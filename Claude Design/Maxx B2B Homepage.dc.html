@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&family=Archivo:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#e9e7e2;font-family:Manrope,system-ui,sans-serif}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+.dv-turn{padding:40px 44px 32px;scroll-margin-top:16px}
+.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}
+.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}
+.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}
+.dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}
+.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}
+.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}
+.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}
+.dv-card{max-width:100%;background:#0a0a0a;border:1px solid rgba(0,0,0,.2);border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.15);overflow:hidden}
+.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}
+.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}
+</style>
+</helmet>
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Chosen direction <a class="dv-oid" href="#1a">1a</a> — red accent added, flippable map, transparent logo</span></div>
+<div class="dv-opts">
+<div class="dv-opt" id="2a">
+<div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Cinematic — red CTAs, world ⇄ Philippines map toggle</div>
+<div class="dv-card" style="width:1440px;color:#f2f2f0;font-family:Manrope,sans-serif">
+  <header style="position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;padding:10px 48px;background:rgba(10,10,10,.92);border-bottom:1px solid #1e1e1e;z-index:5">
+    <img src="uploads/logo.png" alt="Maxx Global Resources" style="height:52px;display:block">
+    <nav style="display:flex;gap:32px;font-size:14px;font-weight:500;color:#c9c9c6">
+      <span style="cursor:pointer;color:#fff">Catalog</span><span style="cursor:pointer" style-hover="color:#fff">Brands</span><span style="cursor:pointer" style-hover="color:#fff">Solutions</span><span style="cursor:pointer" style-hover="color:#fff">Projects</span><span style="cursor:pointer" style-hover="color:#fff">About</span><span style="cursor:pointer" style-hover="color:#fff">Contact</span>
+    </nav>
+    <div style="display:flex;align-items:center;gap:20px">
+      <span style="font-size:13px;color:#8a8a86">(632) 583-2360</span>
+      <button style="background:#d92632;color:#fff;border:none;border-radius:4px;padding:11px 22px;font:600 14px Manrope,sans-serif;cursor:pointer" style-hover="background:#e63e49">Request a Quote</button>
+    </div>
+  </header>
+  <div style="position:relative;height:680px">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:flex-start;justify-content:flex-end;padding:20px;color:#4a4a48;font:11px ui-monospace,monospace">[ hero photo — commercial gym floor, low light, equipment silhouettes ]</div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.25) 0%,rgba(10,10,10,.05) 45%,rgba(10,10,10,.92) 100%)"></div>
+    <div style="position:absolute;left:48px;right:48px;bottom:64px;display:flex;justify-content:space-between;align-items:flex-end;gap:60px">
+      <div style="max-width:760px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px"><span style="width:22px;height:3px;background:#d92632"></span><span style="font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def">Commercial fitness · Flooring · Playground</span></div>
+        <h1 style="margin:0 0 20px;font-size:64px;line-height:1.05;font-weight:300;letter-spacing:-.01em">Equip your facility with the world's commercial brands.</h1>
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#b8b8b4;max-width:560px;font-weight:400">Full commercial ranges from SportsArt, Force USA, Impulse and more — specified, imported and installed across the Philippines.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;flex:none">
+        <button style="background:#d92632;color:#fff;border:none;border-radius:4px;padding:16px 34px;font:600 15px Manrope,sans-serif;cursor:pointer" style-hover="background:#e63e49">Request a Quote</button>
+        <button style="background:transparent;color:#fff;border:1px solid #3a3a38;border-radius:4px;padding:16px 34px;font:600 15px Manrope,sans-serif;cursor:pointer" style-hover="border-color:#fff">Browse the Catalog</button>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #1e1e1e;border-bottom:1px solid #1e1e1e">
+    <div style="padding:36px 48px;border-right:1px solid #1e1e1e"><div style="font-size:40px;font-weight:300">250<span style="color:#d92632">+</span></div><div style="font-size:13px;color:#8a8a86;margin-top:6px">Installations completed</div></div>
+    <div style="padding:36px 48px;border-right:1px solid #1e1e1e"><div style="font-size:40px;font-weight:300">30<span style="color:#d92632">+</span></div><div style="font-size:13px;color:#8a8a86;margin-top:6px">Provinces served</div></div>
+    <div style="padding:36px 48px;border-right:1px solid #1e1e1e"><div style="font-size:40px;font-weight:300">10</div><div style="font-size:13px;color:#8a8a86;margin-top:6px">Global brands</div></div>
+    <div style="padding:36px 48px"><div style="font-size:40px;font-weight:300">20</div><div style="font-size:13px;color:#8a8a86;margin-top:6px">Years operating</div></div>
+  </div>
+  <div style="padding:88px 48px 0">
+    <div style="text-align:center;max-width:680px;margin:0 auto 32px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def;margin-bottom:14px">{{ mapEyebrow }}</div>
+      <h2 style="margin:0 0 14px;font-size:38px;font-weight:300">{{ mapTitle }}</h2>
+      <p style="margin:0;font-size:16px;line-height:1.6;color:#9a9a96">{{ mapSub }}</p>
+    </div>
+    <div style="display:flex;justify-content:center;margin-bottom:24px">
+      <div style="display:flex;background:#111;border:1px solid #242422;border-radius:100px;padding:5px;gap:5px">
+        <button onClick="{{ showWorld }}" style="{{ worldBtnStyle }}">Global suppliers</button>
+        <button onClick="{{ showPH }}" style="{{ phBtnStyle }}">Our clients in the Philippines</button>
+      </div>
+    </div>
+    <div style="position:relative;height:620px;border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;overflow:hidden">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(#141414 1px,transparent 1px),linear-gradient(90deg,#141414 1px,transparent 1px);background-size:62px 62px"></div>
+      <sc-if value="{{ mapWorld }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);color:#3a3a38;font:11px ui-monospace,monospace">[ muted world landmass SVG — single flat tone #1a1a1a, no borders ]</div>
+        <sc-for list="{{ pins2 }}" as="pin" hint-placeholder-count="8">
+          <div onClick="{{ pin.onClick }}" style="{{ pin.wrapStyle }}">
+            <div style="{{ pin.dotStyle }}"></div>
+            <div style="{{ pin.labelStyle }}">{{ pin.label }}</div>
+          </div>
+        </sc-for>
+        <div style="position:absolute;left:83.6%;top:41.9%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px;z-index:3">
+          <div style="width:14px;height:14px;border-radius:50%;background:#2f6fe0;box-shadow:0 0 18px 6px rgba(47,111,224,.55)"></div>
+          <div style="font-size:11px;font-weight:700;color:#fff;white-space:nowrap;background:#2f6fe0;padding:4px 10px;border-radius:3px">MANILA — HQ &amp; SHOWROOM</div>
+        </div>
+      </sc-if>
+      <sc-if value="{{ mapPH }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);color:#3a3a38;font:11px ui-monospace,monospace">[ Philippines outline SVG — single flat tone #1a1a1a ]</div>
+        <sc-for list="{{ phPins2 }}" as="pin" hint-placeholder-count="8">
+          <div onClick="{{ pin.onClick }}" style="{{ pin.wrapStyle }}" title="{{ pin.title }}">
+            <div style="{{ pin.dotStyle }}"></div>
+            <div style="{{ pin.labelStyle }}">{{ pin.label }}</div>
+          </div>
+        </sc-for>
+        <div style="position:absolute;left:24px;bottom:20px;display:flex;gap:18px;flex-wrap:wrap;background:rgba(10,10,10,.75);border:1px solid #1e1e1e;border-radius:6px;padding:12px 18px">
+          <sc-for list="{{ segLegend }}" as="lg" hint-placeholder-count="5">
+            <div style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#9a9a96"><span style="width:9px;height:9px;border-radius:50%;background:{{ lg.color }}"></span>{{ lg.name }}</div>
+          </sc-for>
+          <div style="display:flex;align-items:center;gap:7px;font-size:12px;font-weight:600;color:#f0a63c;border-left:1px solid #2a2a28;padding-left:18px">↗ &nbsp;click pin to open installation photos</div>
+        </div>
+      </sc-if>
+    </div>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px">
+      <sc-for list="{{ chips }}" as="b" hint-placeholder-count="10">
+        <div onClick="{{ b.onClick }}" style="{{ b.style }}">{{ b.name }}</div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:100px 48px 0">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px">
+      <h2 style="margin:0;font-size:38px;font-weight:300">The complete commercial range</h2>
+      <span style="font-size:14px;color:#5b8def;font-weight:600;cursor:pointer" style-hover="color:#82a9f2">View all categories →</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+        <div style="position:relative;height:300px;border-radius:6px;overflow:hidden;cursor:pointer;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px)" style-hover="outline:1px solid #3a3a38">
+          <div style="position:absolute;top:14px;right:16px;color:#4a4a48;font:11px ui-monospace,monospace">[ {{ cat.img }} ]</div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,10,10,.9) 100%)"></div>
+          <div style="position:absolute;left:24px;bottom:20px;right:24px">
+            <div style="font-size:22px;font-weight:600">{{ cat.name }}</div>
+            <div style="font-size:13px;color:#9a9a96;margin-top:4px">{{ cat.sub }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:100px 48px 0">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px">
+      <h2 style="margin:0;font-size:38px;font-weight:300">Featured equipment</h2>
+      <span style="font-size:14px;color:#5b8def;font-weight:600;cursor:pointer" style-hover="color:#82a9f2">Full catalog →</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+        <div style="border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;cursor:pointer;background:#0d0d0d" style-hover="border-color:#3a3a38">
+          <div style="height:240px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace;position:relative">
+            [ product photo ]
+            <sc-if value="{{ p.eco }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:12px;left:12px;background:#123d2a;color:#4ade80;font:700 10px Manrope,sans-serif;letter-spacing:.1em;padding:5px 9px;border-radius:3px">ECO-POWR</div></sc-if>
+          </div>
+          <div style="padding:20px">
+            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:#5b8def;text-transform:uppercase">{{ p.brand }}</div>
+            <div style="font-size:17px;font-weight:600;margin:6px 0 4px">{{ p.name }}</div>
+            <div style="font-size:12px;color:#8a8a86;font-family:ui-monospace,monospace">{{ p.model }}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:{{ p.availColor }};background:{{ p.availBg }};padding:5px 9px;border-radius:3px">{{ p.avail }}</span>
+              <span style="font-size:13px;font-weight:600;color:#c9c9c6" style-hover="color:#e63e49">Request quote →</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:100px 48px">
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:16px;border:1px solid #1e1e1e;border-radius:8px;overflow:hidden">
+      <div style="height:440px;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace">[ installation photo — completed hotel gym fit-out ]</div>
+      <div style="padding:56px;display:flex;flex-direction:column;justify-content:center;background:#0d0d0d">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><span style="width:22px;height:3px;background:#d92632"></span><span style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def">Installations</span></div>
+        <h2 style="margin:0 0 16px;font-size:32px;font-weight:300;line-height:1.2">Proof, delivered. Hotels, condos, schools and LGUs across the Philippines.</h2>
+        <p style="margin:0 0 28px;font-size:15px;line-height:1.65;color:#9a9a96">From five-star hotel gyms in Makati to municipal playgrounds — every project specified, imported and installed by our team.</p>
+        <div><button style="background:transparent;color:#fff;border:1px solid #3a3a38;border-radius:4px;padding:14px 28px;font:600 14px Manrope,sans-serif;cursor:pointer" style-hover="border-color:#fff">See our projects</button></div>
+      </div>
+    </div>
+  </div>
+  <footer style="border-top:1px solid #1e1e1e;padding:56px 48px 40px;background:#080808">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px">
+      <div>
+        <img src="uploads/logo.png" alt="Maxx Global Resources" style="height:64px;display:block">
+        <p style="font-size:13px;line-height:1.7;color:#8a8a86;margin:18px 0 0;max-width:300px">Commercial fitness equipment, sports flooring and playground systems for the Philippine B2B market.</p>
+      </div>
+      <div style="font-size:13px;line-height:2.1;color:#8a8a86"><div style="color:#fff;font-weight:600;margin-bottom:8px">Catalog</div>Cardio<br>Strength<br>Functional<br>Cycling Studio<br>Flooring<br>Playground</div>
+      <div style="font-size:13px;line-height:2.1;color:#8a8a86"><div style="color:#fff;font-weight:600;margin-bottom:8px">Contact</div>(632) 583-2360 — Sales, Manila<br>(632) 794-1737 — Showroom<br>(63917) 833-3202 — Mobile · Viber<br>(63925) 7-MAXX-77 — Hotline<br>info@maxxglobalresources.com</div>
+      <div style="font-size:13px;line-height:1.8;color:#8a8a86"><div style="color:#fff;font-weight:600;margin-bottom:8px">Showroom</div>Unit 202B, RBL Building,<br>549 Banawe St, Quezon City<br><span style="color:#5b8def;font-weight:600;cursor:pointer">Open in Google Maps →</span><br><br>Mon–Sat, 9:00–18:00</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:48px;padding-top:24px;border-top:1px solid #161616;font-size:12px;color:#5a5a56"><span>© 2026 Maxx Global Resources Corporation</span><span>Facebook · Instagram</span></div>
+  </footer>
+</div>
+</div>
+</div>
+<p class="dv-next">Try next: "make the map flip animated" · "show the product detail page in this style" · "tone the red down to just the CTAs"</p>
+</section>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Maxx Global B2B homepage — three directions (black base, white text, blue accent)</span></div>
+<div class="dv-opts">
+
+<!-- ============ 1a CINEMATIC ============ -->
+<div class="dv-opt" id="1a">
+<div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Cinematic — sentence-case light headlines, closest to the Technogym reference</div>
+<div class="dv-card" style="width:1440px;color:#f2f2f0;font-family:Manrope,sans-serif">
+  <header style="position:sticky;top:0;display:flex;align-items:center;justify-content:space-between;padding:14px 48px;background:rgba(10,10,10,.92);border-bottom:1px solid #1e1e1e;z-index:5">
+    <div style="display:flex;align-items:center;gap:14px">
+      <div style="background:#fff;border-radius:6px;padding:5px 10px;display:flex;align-items:center"><img src="uploads/logo.jpg" alt="Maxx Global Resources" style="height:30px;display:block"></div>
+    </div>
+    <nav style="display:flex;gap:32px;font-size:14px;font-weight:500;color:#c9c9c6">
+      <span style="cursor:pointer;color:#fff">Catalog</span><span style="cursor:pointer" style-hover="color:#fff">Brands</span><span style="cursor:pointer" style-hover="color:#fff">Solutions</span><span style="cursor:pointer" style-hover="color:#fff">Projects</span><span style="cursor:pointer" style-hover="color:#fff">About</span><span style="cursor:pointer" style-hover="color:#fff">Contact</span>
+    </nav>
+    <div style="display:flex;align-items:center;gap:20px">
+      <span style="font-size:13px;color:#8a8a86">(632) 583-2360</span>
+      <button style="background:#2f6fe0;color:#fff;border:none;border-radius:4px;padding:11px 22px;font:600 14px Manrope,sans-serif;cursor:pointer" style-hover="background:#4381ea">Request a Quote</button>
+    </div>
+  </header>
+  <div style="position:relative;height:680px">
+    <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:flex-start;justify-content:flex-end;padding:20px;color:#4a4a48;font:11px ui-monospace,monospace">[ hero photo — commercial gym floor, low light, equipment silhouettes ]</div>
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,10,10,.25) 0%,rgba(10,10,10,.05) 45%,rgba(10,10,10,.92) 100%)"></div>
+    <div style="position:absolute;left:48px;right:48px;bottom:64px;display:flex;justify-content:space-between;align-items:flex-end;gap:60px">
+      <div style="max-width:760px">
+        <div style="font-size:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def;margin-bottom:18px">Commercial fitness · Flooring · Playground</div>
+        <h1 style="margin:0 0 20px;font-size:64px;line-height:1.05;font-weight:300;letter-spacing:-.01em">Equip your facility with the world's commercial brands.</h1>
+        <p style="margin:0;font-size:18px;line-height:1.6;color:#b8b8b4;max-width:560px;font-weight:400">Full commercial ranges from SportsArt, Force USA, Impulse and more — specified, imported and installed across the Philippines.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;flex:none">
+        <button style="background:#2f6fe0;color:#fff;border:none;border-radius:4px;padding:16px 34px;font:600 15px Manrope,sans-serif;cursor:pointer" style-hover="background:#4381ea">Request a Quote</button>
+        <button style="background:transparent;color:#fff;border:1px solid #3a3a38;border-radius:4px;padding:16px 34px;font:600 15px Manrope,sans-serif;cursor:pointer" style-hover="border-color:#fff">Browse the Catalog</button>
+      </div>
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid #1e1e1e;border-bottom:1px solid #1e1e1e">
+    <div style="padding:36px 48px;border-right:1px solid #1e1e1e"><div style="font-size:40px;font-weight:300">250+</div><div style="font-size:13px;color:#8a8a86;margin-top:6px">Installations completed</div></div>
+    <div style="padding:36px 48px;border-right:1px solid #1e1e1e"><div style="font-size:40px;font-weight:300">30+</div><div style="font-size:13px;color:#8a8a86;margin-top:6px">Provinces served</div></div>
+    <div style="padding:36px 48px;border-right:1px solid #1e1e1e"><div style="font-size:40px;font-weight:300">10</div><div style="font-size:13px;color:#8a8a86;margin-top:6px">Global brands</div></div>
+    <div style="padding:36px 48px"><div style="font-size:40px;font-weight:300">20</div><div style="font-size:13px;color:#8a8a86;margin-top:6px">Years operating</div></div>
+  </div>
+  <div style="padding:88px 48px 0">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px">
+      <h2 style="margin:0;font-size:38px;font-weight:300">The complete commercial range</h2>
+      <span style="font-size:14px;color:#5b8def;font-weight:600;cursor:pointer" style-hover="color:#82a9f2">View all categories →</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+        <div style="position:relative;height:300px;border-radius:6px;overflow:hidden;cursor:pointer;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px)" style-hover="outline:1px solid #3a3a38">
+          <div style="position:absolute;top:14px;right:16px;color:#4a4a48;font:11px ui-monospace,monospace">[ {{ cat.img }} ]</div>
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(10,10,10,.9) 100%)"></div>
+          <div style="position:absolute;left:24px;bottom:20px;right:24px">
+            <div style="font-size:22px;font-weight:600">{{ cat.name }}</div>
+            <div style="font-size:13px;color:#9a9a96;margin-top:4px">{{ cat.sub }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:100px 48px 0">
+    <div style="text-align:center;max-width:680px;margin:0 auto 44px">
+      <div style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def;margin-bottom:14px">Supplier provenance</div>
+      <h2 style="margin:0 0 14px;font-size:38px;font-weight:300">From the world to your floor</h2>
+      <p style="margin:0;font-size:16px;line-height:1.6;color:#9a9a96">Principal relationships with manufacturers across four continents — imported directly, supported locally from Manila.</p>
+    </div>
+    <div style="position:relative;height:620px;border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;overflow:hidden">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(#141414 1px,transparent 1px),linear-gradient(90deg,#141414 1px,transparent 1px);background-size:62px 62px"></div>
+      <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);color:#3a3a38;font:11px ui-monospace,monospace">[ muted world landmass SVG — single flat tone #1a1a1a, no borders ]</div>
+      <sc-for list="{{ pins }}" as="pin" hint-placeholder-count="8">
+        <div style="position:absolute;left:{{ pin.left }};top:{{ pin.top }};transform:{{ pin.tf }};display:flex;flex-direction:{{ pin.dir }};align-items:center;gap:7px;cursor:pointer;z-index:2">
+          <div style="width:10px;height:10px;border-radius:50%;background:#e8e8e6;box-shadow:0 0 12px 3px rgba(255,255,255,.35)"></div>
+          <div style="font-size:11px;font-weight:600;color:#c9c9c6;white-space:nowrap;background:rgba(10,10,10,.75);padding:3px 8px;border-radius:3px">{{ pin.label }}</div>
+        </div>
+      </sc-for>
+      <div style="position:absolute;left:83.6%;top:41.9%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:7px;z-index:3">
+        <div style="width:14px;height:14px;border-radius:50%;background:#2f6fe0;box-shadow:0 0 18px 6px rgba(47,111,224,.55)"></div>
+        <div style="font-size:11px;font-weight:700;color:#fff;white-space:nowrap;background:#2f6fe0;padding:4px 10px;border-radius:3px">MANILA — HQ &amp; SHOWROOM</div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-top:28px">
+      <sc-for list="{{ brands }}" as="b" hint-placeholder-count="10">
+        <div style="border:1px solid #242422;border-radius:4px;padding:14px 26px;font-size:13px;font-weight:600;color:#8a8a86;letter-spacing:.06em;cursor:pointer" style-hover="color:#fff;border-color:#3a3a38">{{ b }}</div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:100px 48px 0">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:36px">
+      <h2 style="margin:0;font-size:38px;font-weight:300">Featured equipment</h2>
+      <span style="font-size:14px;color:#5b8def;font-weight:600;cursor:pointer" style-hover="color:#82a9f2">Full catalog →</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+        <div style="border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;cursor:pointer;background:#0d0d0d" style-hover="border-color:#3a3a38">
+          <div style="height:240px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace;position:relative">
+            [ product photo ]
+            <sc-if value="{{ p.eco }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:12px;left:12px;background:#123d2a;color:#4ade80;font:700 10px Manrope,sans-serif;letter-spacing:.1em;padding:5px 9px;border-radius:3px">ECO-POWR</div></sc-if>
+          </div>
+          <div style="padding:20px">
+            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:#5b8def;text-transform:uppercase">{{ p.brand }}</div>
+            <div style="font-size:17px;font-weight:600;margin:6px 0 4px">{{ p.name }}</div>
+            <div style="font-size:12px;color:#8a8a86;font-family:ui-monospace,monospace">{{ p.model }}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+              <span style="font-size:11px;font-weight:700;letter-spacing:.06em;color:{{ p.availColor }};background:{{ p.availBg }};padding:5px 9px;border-radius:3px">{{ p.avail }}</span>
+              <span style="font-size:13px;font-weight:600;color:#c9c9c6" style-hover="color:#fff">Request quote →</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:100px 48px">
+    <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:16px;border:1px solid #1e1e1e;border-radius:8px;overflow:hidden">
+      <div style="height:440px;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace">[ installation photo — completed hotel gym fit-out ]</div>
+      <div style="padding:56px;display:flex;flex-direction:column;justify-content:center;background:#0d0d0d">
+        <div style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def;margin-bottom:16px">Installations</div>
+        <h2 style="margin:0 0 16px;font-size:32px;font-weight:300;line-height:1.2">Proof, delivered. Hotels, condos, schools and LGUs across the Philippines.</h2>
+        <p style="margin:0 0 28px;font-size:15px;line-height:1.65;color:#9a9a96">From five-star hotel gyms in Makati to municipal playgrounds — every project specified, imported and installed by our team.</p>
+        <div><button style="background:transparent;color:#fff;border:1px solid #3a3a38;border-radius:4px;padding:14px 28px;font:600 14px Manrope,sans-serif;cursor:pointer" style-hover="border-color:#fff">See our projects</button></div>
+      </div>
+    </div>
+  </div>
+  <footer style="border-top:1px solid #1e1e1e;padding:56px 48px 40px;background:#080808">
+    <div style="display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:48px">
+      <div>
+        <div style="background:#fff;border-radius:6px;padding:6px 12px;display:inline-flex"><img src="uploads/logo.jpg" alt="Maxx Global Resources" style="height:34px;display:block"></div>
+        <p style="font-size:13px;line-height:1.7;color:#8a8a86;margin:18px 0 0;max-width:300px">Commercial fitness equipment, sports flooring and playground systems for the Philippine B2B market.</p>
+      </div>
+      <div style="font-size:13px;line-height:2.1;color:#8a8a86"><div style="color:#fff;font-weight:600;margin-bottom:8px">Catalog</div>Cardio<br>Strength<br>Functional<br>Cycling Studio<br>Flooring<br>Playground</div>
+      <div style="font-size:13px;line-height:2.1;color:#8a8a86"><div style="color:#fff;font-weight:600;margin-bottom:8px">Contact</div>(632) 583-2360 — Sales, Manila<br>(632) 794-1737 — Showroom<br>(63917) 833-3202 — Mobile · Viber<br>(63925) 7-MAXX-77 — Hotline<br>info@maxxglobalresources.com</div>
+      <div style="font-size:13px;line-height:1.8;color:#8a8a86"><div style="color:#fff;font-weight:600;margin-bottom:8px">Showroom</div>Unit 202B, RBL Building,<br>549 Banawe St, Quezon City<br><span style="color:#5b8def;font-weight:600;cursor:pointer">Open in Google Maps →</span><br><br>Mon–Sat, 9:00–18:00</div>
+    </div>
+    <div style="display:flex;justify-content:space-between;margin-top:48px;padding-top:24px;border-top:1px solid #161616;font-size:12px;color:#5a5a56"><span>© 2026 Maxx Global Resources Corporation</span><span>Facebook · Instagram</span></div>
+  </footer>
+</div>
+</div>
+
+<!-- ============ 1b BOLD CAPS ============ -->
+<div class="dv-opt" id="1b">
+<div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Bold — oversized caps headlines, split hero, list-row categories</div>
+<div class="dv-card" style="width:1440px;color:#f2f2f0;font-family:Archivo,sans-serif">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:72px;background:#0a0a0a;border-bottom:1px solid #222">
+    <div style="display:flex;align-items:center;gap:36px">
+      <div style="background:#fff;border-radius:4px;padding:4px 9px;display:flex;align-items:center"><img src="uploads/logo.jpg" alt="Maxx Global Resources" style="height:28px;display:block"></div>
+      <nav style="display:flex;gap:26px;font-size:13px;font-weight:700;letter-spacing:.08em;color:#b0b0ac">
+        <span style="cursor:pointer;color:#fff">CATALOG</span><span style="cursor:pointer">BRANDS</span><span style="cursor:pointer">SOLUTIONS</span><span style="cursor:pointer">PROJECTS</span><span style="cursor:pointer">CONTACT</span>
+      </nav>
+    </div>
+    <button style="background:#2f6fe0;color:#fff;border:none;padding:12px 26px;font:800 13px Archivo,sans-serif;letter-spacing:.08em;cursor:pointer" style-hover="background:#4381ea">REQUEST A QUOTE</button>
+  </header>
+  <div style="display:grid;grid-template-columns:1.1fr 1fr;min-height:640px;border-bottom:1px solid #222">
+    <div style="padding:72px 48px;display:flex;flex-direction:column;justify-content:space-between">
+      <div>
+        <div style="font:600 12px ui-monospace,monospace;letter-spacing:.14em;color:#5b8def;margin-bottom:28px">B2B · COMMERCIAL EQUIPMENT · PHILIPPINES</div>
+        <h1 style="margin:0;font-size:96px;line-height:.95;font-weight:900;letter-spacing:-.02em">EQUIP<br>YOUR<br>FACILITY<span style="color:#2f6fe0">.</span></h1>
+      </div>
+      <div>
+        <p style="margin:0 0 28px;font-size:17px;line-height:1.6;color:#b0b0ac;max-width:440px">Ten global brands. Cardio to playground. Specified, imported and installed — with the spec sheets your procurement team needs.</p>
+        <div style="display:flex;gap:12px">
+          <button style="background:#fff;color:#0a0a0a;border:none;padding:16px 32px;font:800 14px Archivo,sans-serif;letter-spacing:.06em;cursor:pointer" style-hover="background:#d8d8d4">BROWSE CATALOG</button>
+          <button style="background:transparent;color:#fff;border:1px solid #3a3a38;padding:16px 32px;font:800 14px Archivo,sans-serif;letter-spacing:.06em;cursor:pointer" style-hover="border-color:#fff">TALK TO SALES</button>
+        </div>
+      </div>
+    </div>
+    <div style="border-left:1px solid #222;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace">[ hero photo — strength rack, dramatic side light ]</div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:0;border-bottom:1px solid #222">
+    <sc-for list="{{ brands }}" as="b" hint-placeholder-count="10">
+      <div style="flex:none;padding:18px 32px;border-right:1px solid #222;font:700 13px Archivo,sans-serif;letter-spacing:.12em;color:#6a6a66;white-space:nowrap" style-hover="color:#fff">{{ b }}</div>
+    </sc-for>
+  </div>
+  <div style="padding:80px 48px 0">
+    <h2 style="margin:0 0 8px;font-size:44px;font-weight:900;letter-spacing:-.01em">THE RANGE</h2>
+    <div style="font-size:14px;color:#8a8a86;margin-bottom:36px">Six commercial lines — including flooring and playground, available nowhere else.</div>
+    <div style="border-top:1px solid #222">
+      <sc-for list="{{ categories }}" as="cat" hint-placeholder-count="6">
+        <div style="display:grid;grid-template-columns:80px 1fr 1fr 40px;align-items:center;gap:24px;padding:28px 8px;border-bottom:1px solid #222;cursor:pointer" style-hover="background:#111">
+          <div style="font:600 13px ui-monospace,monospace;color:#5a5a56">{{ cat.num }}</div>
+          <div style="font-size:30px;font-weight:800;letter-spacing:-.01em">{{ cat.nameUpper }}</div>
+          <div style="font-size:14px;color:#8a8a86">{{ cat.sub }}</div>
+          <div style="font-size:22px;color:#5b8def">→</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:90px 48px 0">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px">
+      <h2 style="margin:0;font-size:44px;font-weight:900">SOURCED WORLDWIDE<span style="color:#2f6fe0">.</span> INSTALLED HERE<span style="color:#2f6fe0">.</span></h2>
+    </div>
+    <div style="position:relative;height:560px;background:#0d0d0d;border:1px solid #222;overflow:hidden">
+      <div style="position:absolute;inset:0;background-image:radial-gradient(#1a1a1a 1.5px,transparent 1.5px);background-size:26px 26px"></div>
+      <div style="position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);color:#3a3a38;font:11px ui-monospace,monospace">[ muted world landmass SVG — dot-matrix style, flat #1e1e1e ]</div>
+      <sc-for list="{{ pins }}" as="pin" hint-placeholder-count="8">
+        <div style="position:absolute;left:{{ pin.left }};top:{{ pin.top }};transform:{{ pin.tf }};display:flex;flex-direction:{{ pin.dir }};align-items:center;gap:8px;z-index:2">
+          <div style="width:9px;height:9px;background:#fff;box-shadow:0 0 10px 3px rgba(255,255,255,.4)"></div>
+          <div style="font:700 10px Archivo,sans-serif;letter-spacing:.1em;color:#b0b0ac;white-space:nowrap">{{ pin.labelUpper }}</div>
+        </div>
+      </sc-for>
+      <div style="position:absolute;left:83.6%;top:41.9%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;z-index:3">
+        <div style="width:13px;height:13px;background:#2f6fe0;box-shadow:0 0 16px 6px rgba(47,111,224,.55)"></div>
+        <div style="font:800 10px Archivo,sans-serif;letter-spacing:.1em;color:#fff;background:#2f6fe0;padding:4px 8px;white-space:nowrap">MANILA HQ</div>
+      </div>
+    </div>
+  </div>
+  <div style="padding:90px 48px 0">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:36px">
+      <h2 style="margin:0;font-size:44px;font-weight:900">FEATURED</h2>
+      <span style="font:700 13px Archivo,sans-serif;letter-spacing:.08em;color:#5b8def;cursor:pointer">FULL CATALOG →</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#222;border:1px solid #222">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+        <div style="background:#0a0a0a;padding:0;cursor:pointer" style-hover="background:#111">
+          <div style="height:220px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace">[ product photo ]</div>
+          <div style="padding:22px">
+            <div style="font:600 11px ui-monospace,monospace;color:#5b8def;margin-bottom:8px">{{ p.brandUpper }} · {{ p.model }}</div>
+            <div style="font-size:18px;font-weight:800;line-height:1.2">{{ p.nameUpper }}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px">
+              <span style="font:700 10px Archivo,sans-serif;letter-spacing:.08em;color:{{ p.availColor }};border:1px solid {{ p.availColor }};padding:5px 8px">{{ p.availUpper }}</span>
+              <span style="font-size:18px;color:#5b8def">→</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="margin:90px 0 0;background:#2f6fe0;padding:72px 48px;display:flex;justify-content:space-between;align-items:center;gap:48px">
+    <h2 style="margin:0;font-size:52px;font-weight:900;line-height:1.1;color:#fff">SPECCING A FACILITY?<br><span style="color:rgba(255,255,255,.6)">WE'LL BUILD THE CASE WITH YOU.</span></h2>
+    <div style="display:flex;flex-direction:column;gap:12px;flex:none">
+      <button style="background:#0a0a0a;color:#fff;border:none;padding:18px 40px;font:800 15px Archivo,sans-serif;letter-spacing:.06em;cursor:pointer" style-hover="background:#1c1c1c">REQUEST A QUOTE</button>
+      <button style="background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5);padding:18px 40px;font:800 15px Archivo,sans-serif;letter-spacing:.06em;cursor:pointer" style-hover="border-color:#fff">WHATSAPP US</button>
+    </div>
+  </div>
+  <footer style="padding:48px;background:#080808;display:flex;justify-content:space-between;gap:48px;font-size:13px;color:#8a8a86;line-height:2">
+    <div style="display:flex;align-items:flex-start"><div style="background:#fff;border-radius:4px;padding:5px 10px"><img src="uploads/logo.jpg" alt="Maxx Global Resources" style="height:30px;display:block"></div></div>
+    <div><div style="color:#fff;font-weight:700;letter-spacing:.08em;font-size:12px;margin-bottom:6px">SALES</div>(632) 583-2360 · (632) 794-1737<br>(63917) 833-3202 — Viber · (63925) 7-MAXX-77</div>
+    <div><div style="color:#fff;font-weight:700;letter-spacing:.08em;font-size:12px;margin-bottom:6px">SHOWROOM</div>Unit 202B, RBL Building, 549 Banawe St, QC<br>Mon–Sat 9:00–18:00 · <span style="color:#5b8def">Google Maps →</span></div>
+    <div><div style="color:#fff;font-weight:700;letter-spacing:.08em;font-size:12px;margin-bottom:6px">SOCIAL</div>Facebook · Instagram<br>info@maxxglobalresources.com</div>
+  </footer>
+</div>
+</div>
+
+<!-- ============ 1c TECHNICAL ============ -->
+<div class="dv-opt" id="1c">
+<div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Technical — map-first hero, numbered sections, procurement-friendly index</div>
+<div class="dv-card" style="width:1440px;color:#f2f2f0;font-family:Manrope,sans-serif">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:64px;background:#0a0a0a;border-bottom:1px solid #1e1e1e">
+    <div style="display:flex;align-items:center;gap:16px">
+      <div style="background:#fff;border-radius:4px;padding:4px 8px;display:flex;align-items:center"><img src="uploads/logo.jpg" alt="Maxx Global Resources" style="height:26px;display:block"></div>
+      <span style="font:600 11px ui-monospace,monospace;color:#5a5a56;letter-spacing:.08em">B2B.MAXXGLOBALRESOURCES.COM</span>
+    </div>
+    <nav style="display:flex;gap:2px;font-size:13px;font-weight:600;color:#b0b0ac">
+      <span style="padding:8px 14px;cursor:pointer;color:#fff;background:#161616;border-radius:4px">Catalog</span><span style="padding:8px 14px;cursor:pointer" style-hover="color:#fff">Brands</span><span style="padding:8px 14px;cursor:pointer" style-hover="color:#fff">Solutions</span><span style="padding:8px 14px;cursor:pointer" style-hover="color:#fff">Projects</span><span style="padding:8px 14px;cursor:pointer" style-hover="color:#fff">Contact</span>
+    </nav>
+    <button style="background:#2f6fe0;color:#fff;border:none;border-radius:4px;padding:10px 20px;font:700 13px Manrope,sans-serif;cursor:pointer" style-hover="background:#4381ea">Request a Quote</button>
+  </header>
+  <div style="display:grid;grid-template-columns:520px 1fr;border-bottom:1px solid #1e1e1e">
+    <div style="padding:56px 40px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid #1e1e1e">
+      <div>
+        <div style="font:600 11px ui-monospace,monospace;color:#5b8def;letter-spacing:.12em;margin-bottom:22px">01 / SUPPLIER PROVENANCE</div>
+        <h1 style="margin:0 0 18px;font-size:44px;line-height:1.1;font-weight:600;letter-spacing:-.01em">The world's commercial equipment. One Manila supplier.</h1>
+        <p style="margin:0;font-size:15px;line-height:1.7;color:#9a9a96">Direct principal relationships in the USA, Taiwan, China and Australia. Manufacturer spec sheets on every product page — ready for your tender file.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1px;background:#1e1e1e;border:1px solid #1e1e1e;margin-top:40px">
+        <div style="background:#0d0d0d;padding:20px"><div style="font-size:28px;font-weight:600">250+</div><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;margin-top:4px">INSTALLATIONS</div></div>
+        <div style="background:#0d0d0d;padding:20px"><div style="font-size:28px;font-weight:600">30+</div><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;margin-top:4px">PROVINCES</div></div>
+        <div style="background:#0d0d0d;padding:20px"><div style="font-size:28px;font-weight:600">10</div><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;margin-top:4px">GLOBAL BRANDS</div></div>
+        <div style="background:#0d0d0d;padding:20px"><div style="font-size:28px;font-weight:600">20</div><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;margin-top:4px">YEARS OPERATING</div></div>
+      </div>
+    </div>
+    <div style="position:relative;min-height:560px;background:#0d0d0d;overflow:hidden">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(#131313 1px,transparent 1px),linear-gradient(90deg,#131313 1px,transparent 1px);background-size:46px 46px"></div>
+      <div style="position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);color:#3a3a38;font:11px ui-monospace,monospace">[ muted world landmass SVG — flat #191919 ]</div>
+      <sc-for list="{{ pins }}" as="pin" hint-placeholder-count="8">
+        <div style="position:absolute;left:{{ pin.left }};top:{{ pin.top }};transform:{{ pin.tf }};display:flex;flex-direction:{{ pin.dir }};align-items:center;gap:7px;z-index:2">
+          <div style="width:8px;height:8px;border-radius:50%;background:#e8e8e6;box-shadow:0 0 10px 2px rgba(255,255,255,.35)"></div>
+          <div style="font:600 10px ui-monospace,monospace;color:#8a8a86;white-space:nowrap">{{ pin.label }}</div>
+        </div>
+      </sc-for>
+      <div style="position:absolute;left:83.6%;top:41.9%;transform:translate(-50%,-50%);display:flex;align-items:center;gap:7px;z-index:3">
+        <div style="width:11px;height:11px;border-radius:50%;background:#2f6fe0;box-shadow:0 0 14px 5px rgba(47,111,224,.55)"></div>
+        <div style="font:700 10px ui-monospace,monospace;color:#fff;background:#2f6fe0;padding:3px 7px;border-radius:2px;white-space:nowrap">MANILA</div>
+      </div>
+      <div style="position:absolute;left:0;right:0;bottom:0;display:flex;border-top:1px solid #1e1e1e;background:rgba(10,10,10,.85)">
+        <sc-for list="{{ brands }}" as="b" hint-placeholder-count="10">
+          <div style="flex:1;padding:14px 8px;text-align:center;border-right:1px solid #1e1e1e;font:600 10px ui-monospace,monospace;color:#6a6a66;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" style-hover="color:#fff">{{ b }}</div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  <div style="padding:72px 40px 0">
+    <div style="font:600 11px ui-monospace,monospace;color:#5b8def;letter-spacing:.12em;margin-bottom:22px">02 / CATALOG INDEX</div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#1e1e1e;border:1px solid #1e1e1e">
+      <sc-for list="{{ categoriesIdx }}" as="cat" hint-placeholder-count="6">
+        <div style="background:#0a0a0a;padding:28px;cursor:pointer;min-height:150px;display:flex;flex-direction:column;justify-content:space-between" style-hover="background:#111">
+          <div style="display:flex;justify-content:space-between;align-items:baseline">
+            <div style="font-size:21px;font-weight:600">{{ cat.name }}</div>
+            <div style="font:500 11px ui-monospace,monospace;color:#5a5a56">{{ cat.count }}</div>
+          </div>
+          <div>
+            <div style="font-size:13px;color:#8a8a86;line-height:1.6">{{ cat.sub }}</div>
+            <div style="font-size:13px;font-weight:600;color:#5b8def;margin-top:14px">Browse →</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:72px 40px 0">
+    <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:22px">
+      <div style="font:600 11px ui-monospace,monospace;color:#5b8def;letter-spacing:.12em">03 / FEATURED EQUIPMENT</div>
+      <span style="font-size:13px;font-weight:600;color:#8a8a86;cursor:pointer" style-hover="color:#fff">Every product ships with a manufacturer spec sheet (PDF) ↓</span>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px">
+      <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+        <div style="border:1px solid #1e1e1e;border-radius:4px;overflow:hidden;cursor:pointer" style-hover="border-color:#3a3a38">
+          <div style="height:210px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace">[ product photo ]</div>
+          <div style="padding:18px;background:#0d0d0d">
+            <div style="display:flex;justify-content:space-between;align-items:baseline">
+              <div style="font-size:15px;font-weight:600">{{ p.name }}</div>
+            </div>
+            <div style="font:500 11px ui-monospace,monospace;color:#6a6a66;margin-top:5px">{{ p.brandUpper }} / {{ p.model }}</div>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;padding-top:14px;border-top:1px solid #1a1a1a">
+              <span style="font:600 10px ui-monospace,monospace;color:{{ p.availColor }}">● {{ p.availUpper }}</span>
+              <span style="font:600 11px ui-monospace,monospace;color:#8a8a86" style-hover="color:#fff">SPEC.PDF ↓</span>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:72px 40px 80px">
+    <div style="font:600 11px ui-monospace,monospace;color:#5b8def;letter-spacing:.12em;margin-bottom:22px">04 / WHO WE EQUIP</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap">
+      <sc-for list="{{ segments }}" as="s" hint-placeholder-count="6">
+        <div style="border:1px solid #242422;border-radius:100px;padding:14px 28px;font-size:14px;font-weight:600;color:#c9c9c6;cursor:pointer" style-hover="border-color:#5b8def;color:#fff">{{ s }}</div>
+      </sc-for>
+    </div>
+  </div>
+  <footer style="border-top:1px solid #1e1e1e;padding:40px;background:#080808;display:flex;justify-content:space-between;align-items:flex-start;gap:40px;font-size:13px;color:#8a8a86;line-height:1.9">
+    <div style="background:#fff;border-radius:4px;padding:5px 10px;flex:none"><img src="uploads/logo.jpg" alt="Maxx Global Resources" style="height:28px;display:block"></div>
+    <div>(632) 583-2360 · (632) 794-1737<br>(63917) 833-3202 Viber · (63925) 7-MAXX-77</div>
+    <div>Unit 202B, RBL Building, 549 Banawe St, QC<br>Mon–Sat 9:00–18:00</div>
+    <div>info@maxxglobalresources.com<br>Facebook · Instagram</div>
+    <div style="font:500 11px ui-monospace,monospace;color:#5a5a56">© 2026 MAXX GLOBAL<br>RESOURCES CORP.</div>
+  </footer>
+</div>
+</div>
+
+</div>
+<p class="dv-next">Try next: "go with <a class="dv-oid" href="#1a">1a</a>, but use the caps headlines from <a class="dv-oid" href="#1b">1b</a>" · "make the map in <a class="dv-oid" href="#1c">1c</a> full-width" · "show me the product detail page for the winner"</p>
+</section>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { mapMode: "world", selBrand: null, selClient: null };
+  renderVals() {
+    const world = this.state.mapMode === "world";
+    const btn = (active, color) =>
+      "border:none;border-radius:100px;padding:11px 24px;font:600 13px Manrope,sans-serif;cursor:pointer;" +
+      (active ? "background:" + color + ";color:#fff" : "background:transparent;color:#8a8a86");
+    const SEG = {
+      hotel: { name: "Hotels & Resorts", color: "#e64550" },
+      condo: { name: "Condominiums", color: "#f0a63c" },
+      corp: { name: "Corporate", color: "#5b8def" },
+      school: { name: "Schools", color: "#a78bfa" },
+      lgu: { name: "Government / LGU", color: "#4ade80" },
+      gym: { name: "Commercial Gyms", color: "#e8e8e6" },
+    };
+    const P2 = (label, left, top, side, seg) => ({
+      label, left, top,
+      color: SEG[seg].color,
+      glow: SEG[seg].color + "59",
+      dir: side === "l" ? "row-reverse" : side === "b" ? "column" : "row",
+      tf: side === "l" ? "translate(calc(-100% + 5px),-50%)" : side === "b" ? "translate(-50%,-5px)" : "translate(-5px,-50%)",
+    });
+    // [label, left, top, side, segment, client, hasPhotos]
+    const PH = [
+      ["SM North EDSA, QC — Corporate gym", "46%", "25%", "r", "corp", "sm", true],
+      ["Shangri-La Plaza, Ortigas — Hotel gym", "50%", "31%", "r", "hotel", "shangrila", true],
+      ["Ayala Tower, Makati — Office fitness", "42%", "34%", "l", "corp", "ayala", false],
+      ["Megaworld Uptown, BGC — Condo amenity", "48%", "39%", "r", "condo", "megaworld", true],
+      ["Anvaya Cove, Bataan — Resort gym", "37%", "27%", "l", "hotel", "ayala", false],
+      ["State university, Baguio — Campus gym", "41%", "14%", "r", "school", "lgu", false],
+      ["Robinsons, Iloilo — Mall gym", "43%", "58%", "l", "gym", "robinsons", false],
+      ["SM Seaside, Cebu — Fitness center", "56%", "55%", "r", "gym", "sm", true],
+      ["LGU playground, Cagayan de Oro", "58%", "70%", "r", "lgu", "lgu", true],
+      ["SM Lanang, Davao — Hotel gym", "62%", "80%", "r", "hotel", "sm", false],
+    ];
+    const mapVals = {
+      mapWorld: world,
+      mapPH: !world,
+      mapEyebrow: world ? "Supplier provenance" : "Installations",
+      mapTitle: world ? "From the world to your floor" : "Delivered across the Philippines",
+      mapSub: world
+        ? "Principal relationships with manufacturers across four continents — imported directly, supported locally from Manila."
+        : "Hotels, condos, schools, LGUs and commercial gyms — 250+ installations from Baguio to Davao.",
+      showWorld: () => this.setState({ mapMode: "world", selBrand: null, selClient: null }),
+      showPH: () => this.setState({ mapMode: "ph", selBrand: null, selClient: null }),
+      worldBtnStyle: btn(world, "#2f6fe0"),
+      phBtnStyle: btn(!world, "#d92632"),
+      segLegend: Object.values(SEG),
+    };
+    const cats = [
+      { name: "Cardio", sub: "Treadmills · Ellipticals · Bikes · Rowers", img: "cardio row photo", num: "01", count: "48 PRODUCTS" },
+      { name: "Strength", sub: "Plate loaded · Selectorized · Racks", img: "strength floor photo", num: "02", count: "86 PRODUCTS" },
+      { name: "Functional", sub: "All-in-one trainers · Rigs · Accessories", img: "functional rig photo", num: "03", count: "34 PRODUCTS" },
+      { name: "Cycling Studio", sub: "Indoor cycles · Power meters · Studio systems", img: "cycling studio photo", num: "04", count: "22 PRODUCTS" },
+      { name: "Flooring", sub: "Rubber tiles · Rolls · PVC · Platforms", img: "rubber flooring detail", num: "05", count: "18 PRODUCTS" },
+      { name: "Playground", sub: "Play systems · Swings · Slides", img: "playground install photo", num: "06", count: "26 PRODUCTS" },
+    ];
+    // side: which side of the dot the label sits on ('l' = label to the left)
+    // side: 'l' label left of dot, 'r' right, 'b' below (column)
+    const P = (label, left, top, side) => ({
+      label, left, top,
+      dir: side === "l" ? "row-reverse" : side === "b" ? "column" : "row",
+      tf: side === "l" ? "translate(calc(-100% + 5px),-50%)" : side === "b" ? "translate(-50%,-5px)" : "translate(-5px,-50%)",
+    });
+    const pins = [
+      P("Woodinville, USA — SportsArt HQ", "16%", "23.5%", "r"),
+      P("Utah, USA — Force USA", "19%", "27.6%", "r"),
+      P("Boulder, USA — Stages", "20.8%", "31%", "l"),
+      P("Shandong, CN — Impulse", "82.5%", "29.6%", "l"),
+      P("Wenzhou, CN — Liben", "80%", "34.2%", "l"),
+      P("Tainan, TW — SportsArt Mfg", "86.5%", "37.2%", "l"),
+      P("Intenza · FitPlus — TW", "88.5%", "31%", "b"),
+      P("Melbourne, AU — VersaFit", "90.3%", "71%", "l"),
+      P("Perth, AU — First Degree", "82.2%", "67.8%", "l"),
+    ].map(p => ({ ...p, labelUpper: p.label.toUpperCase() }));
+    const brands = ["SportsArt", "Force USA", "Impulse", "Stages Cycling", "Intenza", "First Degree", "VersaFit", "FitPlus Floor", "Liben", "Shamrock Arena"];
+    const AV = {
+      available: { avail: "Available", availColor: "#4ade80", availBg: "#123d2a" },
+      indent: { avail: "Indent Order", availColor: "#fbbf24", availBg: "#3d2f10" },
+    };
+    const products = [
+      { brand: "SportsArt", name: "G690 Verde Treadmill", model: "G690", eco: true, a: "available" },
+      { brand: "Force USA", name: "G20 Pro All-In-One", model: "G20-PRO", eco: false, a: "indent" },
+      { brand: "Impulse", name: "IT9527 Leg Press", model: "IT9527", eco: false, a: "indent" },
+      { brand: "Stages", name: "SC3 Indoor Cycle", model: "SC3", eco: false, a: "available" },
+    ].map(p => ({
+      ...p, ...AV[p.a],
+      brandUpper: p.brand.toUpperCase(),
+      nameUpper: p.name.toUpperCase(),
+      availUpper: AV[p.a].avail.toUpperCase(),
+    }));
+    cats.forEach(c => { c.nameUpper = c.name.toUpperCase(); });
+    // Interactive map: brand/client chips <-> pins highlight sync
+    const selB = this.state.selBrand, selC = this.state.selClient;
+    const pinKeys = [["sportsart"], ["forceusa"], ["stages"], ["impulse"], ["liben"], ["sportsart"], ["intenza", "fitplus"], ["versafit"], ["firstdegree"]];
+    const wrap = (p, dim) => "position:absolute;left:" + p.left + ";top:" + p.top + ";transform:" + p.tf + ";display:flex;flex-direction:" + p.dir + ";align-items:center;gap:7px;cursor:pointer;z-index:" + (dim ? 1 : 2) + ";opacity:" + (dim ? 0.3 : 1) + ";transition:opacity .2s";
+    const dot = (on, color) => "width:" + (on ? 14 : 10) + "px;height:" + (on ? 14 : 10) + "px;border-radius:50%;background:" + color + ";box-shadow:0 0 " + (on ? 18 : 12) + "px " + (on ? 6 : 3) + "px " + (on ? color + "99" : color === "#e8e8e6" ? "rgba(255,255,255,.35)" : color + "59") + ";transition:all .2s";
+    const lbl = on => "font-size:11px;font-weight:600;white-space:nowrap;padding:3px 8px;border-radius:3px;transition:all .2s;" + (on ? "color:#0a0a0a;background:#fff" : "color:#c9c9c6;background:rgba(10,10,10,.75)");
+    const pins2 = pins.map((p, i) => {
+      const on = !!selB && pinKeys[i].includes(selB);
+      const dim = !!selB && !on;
+      return { label: p.label, wrapStyle: wrap(p, dim), dotStyle: dot(on, on ? "#5b8def" : "#e8e8e6"), labelStyle: lbl(on),
+        onClick: () => this.setState({ selBrand: on ? null : pinKeys[i][0] }) };
+    });
+    const phPins2 = PH.map(([label, left, top, side, seg, client, photos]) => {
+      const p = P2(label, left, top, side, seg);
+      const on = selC === client;
+      const dim = !!selC && !on;
+      return { label: photos ? label + "  ↗" : label, title: photos ? "Opens installation photo gallery" : "",
+        wrapStyle: wrap(p, dim), dotStyle: dot(on, SEG[seg].color), labelStyle: lbl(on),
+        onClick: () => this.setState({ selClient: on ? null : client }) };
+    });
+    const BRAND_CHIPS = [["SportsArt", "sportsart"], ["Force USA", "forceusa"], ["Impulse", "impulse"], ["Stages Cycling", "stages"], ["Intenza", "intenza"], ["First Degree", "firstdegree"], ["VersaFit", "versafit"], ["FitPlus Floor", "fitplus"], ["Liben", "liben"], ["Shamrock Arena", "shamrock"]];
+    const CLIENT_CHIPS = [["SM", "sm"], ["Ayala Land", "ayala"], ["Shangri-La", "shangrila"], ["Megaworld", "megaworld"], ["Robinsons Land", "robinsons"], ["Gov't & LGU", "lgu"]];
+    const chip = (on, accent, tint) => "border:1px solid " + (on ? accent : "#242422") + ";border-radius:4px;padding:14px 26px;font:600 13px Manrope,sans-serif;color:" + (on ? "#fff" : "#8a8a86") + ";letter-spacing:.06em;cursor:pointer;background:" + (on ? tint : "transparent") + ";transition:all .2s";
+    const chips = (world ? BRAND_CHIPS : CLIENT_CHIPS).map(([name, key]) => {
+      const on = world ? selB === key : selC === key;
+      return { name, style: chip(on, world ? "#2f6fe0" : "#d92632", world ? "#12203f" : "#3a1216"),
+        onClick: () => this.setState(world ? { selBrand: on ? null : key } : { selClient: on ? null : key }) };
+    });
+    return {
+      ...mapVals,
+      pins2, phPins2, chips,
+      categories: cats,
+      categoriesIdx: cats,
+      pins, brands, products,
+      segments: ["Hotels & Resorts", "Residential Condominiums", "Corporate Fitness", "Schools & Universities", "Government & LGU", "Commercial Gyms"],
+    };
+  }
+}
+</script>
+</body>
+</html>

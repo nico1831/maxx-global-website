@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+</style>
+</helmet>
+<dc-import name="SiteHeader" active="Solutions" hint-size="100%,92px" style="position:fixed;top:0;left:0;right:0;z-index:50"></dc-import>
+<div style="height:92px"></div>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;padding:22px clamp(20px,5vw,48px);border-bottom:1px solid #1e1e1e;align-items:center">
+  <span style="font-size:12px;color:#5a5a56;margin-right:8px;letter-spacing:.08em;text-transform:uppercase">Solutions for</span>
+  <sc-for list="{{ segTabs }}" as="t" hint-placeholder-count="6">
+    <div style="{{ t.style }}">{{ t.name }}</div>
+  </sc-for>
+</div>
+
+<div style="position:relative;height:460px;border-bottom:1px solid #1e1e1e">
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:flex-start;justify-content:flex-end;padding:20px;color:#4a4a48;font:11px ui-monospace,monospace">[ hero photo — five-star hotel gym overlooking the city, evening ]</div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.95) 0%,rgba(10,10,10,.6) 58%,rgba(10,10,10,.25) 100%)"></div>
+  <div style="position:absolute;left:48px;bottom:52px;right:48px;max-width:760px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px"><span style="width:22px;height:3px;background:#d92632"></span><span style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def">Hotels &amp; Resorts</span></div>
+    <h1 style="margin:0 0 18px;font-size:clamp(30px,6vw,52px);font-weight:300;letter-spacing:-.01em;line-height:1.08;text-wrap:pretty">A gym your guests rate, in the floor area you actually have.</h1>
+    <p style="margin:0;font-size:17px;line-height:1.65;color:#b8b8b4;max-width:620px">Hotel fitness rooms are judged in online reviews and won't get a second budget cycle. We specify for small footprints, quiet running and low maintenance — and we install overnight so the floor stays open.</p>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:56px;padding:72px clamp(20px,5vw,48px) 0;align-items:start">
+  <div>
+    <h2 style="margin:0 0 22px;font-size:clamp(22px,3.6vw,30px);font-weight:300">What we plan around</h2>
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <sc-for list="{{ considerations }}" as="c" hint-placeholder-count="5">
+        <div style="border-left:2px solid #d92632;padding:2px 0 2px 20px">
+          <div style="font-size:16px;font-weight:600;margin-bottom:5px">{{ c.title }}</div>
+          <div style="font-size:14px;line-height:1.6;color:#9a9a96">{{ c.body }}</div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;padding:36px">
+    <h2 style="margin:0 0 8px;font-size:clamp(19px,3vw,24px);font-weight:600">A typical hotel specification</h2>
+    <p style="margin:0 0 26px;font-size:14px;line-height:1.6;color:#9a9a96">For a 60–90 m² fitness room serving 150–250 keys. Adjusted to your floor plan on request.</p>
+    <div style="display:flex;flex-direction:column;gap:1px;background:#1e1e1e;border:1px solid #1e1e1e;border-radius:6px;overflow:hidden">
+      <sc-for list="{{ specRows }}" as="r" hint-placeholder-count="6">
+        <div style="background:#0a0a0a;padding:15px 18px;display:flex;justify-content:space-between;align-items:center;gap:16px">
+          <span style="font-size:14px;color:#e2e2de">{{ r.item }}</span>
+          <span style="font:600 13px ui-monospace,monospace;color:#8a8a86;white-space:nowrap">{{ r.qty }}</span>
+        </div>
+      </sc-for>
+    </div>
+    <a href="Contact.dc.html" style="display:block;text-align:center;margin-top:22px;background:#d92632;color:#fff;border-radius:4px;padding:15px 24px;font:600 14px Manrope,sans-serif" style-hover="background:#e63e49">Request a facility layout consultation</a>
+  </div>
+</div>
+
+<div style="padding:80px clamp(20px,5vw,48px) 0">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px">
+    <h2 style="margin:0;font-size:clamp(23px,4vw,34px);font-weight:300">What hotels usually choose</h2>
+    <a href="Catalog.dc.html" style="font-size:14px;font-weight:600;color:#5b8def">Filter the catalog by facility type →</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px">
+    <sc-for list="{{ products }}" as="p" hint-placeholder-count="4">
+      <a href="Product.dc.html" style="border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;background:#0d0d0d;display:block;color:inherit" style-hover="border-color:#3a3a38">
+        <div style="height:210px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace;position:relative">
+          [ product photo ]
+        </div>
+        <div style="padding:20px">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:#5b8def;text-transform:uppercase">{{ p.brandName }}</div>
+          <div style="font-size:16px;font-weight:600;margin:6px 0 4px;color:#f2f2f0">{{ p.title }}</div>
+          <div style="font-size:12px;color:#8a8a86;font-family:ui-monospace,monospace">{{ p.model }}</div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+
+<div style="padding:80px clamp(20px,5vw,48px) 0">
+  <h2 style="margin:0 0 28px;font-size:clamp(23px,4vw,34px);font-weight:300">Hotel and resort installations</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+    <sc-for list="{{ projects }}" as="pr" hint-placeholder-count="3">
+      <a href="Project.dc.html" style="border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;background:#0d0d0d;display:block;color:inherit" style-hover="border-color:#3a3a38">
+        <div style="height:200px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace">[ installation photo ]</div>
+        <div style="padding:22px">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:#5b8def;text-transform:uppercase">{{ pr.clientLabel }} · {{ pr.year }}</div>
+          <div style="font-size:17px;font-weight:600;margin:8px 0 5px">{{ pr.title }}</div>
+          <div style="font-size:13px;color:#8a8a86">{{ pr.location }} · {{ pr.units }} units</div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+
+<div style="padding:80px clamp(20px,5vw,48px) 100px">
+  <div style="border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;padding:56px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:48px">
+    <div style="max-width:640px">
+      <h2 style="margin:0 0 12px;font-size:clamp(22px,3.6vw,30px);font-weight:300;line-height:1.25">Send us the floor plan.</h2>
+      <p style="margin:0;font-size:15px;line-height:1.65;color:#9a9a96">A dimensioned plan and your key count is all we need to come back with an equipment mix, a layout, manufacturer spec sheets and an indicative quotation you can take into a budget meeting.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px;flex:none">
+      <a href="Contact.dc.html" style="background:#d92632;color:#fff;border-radius:4px;padding:16px 34px;font:600 15px Manrope,sans-serif;text-align:center" style-hover="background:#e63e49">Request a consultation</a>
+      <a href="https://wa.me/639178333202" target="_blank" rel="noopener noreferrer" style="color:#fff;border:1px solid #3a3a38;border-radius:4px;padding:16px 34px;font:600 15px Manrope,sans-serif;text-align:center" style-hover="border-color:#fff">WhatsApp us</a>
+    </div>
+  </div>
+</div>
+
+<dc-import name="SiteFooter" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { data: null };
+  componentDidMount() { import("./data.js").then(d => this.setState({ data: d })); }
+  renderVals() {
+    const d = this.state.data;
+    const tab = on =>
+      "border:1px solid " + (on ? "#d92632" : "#242422") + ";background:" + (on ? "#3a1216" : "transparent") +
+      ";border-radius:100px;padding:9px 20px;font:600 13px Manrope,sans-serif;color:" + (on ? "#fff" : "#8a8a86") + ";cursor:pointer";
+    const segTabs = (d ? d.SEGMENTS : []).map(s => ({ name: s.name, style: tab(s.key === "hotel") }));
+    return {
+      segTabs,
+      considerations: [
+        { title: "Limited floor area", body: "Most hotel fitness rooms run 50–90 m². We specify a footprint plan first and choose equipment to fit it, rather than the reverse." },
+        { title: "Noise transfer to guest rooms", body: "Cardio above or beside keys needs the right deck and the right flooring build-up. We quote the flooring as part of the package, not as an afterthought." },
+        { title: "Low-maintenance requirement", body: "Housekeeping maintains the room, not a technician. Everything we specify is wipe-down serviceable with a documented quarterly check." },
+        { title: "Guest-safety and liability", body: "Commercial-rated frames, correct clearances, emergency stops and signage — the things an insurer and a franchise inspector look for." },
+        { title: "Brand-standard compliance", body: "International operators publish fitness specifications. Send us the standard and we will map our range against it line by line." },
+      ],
+      specRows: [
+        { item: "Commercial treadmill", qty: "2–3 units" },
+        { item: "Elliptical or cross-trainer", qty: "2 units" },
+        { item: "Upright / recumbent bike", qty: "1–2 units" },
+        { item: "Selectorized strength stations", qty: "4–6 stations" },
+        { item: "Dumbbell set with rack", qty: "2–20 kg" },
+        { item: "Rubber flooring, 8mm rolls", qty: "Full room" },
+        { item: "Mirrors, mats and accessories", qty: "As required" },
+      ],
+      products: d ? d.PRODUCTS.filter(p => p.segs.includes("hotel")).slice(0, 4) : [],
+      projects: d ? d.PROJECTS.filter(p => p.segment === "hotel").slice(0, 3) : [],
+    };
+  }
+}
+</script>
+</body>
+</html>

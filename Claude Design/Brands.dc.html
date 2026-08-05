@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+</style>
+</helmet>
+<dc-import name="SiteHeader" active="Brands" hint-size="100%,92px" style="position:fixed;top:0;left:0;right:0;z-index:50"></dc-import>
+<div style="height:92px"></div>
+
+<div style="padding:48px clamp(20px,5vw,48px) 40px;border-bottom:1px solid #1e1e1e">
+  <div style="font-size:12px;color:#5a5a56;margin-bottom:16px"><a href="Home.dc.html" style="color:#5a5a56">Home</a> &nbsp;/&nbsp; Brands</div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><span style="width:22px;height:3px;background:#d92632"></span><span style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def">Ten principals · Four continents</span></div>
+  <h1 style="margin:0 0 14px;font-size:clamp(28px,5.5vw,46px);font-weight:300;letter-spacing:-.01em">The brands we represent</h1>
+  <p style="margin:0;font-size:16px;line-height:1.65;color:#9a9a96;max-width:680px">Every line below is held under a direct principal relationship — we import it, we stock the parts, and our own technicians service it. Country of origin is stated for each, because tenders ask.</p>
+</div>
+
+<div style="padding:40px clamp(20px,5vw,48px) 88px">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px">
+    <sc-for list="{{ brands }}" as="b" hint-placeholder-count="10">
+      <a href="{{ b.href }}" style="border:1px solid #1e1e1e;border-radius:6px;background:#0d0d0d;padding:32px;display:grid;grid-template-columns:150px 1fr;gap:32px;align-items:center;color:inherit" style-hover="border-color:#3a3a38">
+        <div style="aspect-ratio:3/2;border-radius:4px;background:repeating-linear-gradient(45deg,#131313 0 10px,#181818 10px 20px);display:flex;align-items:center;justify-content:center;color:#5a5a56;font:10px ui-monospace,monospace;text-align:center;padding:8px">[ {{ b.logoLabel }} ]</div>
+        <div>
+          <div style="display:flex;align-items:baseline;gap:12px;flex-wrap:wrap">
+            <div style="font-size:clamp(19px,3vw,24px);font-weight:600">{{ b.name }}</div>
+          </div>
+          <div style="font-size:14px;color:#b8b8b4;margin-top:6px">{{ b.tagline }}</div>
+          <div style="display:flex;gap:24px;margin-top:20px;padding-top:18px;border-top:1px solid #1a1a18">
+            <div><div style="font:500 10px ui-monospace,monospace;color:#5a5a56;letter-spacing:.08em">ORIGIN</div><div style="font-size:13px;color:#c9c9c6;margin-top:4px">{{ b.origin }}</div></div>
+            <div><div style="font:500 10px ui-monospace,monospace;color:#5a5a56;letter-spacing:.08em">RANGE</div><div style="font-size:13px;color:#c9c9c6;margin-top:4px">{{ b.count }} products</div></div>
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+
+<div style="padding:0 48px 100px">
+  <div style="border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;padding:56px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:48px">
+    <div style="max-width:620px">
+      <h2 style="margin:0 0 12px;font-size:clamp(22px,3.6vw,30px);font-weight:300;line-height:1.25">Looking for a brand we don't list?</h2>
+      <p style="margin:0;font-size:15px;line-height:1.65;color:#9a9a96">We source outside the published range regularly — particularly for tender specifications that name a particular manufacturer. Send us the spec and we'll tell you honestly whether we can supply it.</p>
+    </div>
+    <a href="Contact.dc.html" style="background:#d92632;color:#fff;border-radius:4px;padding:16px 34px;font:600 15px Manrope,sans-serif;flex:none" style-hover="background:#e63e49">Talk to sales</a>
+  </div>
+</div>
+
+<dc-import name="SiteFooter" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { data: null };
+  componentDidMount() { import("./data.js").then(d => this.setState({ data: d })); }
+  renderVals() {
+    const d = this.state.data;
+    if (!d) return { brands: [] };
+    return {
+      brands: d.BRANDS.map(b => ({
+        ...b,
+        eco: !!b.eco,
+        logoLabel: b.name + " logo",
+        href: b.key === "sportsart" ? "Brand.dc.html" : "Catalog.dc.html",
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

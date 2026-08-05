@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+input,select,textarea{font-family:Manrope,system-ui,sans-serif}
+input::placeholder,textarea::placeholder{color:#4a4a48}
+</style>
+</helmet>
+<dc-import name="SiteHeader" active="Contact" hint-size="100%,92px" style="position:fixed;top:0;left:0;right:0;z-index:50"></dc-import>
+<div style="height:92px"></div>
+
+<div style="padding:48px clamp(20px,5vw,48px) 40px">
+  <div style="font-size:12px;color:#5a5a56;margin-bottom:16px"><a href="Home.dc.html" style="color:#5a5a56">Home</a> &nbsp;/&nbsp; Contact</div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><span style="width:22px;height:3px;background:#d92632"></span><span style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def">Request a quote</span></div>
+  <h1 style="margin:0 0 14px;font-size:clamp(28px,5.5vw,46px);font-weight:300;letter-spacing:-.01em">Tell us what you're equipping.</h1>
+  <p style="margin:0;font-size:16px;line-height:1.65;color:#9a9a96;max-width:660px">Floor area, facility type and a rough budget range is enough to start. We reply with an equipment mix, manufacturer spec sheets and an indicative quotation — usually within one business day.</p>
+</div>
+
+<div style="display:grid;grid-template-columns:1.15fr 1fr;gap:16px;padding:0 48px 88px;align-items:start">
+
+  <div style="border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;padding:40px">
+    <sc-if value="{{ showForm }}" hint-placeholder-val="{{ true }}">
+      <div>
+        <h2 style="margin:0 0 6px;font-size:clamp(19px,3vw,24px);font-weight:600">Enquiry form</h2>
+        <p style="margin:0 0 28px;font-size:14px;color:#8a8a86">Goes straight to info@maxxglobalresources.com. Fields marked with <span style="color:#d92632">*</span> are required.</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px">
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8a86">Name <span style="color:#d92632">*</span></label>
+            <input value="{{ f_name }}" onInput="{{ set_name }}" placeholder="Juan Dela Cruz" style="{{ s_name }}">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8a86">Company / Organisation <span style="color:#d92632">*</span></label>
+            <input value="{{ f_company }}" onInput="{{ set_company }}" placeholder="Company name" style="{{ s_company }}">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8a86">Role</label>
+            <input value="{{ f_role }}" onInput="{{ set_role }}" placeholder="Facilities Manager" style="{{ s_role }}">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8a86">Facility type <span style="color:#d92632">*</span></label>
+            <select value="{{ f_facility }}" onChange="{{ set_facility }}" style="{{ s_facility }}">
+              <option value="">Select one…</option>
+              <sc-for list="{{ facilityOptions }}" as="o" hint-placeholder-count="6">
+                <option value="{{ o }}">{{ o }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8a86">Email <span style="color:#d92632">*</span></label>
+            <input value="{{ f_email }}" onInput="{{ set_email }}" placeholder="you@company.com" style="{{ s_email }}">
+          </div>
+          <div style="display:flex;flex-direction:column;gap:7px">
+            <label style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8a86">Phone <span style="color:#d92632">*</span></label>
+            <input value="{{ f_phone }}" onInput="{{ set_phone }}" placeholder="(63917) 000-0000" style="{{ s_phone }}">
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-top:18px">
+          <label style="font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#8a8a86">Message <span style="color:#d92632">*</span></label>
+          <textarea value="{{ f_message }}" onInput="{{ set_message }}" rows="5" placeholder="Floor area, equipment you have in mind, target timeline, budget range if you have one." style="{{ s_message }}"></textarea>
+        </div>
+        <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+          <div style="margin-top:18px;border:1px solid #4a1a1e;background:#2a1013;border-radius:4px;padding:14px 18px;font-size:13.5px;color:#f0a6ac">{{ errorText }}</div>
+        </sc-if>
+        <button onClick="{{ submit }}" style="width:100%;margin-top:24px;background:#d92632;color:#fff;border:none;border-radius:4px;padding:17px 28px;font:600 15px Manrope,sans-serif;cursor:pointer" style-hover="background:#e63e49">Send enquiry</button>
+        <div style="font-size:12.5px;color:#5a5a56;margin-top:14px;text-align:center">We typically reply within one business day. For maintenance on equipment you already own, write to service@maxxglobalresources.com instead.</div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ showSuccess }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:40px 0;text-align:center">
+        <div style="width:56px;height:56px;border-radius:50%;background:#123d2a;color:#4ade80;display:flex;align-items:center;justify-content:center;font-size:clamp(20px,3.2vw,26px);margin:0 auto 24px">✓</div>
+        <h2 style="margin:0 0 12px;font-size:clamp(21px,3.4vw,28px);font-weight:300">Enquiry sent.</h2>
+        <p style="margin:0 auto 28px;font-size:15px;line-height:1.65;color:#9a9a96;max-width:420px">Thanks {{ sentName }} — it's with our sales team now. We typically reply within one business day, and we'll copy in the spec sheets for anything we recommend.</p>
+        <div style="display:flex;gap:12px;justify-content:center">
+          <a href="Catalog.dc.html" style="border:1px solid #3a3a38;color:#fff;border-radius:4px;padding:14px 26px;font:600 14px Manrope,sans-serif" style-hover="border-color:#fff">Keep browsing the catalog</a>
+          <button onClick="{{ reset }}" style="background:transparent;border:none;color:#8a8a86;font:600 14px Manrope,sans-serif;cursor:pointer;padding:14px 8px" style-hover="color:#fff">Send another</button>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+
+    <div style="border:1px solid #1e3a2a;border-radius:8px;background:#0e1a14;padding:28px">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:24px">
+        <div>
+          <h3 style="margin:0 0 8px;font-size:20px;font-weight:600">Message us on WhatsApp</h3>
+          <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#9ab8a6">Fastest route during business hours. Scan the code to continue on your phone, or tap through on mobile.</p>
+          <a href="https://wa.me/639178333202" target="_blank" rel="noopener noreferrer" style="display:inline-block;background:#25d366;color:#062d13;border-radius:4px;padding:14px 26px;font:700 14px Manrope,sans-serif" style-hover="background:#3ee07a">Open WhatsApp →</a>
+        </div>
+        <div style="width:118px;height:118px;flex:none;border:1px solid #2a5a40;border-radius:6px;background:repeating-linear-gradient(45deg,#0c1610 0 6px,#111c15 6px 12px);display:flex;align-items:center;justify-content:center;color:#4a7a5c;font:9px ui-monospace,monospace;text-align:center;padding:8px">[ WhatsApp QR code ]</div>
+      </div>
+    </div>
+
+    <div style="border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;overflow:hidden">
+      <div style="position:relative;height:200px;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:center;justify-content:center">
+        <div style="position:absolute;inset:0;background-image:linear-gradient(#161616 1px,transparent 1px),linear-gradient(90deg,#161616 1px,transparent 1px);background-size:38px 38px"></div>
+        <div style="color:#4a4a48;font:11px ui-monospace,monospace;position:relative">[ static map thumbnail — Banawe St, Quezon City ]</div>
+        <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px">
+          <div style="width:14px;height:14px;border-radius:50%;background:#d92632;box-shadow:0 0 16px 5px rgba(217,38,50,.5)"></div>
+        </div>
+      </div>
+      <div style="padding:26px 28px">
+        <div style="font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#5b8def;margin-bottom:10px">Showroom</div>
+        <div style="font-size:16px;line-height:1.6;color:#e2e2de">Unit 202B, RBL Building<br>549 Banawe St, Lourdes, Santa Mesa Heights<br>Quezon City 1114, Metro Manila</div>
+        <div style="font-size:13px;color:#8a8a86;margin-top:10px">Same building as RBL Place · Mon–Sat, 9:00–18:00</div>
+        <div style="display:flex;gap:10px;margin-top:20px">
+          <a href="https://www.google.com/maps/search/?api=1&amp;query=14.6305045,121.0025512" target="_blank" rel="noopener noreferrer" style="flex:1;text-align:center;border:1px solid #3a3a38;color:#fff;border-radius:4px;padding:13px 18px;font:600 13px Manrope,sans-serif" style-hover="border-color:#fff">Open in Google Maps</a>
+          <a href="https://www.google.com/maps/dir/?api=1&amp;destination=14.6305045,121.0025512" target="_blank" rel="noopener noreferrer" style="flex:1;text-align:center;border:1px solid #3a3a38;color:#fff;border-radius:4px;padding:13px 18px;font:600 13px Manrope,sans-serif" style-hover="border-color:#fff">Get directions</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<dc-import name="SiteFooter" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const FIELDS = ["name", "company", "role", "email", "phone", "facility", "message"];
+const REQUIRED = ["name", "company", "email", "phone", "facility", "message"];
+
+class Component extends DCLogic {
+  state = { form: { name: "", company: "", role: "", email: "", phone: "", facility: "", message: "" }, error: "", sent: false, sentName: "" };
+
+  set(field, value) {
+    this.setState(s => ({ form: { ...s.form, [field]: value }, error: "" }));
+  }
+
+  submit() {
+    const f = this.state.form;
+    const missing = REQUIRED.filter(k => !String(f[k]).trim());
+    if (missing.length) {
+      this.setState({ error: "Please complete the required fields: " + missing.map(m => m === "facility" ? "facility type" : m).join(", ") + "." });
+      return;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.email)) {
+      this.setState({ error: "That email address doesn't look right — check it and try again." });
+      return;
+    }
+    this.setState({ sent: true, sentName: f.name.split(" ")[0] });
+  }
+
+  renderVals() {
+    const f = this.state.form;
+    const base = "background:#111;border:1px solid #2a2a28;border-radius:4px;padding:13px 15px;font-size:14.5px;color:#f2f2f0;outline:none;width:100%;box-sizing:border-box";
+    const invalid = this.state.error && REQUIRED.some(k => !String(f[k]).trim());
+    const style = k => base + (invalid && REQUIRED.includes(k) && !String(f[k]).trim() ? ";border-color:#8a2630" : "");
+
+    const vals = {
+      showForm: !this.state.sent,
+      showSuccess: this.state.sent,
+      sentName: this.state.sentName,
+      hasError: !!this.state.error,
+      errorText: this.state.error,
+      submit: () => this.submit(),
+      reset: () => this.setState({ form: { name: "", company: "", role: "", email: "", phone: "", facility: "", message: "" }, error: "", sent: false }),
+      facilityOptions: ["Hotel or resort", "Residential condominium", "Corporate office", "School or university", "Government / LGU", "Commercial gym", "Other"],
+    };
+    FIELDS.forEach(k => {
+      vals["f_" + k] = f[k];
+      vals["s_" + k] = style(k) + (k === "message" ? ";resize:vertical;line-height:1.6" : "");
+      vals["set_" + k] = e => this.set(k, e.target.value);
+    });
+    return vals;
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+</style>
+</helmet>
+<dc-import name="SiteHeader" active="Projects" hint-size="100%,92px" style="position:fixed;top:0;left:0;right:0;z-index:50"></dc-import>
+<div style="height:92px"></div>
+
+<div style="padding:48px clamp(20px,5vw,48px) 40px">
+  <div style="font-size:12px;color:#5a5a56;margin-bottom:16px"><a href="Home.dc.html" style="color:#5a5a56">Home</a> &nbsp;/&nbsp; Projects</div>
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><span style="width:22px;height:3px;background:#d92632"></span><span style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def">Installations</span></div>
+  <h1 style="margin:0 0 14px;font-size:clamp(28px,5.5vw,46px);font-weight:300;letter-spacing:-.01em;max-width:900px;text-wrap:pretty">Two hundred and fifty floors, and counting.</h1>
+  <p style="margin:0;font-size:16px;line-height:1.65;color:#9a9a96;max-width:680px">Hotels, condominium towers, corporate offices, universities and local government units. Every project below was specified, imported, delivered and installed by our own team — no subcontracted fit-outs.</p>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid #1e1e1e;border-bottom:1px solid #1e1e1e">
+  <div style="padding:32px clamp(20px,5vw,48px);border-right:1px solid #1e1e1e"><div style="font-size:clamp(24px,4.2vw,36px);font-weight:300">250<span style="color:#d92632">+</span></div><div style="font-size:13px;color:#8a8a86;margin-top:5px">Installations completed</div></div>
+  <div style="padding:32px clamp(20px,5vw,48px);border-right:1px solid #1e1e1e"><div style="font-size:clamp(24px,4.2vw,36px);font-weight:300">30<span style="color:#d92632">+</span></div><div style="font-size:13px;color:#8a8a86;margin-top:5px">Provinces served</div></div>
+  <div style="padding:32px clamp(20px,5vw,48px);border-right:1px solid #1e1e1e"><div style="font-size:clamp(24px,4.2vw,36px);font-weight:300">10</div><div style="font-size:13px;color:#8a8a86;margin-top:5px">Brands deployed</div></div>
+  <div style="padding:32px clamp(20px,5vw,48px)"><div style="font-size:clamp(24px,4.2vw,36px);font-weight:300">20</div><div style="font-size:13px;color:#8a8a86;margin-top:5px">Years operating</div></div>
+</div>
+
+<div style="position:sticky;top:112px;z-index:10;background:rgba(10,10,10,.94);backdrop-filter:blur(8px);border-bottom:1px solid #1e1e1e;padding:22px clamp(20px,5vw,48px);display:flex;flex-direction:column;gap:14px">
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <span style="font-size:11px;color:#5a5a56;letter-spacing:.1em;text-transform:uppercase;width:96px;flex:none">Facility</span>
+    <sc-for list="{{ segFilters }}" as="f" hint-placeholder-count="7">
+      <div onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.name }}</div>
+    </sc-for>
+  </div>
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+    <span style="font-size:11px;color:#5a5a56;letter-spacing:.1em;text-transform:uppercase;width:96px;flex:none">Brand</span>
+    <sc-for list="{{ brandFilters }}" as="f" hint-placeholder-count="8">
+      <div onClick="{{ f.onClick }}" style="{{ f.style }}">{{ f.name }}</div>
+    </sc-for>
+  </div>
+</div>
+
+<div style="padding:36px clamp(20px,5vw,48px) 88px">
+  <div style="font-size:14px;color:#8a8a86;margin-bottom:24px">Showing <span style="color:#fff;font-weight:600">{{ count }}</span> projects</div>
+  <div style="columns:3;column-gap:16px">
+    <sc-for list="{{ projects }}" as="pr" hint-placeholder-count="9">
+      <a href="Project.dc.html" style="{{ pr.cardStyle }}">
+        <div style="{{ pr.imgStyle }}">
+          [ installation photo ]
+          <sc-if value="{{ pr.photos }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;top:12px;right:12px;background:rgba(10,10,10,.8);border:1px solid #3a3a38;color:#f0a63c;font:700 10px Manrope,sans-serif;letter-spacing:.08em;padding:5px 9px;border-radius:3px">GALLERY ↗</div></sc-if>
+        </div>
+        <div style="padding:22px">
+          <div style="display:flex;align-items:center;gap:9px;margin-bottom:9px">
+            <span style="width:8px;height:8px;border-radius:50%;background:{{ pr.segColor }};flex:none"></span>
+            <span style="font-size:11px;font-weight:600;letter-spacing:.1em;color:#8a8a86;text-transform:uppercase">{{ pr.segmentName }} · {{ pr.year }}</span>
+          </div>
+          <div style="font-size:18px;font-weight:600;line-height:1.3;margin-bottom:7px;color:#f2f2f0">{{ pr.title }}</div>
+          <div style="font-size:13px;color:#8a8a86;margin-bottom:14px">{{ pr.clientLabel }} · {{ pr.location }}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding-top:14px;border-top:1px solid #1a1a18">
+            <span style="font:500 12px ui-monospace,monospace;color:#6a6a66">{{ pr.brandLine }}</span>
+            <span style="font:600 12px ui-monospace,monospace;color:#c9c9c6">{{ pr.units }} UNITS</span>
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+
+<div style="padding:0 48px 88px">
+  <div style="text-align:center;margin-bottom:28px">
+    <h2 style="margin:0 0 10px;font-size:clamp(22px,3.6vw,30px);font-weight:300">Clients who let us say so</h2>
+    <p style="margin:0;font-size:14px;color:#8a8a86">Logos shown with written permission. Several of our largest projects are covered by confidentiality and appear unnamed above.</p>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:16px">
+    <sc-for list="{{ logos }}" as="l" hint-placeholder-count="6">
+      <div style="aspect-ratio:5/3;border:1px solid #1e1e1e;border-radius:6px;background:repeating-linear-gradient(45deg,#0f0f0f 0 10px,#141414 10px 20px);display:flex;align-items:center;justify-content:center;color:#5a5a56;font:10px ui-monospace,monospace;text-align:center;padding:10px">[ {{ l }} ]</div>
+    </sc-for>
+  </div>
+</div>
+
+<div style="padding:0 48px 100px">
+  <div style="border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;padding:56px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:48px">
+    <div style="max-width:640px">
+      <h2 style="margin:0 0 12px;font-size:clamp(22px,3.6vw,30px);font-weight:300;line-height:1.25">Planning something similar?</h2>
+      <p style="margin:0;font-size:15px;line-height:1.65;color:#9a9a96">Tell us the facility type and floor area. We'll send comparable projects, the equipment list we used, and what it cost to deliver — the material your approver will actually ask for.</p>
+    </div>
+    <a href="Contact.dc.html" style="background:#d92632;color:#fff;border-radius:4px;padding:16px 34px;font:600 15px Manrope,sans-serif;flex:none" style-hover="background:#e63e49">Start an enquiry</a>
+  </div>
+</div>
+
+<dc-import name="SiteFooter" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SEG_COLOR = { hotel: "#e64550", condo: "#f0a63c", corp: "#5b8def", school: "#a78bfa", lgu: "#4ade80", gym: "#e8e8e6" };
+const IMG_H = [260, 200, 320, 220, 280, 200, 240, 300, 210, 260, 200, 280];
+
+class Component extends DCLogic {
+  state = { data: null, seg: null, brand: null };
+  componentDidMount() { import("./data.js").then(d => this.setState({ data: d })); }
+
+  renderVals() {
+    const d = this.state.data;
+    const pill = on =>
+      "border:1px solid " + (on ? "#d92632" : "#242422") + ";background:" + (on ? "#3a1216" : "transparent") +
+      ";border-radius:100px;padding:8px 18px;font:600 12.5px Manrope,sans-serif;color:" + (on ? "#fff" : "#8a8a86") +
+      ";cursor:pointer;transition:all .15s";
+    if (!d) return { projects: [], segFilters: [], brandFilters: [], logos: [], count: "—" };
+
+    const { seg, brand } = this.state;
+    const segFilters = [{ key: null, name: "All" }].concat(d.SEGMENTS).map(s => ({
+      name: s.name, style: pill(seg === s.key), onClick: () => this.setState({ seg: s.key }),
+    }));
+    const brandFilters = [{ key: null, name: "All" }].concat(d.BRANDS.filter(b => d.PROJECTS.some(p => p.brands.includes(b.key)))).map(b => ({
+      name: b.name, style: pill(brand === b.key), onClick: () => this.setState({ brand: b.key }),
+    }));
+
+    const projects = d.PROJECTS
+      .filter(p => (!seg || p.segment === seg) && (!brand || p.brands.includes(brand)))
+      .map((p, i) => ({
+        ...p,
+        segColor: SEG_COLOR[p.segment],
+        brandLine: p.brandNames.slice(0, 2).join(" · ") + (p.brandNames.length > 2 ? " +" + (p.brandNames.length - 2) : ""),
+        cardStyle: "border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;background:#0d0d0d;display:block;color:inherit;break-inside:avoid;margin-bottom:16px",
+        imgStyle: "position:relative;height:" + IMG_H[i % IMG_H.length] + "px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace",
+      }));
+
+    return {
+      projects, segFilters, brandFilters,
+      count: projects.length,
+      logos: ["SM Supermalls logo", "Ayala Land logo", "Shangri-La logo", "Megaworld logo", "Robinsons Land logo", "LGU seal"],
+    };
+  }
+}
+</script>
+</body>
+</html>

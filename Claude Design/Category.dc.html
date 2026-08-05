@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+</style>
+</helmet>
+<dc-import name="SiteHeader" active="Catalog" hint-size="100%,92px" style="position:fixed;top:0;left:0;right:0;z-index:50"></dc-import>
+<div style="height:92px"></div>
+
+<div style="position:relative;height:380px;border-bottom:1px solid #1e1e1e">
+  <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:flex-start;justify-content:flex-end;padding:20px;color:#4a4a48;font:11px ui-monospace,monospace">[ category hero — cardio row, hotel gym, wide crop ]</div>
+  <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,10,10,.95) 0%,rgba(10,10,10,.6) 55%,rgba(10,10,10,.3) 100%)"></div>
+  <div style="position:absolute;left:48px;bottom:44px;right:48px">
+    <div style="font-size:12px;color:#8a8a86;margin-bottom:14px"><a href="Home.dc.html" style="color:#8a8a86">Home</a> &nbsp;/&nbsp; <a href="Catalog.dc.html" style="color:#8a8a86">Catalog</a> &nbsp;/&nbsp; <span style="color:#fff">Cardio</span></div>
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px"><span style="width:22px;height:3px;background:#d92632"></span><span style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def">48 products · 4 brands</span></div>
+    <h1 style="margin:0 0 14px;font-size:clamp(30px,6vw,52px);font-weight:300;letter-spacing:-.01em">Cardio</h1>
+    <p style="margin:0;font-size:16px;line-height:1.65;color:#b8b8b4;max-width:620px">Treadmills, ellipticals, bikes, rowers and climbers rated for continuous commercial duty. Including SportsArt's ECO-POWR line, which returns up to 74% of a user's output to the building's grid.</p>
+  </div>
+</div>
+
+<div style="display:flex;gap:10px;flex-wrap:wrap;padding:28px clamp(20px,5vw,48px);border-bottom:1px solid #1e1e1e;position:sticky;top:112px;background:rgba(10,10,10,.94);backdrop-filter:blur(8px);z-index:10">
+  <sc-for list="{{ subTabs }}" as="t" hint-placeholder-count="6">
+    <div onClick="{{ t.onClick }}" style="{{ t.style }}">{{ t.name }} <span style="{{ t.countStyle }}">{{ t.count }}</span></div>
+  </sc-for>
+</div>
+
+<div style="padding:36px clamp(20px,5vw,48px) 88px">
+  <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:24px">
+    <div style="font-size:14px;color:#8a8a86">Showing <span style="color:#fff;font-weight:600">{{ count }}</span> of 48 products in Cardio</div>
+    <a href="Catalog.dc.html" style="font-size:13px;font-weight:600;color:#5b8def">Filter the full catalog →</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px">
+    <sc-for list="{{ products }}" as="p" hint-placeholder-count="8">
+      <a href="Product.dc.html" style="border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;background:#0d0d0d;display:block;color:inherit" style-hover="border-color:#3a3a38">
+        <div style="height:220px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace;position:relative">
+          [ product photo ]
+        </div>
+        <div style="padding:20px">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:#5b8def;text-transform:uppercase">{{ p.brandName }}</div>
+          <div style="font-size:16px;font-weight:600;margin:6px 0 4px;color:#f2f2f0">{{ p.title }}</div>
+          <div style="font-size:12px;color:#8a8a86;font-family:ui-monospace,monospace">{{ p.model }}</div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+            <span style="font:700 9.5px Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;padding:6px 9px;color:{{ p.availColor }};border:1px solid {{ p.availBorder }}">{{ p.availLabel }}</span>
+            <span style="font-size:13px;font-weight:600;color:#c9c9c6;white-space:nowrap">Details →</span>
+          </div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+
+<div style="padding:0 48px 100px">
+  <h2 style="margin:0 0 24px;font-size:clamp(21px,3.4vw,28px);font-weight:300">Other lines</h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px">
+    <sc-for list="{{ others }}" as="c" hint-placeholder-count="5">
+      <a href="Catalog.dc.html" style="border:1px solid #1e1e1e;border-radius:6px;background:#0d0d0d;padding:24px;display:flex;flex-direction:column;gap:8px;min-height:120px;justify-content:space-between;color:inherit" style-hover="border-color:#3a3a38">
+        <div style="font-size:18px;font-weight:600">{{ c.name }}</div>
+        <div>
+          <div style="font-size:12px;color:#8a8a86;line-height:1.5">{{ c.sub }}</div>
+          <div style="font:500 11px ui-monospace,monospace;color:#5a5a56;margin-top:8px">{{ c.count }} PRODUCTS</div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+
+<dc-import name="SiteFooter" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { data: null, sub: null };
+
+  componentDidMount() {
+    import("./data.js").then(d => this.setState({ data: d }));
+  }
+
+  renderVals() {
+    const d = this.state.data;
+    if (!d) return { subTabs: [], products: [], others: [], count: "—" };
+
+    const cardio = d.CATEGORIES.find(c => c.key === "cardio");
+    const sub = this.state.sub;
+    const tabStyle = on =>
+      "display:flex;align-items:center;gap:9px;border:1px solid " + (on ? "#d92632" : "#242422") +
+      ";background:" + (on ? "#3a1216" : "transparent") + ";border-radius:100px;padding:10px 20px;font:600 13px Manrope,sans-serif;color:" +
+      (on ? "#fff" : "#c9c9c6") + ";cursor:pointer;transition:all .15s";
+    const countStyle = on => "font:500 11px ui-monospace,monospace;color:" + (on ? "#e6949a" : "#5a5a56");
+
+    const tabs = [{ name: "All cardio", count: cardio.count, key: null }]
+      .concat(cardio.children.map(([k, name, n]) => ({ name, count: n, key: k })))
+      .map(t => ({ name: t.name, count: t.count, style: tabStyle(sub === t.key), countStyle: countStyle(sub === t.key),
+        onClick: () => this.setState({ sub: t.key }) }));
+
+    const products = d.PRODUCTS.filter(p => p.cat === "cardio" && (!sub || p.sub === sub));
+
+    return {
+      subTabs: tabs,
+      products,
+      count: products.length,
+      others: d.CATEGORIES.filter(c => c.key !== "cardio"),
+    };
+  }
+}
+</script>
+</body>
+</html>

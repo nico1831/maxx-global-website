@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+</style>
+</helmet>
+<dc-import name="SiteHeader" active="Projects" hint-size="100%,92px" style="position:fixed;top:0;left:0;right:0;z-index:50"></dc-import>
+<div style="height:92px"></div>
+
+<div style="padding:28px clamp(20px,5vw,48px) 0;font-size:12px;color:#5a5a56"><a href="Home.dc.html" style="color:#5a5a56">Home</a> &nbsp;/&nbsp; <a href="Projects.dc.html" style="color:#5a5a56">Projects</a> &nbsp;/&nbsp; <span style="color:#c9c9c6">Corporate fitness centre, SM North EDSA</span></div>
+
+<div style="padding:28px clamp(20px,5vw,48px) 40px">
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px"><span style="width:22px;height:3px;background:#d92632"></span><span style="font-size:12px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:#5b8def">Corporate Fitness · 2025</span></div>
+  <h1 style="margin:0 0 14px;font-size:clamp(28px,5.5vw,46px);font-weight:300;letter-spacing:-.01em;max-width:900px;line-height:1.1">Corporate fitness centre, SM North EDSA</h1>
+  <div style="font-size:16px;color:#9a9a96">SM Supermalls · Quezon City · Completed October 2025</div>
+</div>
+
+<div style="padding:0 48px 40px">
+  <div style="position:relative;height:560px;border:1px solid #1e1e1e;border-radius:8px;overflow:hidden;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace">
+    [ {{ mainLabel }} ]
+    <div style="position:absolute;bottom:16px;right:16px;background:rgba(10,10,10,.85);border:1px solid #2a2a28;border-radius:4px;padding:8px 14px;font:600 12px Manrope,sans-serif;color:#c9c9c6">{{ counter }}</div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-top:12px">
+    <sc-for list="{{ thumbs }}" as="t" hint-placeholder-count="6">
+      <div onClick="{{ t.onClick }}" style="{{ t.style }}">[ {{ t.short }} ]</div>
+    </sc-for>
+  </div>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid #1e1e1e;border-bottom:1px solid #1e1e1e">
+  <div style="padding:28px clamp(20px,5vw,48px);border-right:1px solid #1e1e1e"><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;letter-spacing:.08em">FACILITY TYPE</div><div style="font-size:16px;font-weight:600;margin-top:7px">Corporate fitness</div></div>
+  <div style="padding:28px clamp(20px,5vw,48px);border-right:1px solid #1e1e1e"><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;letter-spacing:.08em">FLOOR AREA</div><div style="font-size:16px;font-weight:600;margin-top:7px">310 m²</div></div>
+  <div style="padding:28px clamp(20px,5vw,48px);border-right:1px solid #1e1e1e"><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;letter-spacing:.08em">UNITS SUPPLIED</div><div style="font-size:16px;font-weight:600;margin-top:7px">42 machines</div></div>
+  <div style="padding:28px clamp(20px,5vw,48px)"><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;letter-spacing:.08em">DELIVERY TO HANDOVER</div><div style="font-size:16px;font-weight:600;margin-top:7px">11 days</div></div>
+</div>
+
+<div style="display:grid;grid-template-columns:1.25fr 1fr;gap:56px;padding:72px clamp(20px,5vw,48px) 0;align-items:start">
+  <div style="display:flex;flex-direction:column;gap:40px">
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8a86;margin-bottom:14px">The brief</div>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#b8b8b4">A staff fitness centre for roughly 1,200 mall and head-office employees, on a mezzanine level directly above retail trading floor. Three constraints shaped the specification: noise and vibration could not transfer downwards during trading hours, the room had to serve peak shift changes at 06:00 and 22:00, and the whole installation had to happen without closing any retail space.</p>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8a86;margin-bottom:14px">What we supplied</div>
+      <p style="margin:0 0 18px;font-size:16px;line-height:1.7;color:#b8b8b4">Forty-two units across cardio, selectorized strength and free weights, on a 20 mm interlocking rubber floor with an acoustic underlay beneath the cardio zone. The cardio row is entirely SportsArt ECO-POWR, which was specified as much for the client's sustainability reporting as for the equipment itself — the row now returns a measurable contribution to the mezzanine's supply.</p>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#b8b8b4">Selectorized stations are Impulse, chosen for parts availability and because the maintenance team can service them without a specialist call-out. Flooring is FitPlus, laid by our own crew.</p>
+    </div>
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8a86;margin-bottom:14px">The outcome</div>
+      <p style="margin:0;font-size:16px;line-height:1.7;color:#b8b8b4">Delivered and commissioned in eleven days, all work overnight, with no retail closure. Vibration readings on the trading floor below came in under the acoustic consultant's threshold at every measured point. The facility has since been extended into an adjacent storage bay — the second phase is with us now.</p>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;gap:16px">
+    <div style="border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;padding:28px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8a86;margin-bottom:16px">Brands deployed</div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <sc-for list="{{ brands }}" as="b" hint-placeholder-count="3">
+          <a href="Brand.dc.html" style="display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border:1px solid #1e1e1e;border-radius:4px;color:inherit" style-hover="border-color:#3a3a38">
+            <span style="font-size:14px;font-weight:600">{{ b.name }}</span>
+            <span style="font:500 12px ui-monospace,monospace;color:#6a6a66">{{ b.origin }}</span>
+          </a>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="border:1px solid #1e1e1e;border-radius:8px;background:#0d0d0d;padding:28px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8a86;margin-bottom:16px">Equipment supplied</div>
+      <div style="display:flex;flex-direction:column;gap:1px;background:#1e1e1e;border:1px solid #1e1e1e;border-radius:4px;overflow:hidden">
+        <sc-for list="{{ equipment }}" as="e" hint-placeholder-count="6">
+          <a href="Product.dc.html" style="background:#0a0a0a;padding:13px 16px;display:flex;justify-content:space-between;align-items:center;gap:14px;color:inherit" style-hover="background:#131313">
+            <span style="font-size:13.5px;color:#e2e2de">{{ e.title }}</span>
+            <span style="font:600 12px ui-monospace,monospace;color:#6a6a66;white-space:nowrap">× {{ e.qty }}</span>
+          </a>
+        </sc-for>
+      </div>
+      <a href="Catalog.dc.html" style="display:block;margin-top:16px;font-size:13px;font-weight:600;color:#5b8def">Browse the full catalog →</a>
+    </div>
+
+    <div style="border:1px solid #242422;border-radius:8px;background:#111;padding:28px">
+      <h3 style="margin:0 0 10px;font-size:20px;font-weight:600">Planning something similar?</h3>
+      <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#9a9a96">We'll send the equipment list and layout from a comparable corporate installation, sized to your floor area.</p>
+      <a href="Contact.dc.html" style="display:block;text-align:center;background:#d92632;color:#fff;border-radius:4px;padding:15px 24px;font:600 14px Manrope,sans-serif" style-hover="background:#e63e49">Request a consultation</a>
+    </div>
+  </div>
+</div>
+
+<div style="padding:80px clamp(20px,5vw,48px) 100px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:28px">
+    <h2 style="margin:0;font-size:clamp(23px,4vw,34px);font-weight:300">Other installations</h2>
+    <a href="Projects.dc.html" style="font-size:14px;font-weight:600;color:#5b8def">All projects →</a>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px">
+    <sc-for list="{{ related }}" as="pr" hint-placeholder-count="3">
+      <a href="Project.dc.html" style="border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;background:#0d0d0d;display:block;color:inherit" style-hover="border-color:#3a3a38">
+        <div style="height:200px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace">[ installation photo ]</div>
+        <div style="padding:22px">
+          <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:#5b8def;text-transform:uppercase">{{ pr.segmentName }} · {{ pr.year }}</div>
+          <div style="font-size:17px;font-weight:600;margin:8px 0 5px">{{ pr.title }}</div>
+          <div style="font-size:13px;color:#8a8a86">{{ pr.clientLabel }} · {{ pr.location }}</div>
+        </div>
+      </a>
+    </sc-for>
+  </div>
+</div>
+
+<dc-import name="SiteFooter" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SHOTS = [
+  ["wide shot of the completed cardio row", "cardio row"],
+  ["selectorized strength area, looking east", "strength"],
+  ["free-weight zone and rubber flooring detail", "free weights"],
+  ["ECO-POWR console detail with power readout", "console"],
+  ["entrance and reception desk", "entrance"],
+  ["acoustic underlay during installation", "underlay"],
+];
+
+class Component extends DCLogic {
+  state = { data: null, shot: 0 };
+  componentDidMount() { import("./data.js").then(d => this.setState({ data: d })); }
+
+  renderVals() {
+    const d = this.state.data;
+    const i = this.state.shot;
+    return {
+      mainLabel: SHOTS[i][0],
+      counter: (i + 1) + " / " + SHOTS.length,
+      thumbs: SHOTS.map(([full, short], idx) => ({
+        short,
+        style: "aspect-ratio:16/10;border:1px solid " + (idx === i ? "#d92632" : "#1e1e1e") +
+          ";border-radius:4px;background:repeating-linear-gradient(45deg,#101010 0 10px,#151515 10px 20px);display:flex;align-items:center;justify-content:center;color:" +
+          (idx === i ? "#c9c9c6" : "#4a4a48") + ";font:10px ui-monospace,monospace;cursor:pointer;text-align:center;padding:6px;transition:all .15s",
+        onClick: () => this.setState({ shot: idx }),
+      })),
+      brands: d ? d.BRANDS.filter(b => ["sportsart", "impulse", "fitplus"].includes(b.key)) : [],
+      equipment: [
+        { title: "G690 Verde Treadmill", qty: 6 },
+        { title: "G576U Elliptical", qty: 4 },
+        { title: "G516 Recumbent Cycle", qty: 3 },
+        { title: "IT9505 Chest Press", qty: 2 },
+        { title: "IT9513 Lat Pulldown", qty: 2 },
+        { title: "Interlocking Rubber Tile 20mm", qty: "310 m²" },
+      ],
+      related: d ? d.PROJECTS.filter(p => p.slug !== "corporate-fitness-centre-sm-north-edsa").slice(0, 3) : [],
+    };
+  }
+}
+</script>
+</body>
+</html>

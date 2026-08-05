@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+</style>
+</helmet>
+<dc-import name="SiteHeader" active="Catalog" hint-size="100%,92px" style="position:fixed;top:0;left:0;right:0;z-index:50"></dc-import>
+<div style="height:92px"></div>
+
+<div style="padding:28px clamp(20px,5vw,48px) 0;font-size:12px;color:#5a5a56"><a href="Home.dc.html" style="color:#5a5a56">Home</a> &nbsp;/&nbsp; <a href="Catalog.dc.html" style="color:#5a5a56">Catalog</a> &nbsp;/&nbsp; <a href="Category.dc.html" style="color:#5a5a56">Cardio</a> &nbsp;/&nbsp; <a href="Category.dc.html" style="color:#5a5a56">Treadmills</a> &nbsp;/&nbsp; <span style="color:#c9c9c6">G690 Verde Treadmill</span></div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:56px;padding:32px clamp(20px,5vw,48px) 88px;align-items:start">
+
+  <div style="display:flex;flex-direction:column;gap:12px;position:sticky;top:104px">
+    <div style="position:relative;aspect-ratio:4/3;border:1px solid #1e1e1e;border-radius:6px;background:repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace;text-align:center;padding:24px">
+      [ {{ mainLabel }} ]
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+      <sc-for list="{{ thumbs }}" as="t" hint-placeholder-count="4">
+        <div onClick="{{ t.onClick }}" style="{{ t.style }}">[ {{ t.short }} ]</div>
+      </sc-for>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin-top:6px;font-size:12px;color:#5a5a56">
+      <span style="width:16px;height:2px;background:#d92632"></span>Photography shown is indicative — manufacturer imagery supplied on request.
+    </div>
+  </div>
+
+  <div>
+    <div style="font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:#5b8def;margin-bottom:12px">SportsArt · Treadmills</div>
+    <h1 style="margin:0 0 10px;font-size:clamp(27px,5.2vw,44px);font-weight:300;letter-spacing:-.01em;line-height:1.1">G690 Verde Treadmill</h1>
+    <div style="display:flex;align-items:center;gap:14px;margin-bottom:26px">
+      <span style="font:600 14px ui-monospace,monospace;color:#c9c9c6;background:#161616;border:1px solid #242422;padding:6px 12px;border-radius:4px">G690</span>
+      <span style="font-size:13px;color:#8a8a86">Model code — quote this when you contact us</span>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:16px;padding:16px 20px;border:1px solid #1e1e1e;border-radius:6px;margin-bottom:28px">
+      <span style="border:1px solid #3c5a45;color:#8fb79b;font:700 9.5px Manrope,sans-serif;letter-spacing:.14em;padding:6px 9px;flex:none">IN STOCK</span>
+      <div style="font-size:13px;color:#9a9a96">In showroom and local stock — viewable at our Banawe showroom, Mon–Sat.</div>
+    </div>
+
+    <p style="margin:0 0 32px;font-size:16px;line-height:1.7;color:#b8b8b4">The G690 is SportsArt's flagship ECO-POWR treadmill: a self-generating commercial deck that converts up to 74% of a user's mechanical output into utility-grade electricity and feeds it back to the building. For hotels and corporate facilities running long cardio hours, that turns a fixed operating cost into a measurable reduction — and gives sustainability officers a number they can report. Built on a commercial 22" × 62" running surface with SportsArt's shock-absorption system and a 20-year frame warranty.</p>
+
+    <div style="margin-bottom:32px">
+      <div style="font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#8a8a86;margin-bottom:16px">Key features</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <sc-for list="{{ features }}" as="f" hint-placeholder-count="5">
+          <div style="display:flex;gap:14px;align-items:flex-start">
+            <span style="width:6px;height:6px;border-radius:50%;background:#d92632;flex:none;margin-top:8px"></span>
+            <span style="font-size:15px;line-height:1.55;color:#e2e2de">{{ f }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="border:1px solid #242422;border-radius:6px;background:#0d0d0d;padding:26px 28px;margin-bottom:20px">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:32px">
+        <div>
+          <div style="font-size:17px;font-weight:600;margin-bottom:5px">Full specifications</div>
+          <div style="font-size:13px;color:#8a8a86;line-height:1.5">Manufacturer datasheet — dimensions, motor, deck, power output, warranty.</div>
+        </div>
+        <a href="#" style="display:flex;align-items:center;gap:12px;background:#2f6fe0;color:#fff;border-radius:4px;padding:15px 26px;font:600 14px Manrope,sans-serif;white-space:nowrap;flex:none" style-hover="background:#4381ea">
+          Download Spec Sheet <span style="font:500 12px ui-monospace,monospace;color:rgba(255,255,255,.75)">PDF · 2.4 MB</span>
+        </a>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px">
+      <a href="Contact.dc.html" style="flex:1;background:#d92632;color:#fff;border-radius:4px;padding:17px 28px;font:600 15px Manrope,sans-serif;text-align:center" style-hover="background:#e63e49">Request a Quote</a>
+      <a href="https://wa.me/639178333202?text=Hi%20MAXX%2C%20I%27m%20enquiring%20about%20the%20SportsArt%20G690%20Verde%20Treadmill%20(G690)." target="_blank" rel="noopener noreferrer" style="flex:1;color:#fff;border:1px solid #3a3a38;border-radius:4px;padding:17px 28px;font:600 15px Manrope,sans-serif;text-align:center" style-hover="border-color:#fff">Message us on WhatsApp</a>
+    </div>
+    <div style="font-size:13px;color:#8a8a86;margin-top:14px;text-align:center">We typically reply within one business day.</div>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr)) 1fr;gap:1px;background:#1e1e1e;border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;margin-top:40px">
+      <div style="background:#0d0d0d;padding:20px"><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;margin-bottom:6px">SUITED TO</div><div style="font-size:14px;font-weight:600">Hotels · Corporate · Commercial gyms</div></div>
+      <div style="background:#0d0d0d;padding:20px"><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;margin-bottom:6px">ORIGIN</div><div style="font-size:14px;font-weight:600">Woodinville, USA · Tainan, TW</div></div>
+      <div style="background:#0d0d0d;padding:20px"><div style="font:500 11px ui-monospace,monospace;color:#6a6a66;margin-bottom:6px">INSTALLATION</div><div style="font-size:14px;font-weight:600">Included, Metro Manila</div></div>
+    </div>
+  </div>
+</div>
+
+<dc-import name="SiteFooter" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const SHOTS = [
+  ["front three-quarter product shot on white", "front 3/4"],
+  ["console and display detail", "console"],
+  ["running deck and side profile", "deck"],
+  ["installed in a hotel cardio row", "in situ"],
+];
+
+class Component extends DCLogic {
+  state = { shot: 0 };
+  renderVals() {
+    const i = this.state.shot;
+    return {
+      mainLabel: SHOTS[i][0],
+      thumbs: SHOTS.map(([full, short], idx) => ({
+        short,
+        style: "aspect-ratio:1;border:1px solid " + (idx === i ? "#d92632" : "#1e1e1e") +
+          ";border-radius:4px;background:repeating-linear-gradient(45deg,#101010 0 10px,#151515 10px 20px);display:flex;align-items:center;justify-content:center;color:" +
+          (idx === i ? "#c9c9c6" : "#4a4a48") + ";font:10px ui-monospace,monospace;cursor:pointer;text-align:center;padding:6px;transition:all .15s",
+        onClick: () => this.setState({ shot: idx }),
+      })),
+      features: [
+        "ECO-POWR self-generating drive — returns up to 74% of user output as utility-grade electricity",
+        "22\" × 62\" commercial running surface with multi-stage shock absorption",
+        "0.5–20 km/h speed range, 0–15% incline, 227 kg maximum user weight",
+        "16:9 touchscreen console with Bluetooth and CSAFE connectivity",
+        "20-year frame, 5-year parts warranty — serviced locally by our own technicians",
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

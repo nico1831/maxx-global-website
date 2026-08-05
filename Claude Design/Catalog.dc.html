@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+</style>
+</helmet>
+<dc-import name="SiteHeader" active="Catalog" hint-size="100%,92px" style="position:fixed;top:0;left:0;right:0;z-index:50"></dc-import>
+<div style="height:92px"></div>
+
+<div style="padding:48px clamp(20px,5vw,48px) 36px;border-bottom:1px solid #1e1e1e">
+  <div style="font-size:12px;color:#5a5a56;margin-bottom:16px"><a href="Home.dc.html" style="color:#5a5a56">Home</a> &nbsp;/&nbsp; Catalog</div>
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:48px">
+    <div style="max-width:720px">
+      <h1 style="margin:0 0 14px;font-size:clamp(28px,5.5vw,46px);font-weight:300;letter-spacing:-.01em">The commercial catalog</h1>
+      <p style="margin:0;font-size:16px;line-height:1.6;color:#9a9a96">Every line we carry, including the flooring and playground ranges you won't find on our consumer store. Prices are quoted per project — every product page carries the manufacturer spec sheet.</p>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:10px;flex:none;align-items:flex-end">
+      <div style="font-size:clamp(23px,4vw,34px);font-weight:300">{{ resultCount }}</div>
+      <div style="font-size:12px;color:#8a8a86;letter-spacing:.08em;text-transform:uppercase">Products shown</div>
+    </div>
+  </div>
+</div>
+
+<div style="display:flex;flex-wrap:wrap;align-items:flex-start">
+  <aside style="flex:1 1 250px;min-width:0;position:sticky;top:112px;max-height:calc(100vh - 112px);overflow-y:auto;overscroll-behavior:contain;scrollbar-width:thin;scrollbar-color:#3a3a38 transparent;padding:32px 28px 48px;border-right:1px solid #1e1e1e;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <div style="font-size:13px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff">Filters</div>
+      <button onClick="{{ clearAll }}" style="{{ clearStyle }}">Clear all</button>
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8a8a86;margin-bottom:14px">Category</div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ catRows }}" as="r" hint-placeholder-count="6">
+          <div style="display:flex;flex-direction:column">
+            <div onClick="{{ r.onClick }}" style="{{ r.style }}">
+              <span>{{ r.name }}</span>
+              <span style="font:500 11px ui-monospace,monospace;color:#5a5a56">{{ r.count }}</span>
+            </div>
+            <sc-if value="{{ r.open }}" hint-placeholder-val="{{ false }}">
+              <div style="display:flex;flex-direction:column;gap:2px;padding:4px 0 8px 12px;border-left:1px solid #242422;margin-left:8px">
+                <sc-for list="{{ r.children }}" as="ch" hint-placeholder-count="4">
+                  <div onClick="{{ ch.onClick }}" style="{{ ch.style }}">
+                    <span>{{ ch.name }}</span>
+                    <span style="font:500 11px ui-monospace,monospace;color:#4a4a48">{{ ch.count }}</span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8a8a86;margin-bottom:14px">Brand</div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ brandRows }}" as="r" hint-placeholder-count="10">
+          <div onClick="{{ r.onClick }}" style="{{ r.style }}"><span style="{{ r.boxStyle }}">{{ r.tick }}</span><span>{{ r.name }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8a8a86;margin-bottom:14px">Availability</div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ availRows }}" as="r" hint-placeholder-count="4">
+          <div onClick="{{ r.onClick }}" style="{{ r.style }}"><span style="{{ r.boxStyle }}">{{ r.tick }}</span><span style="color:{{ r.color }}">{{ r.name }}</span></div>
+        </sc-for>
+      </div>
+    </div>
+  </aside>
+
+  <div style="flex:999 1 62%;min-width:0;padding:32px clamp(20px,5vw,48px) 88px">
+    <sc-if value="{{ hasActive }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:24px">
+        <span style="font-size:12px;color:#8a8a86;margin-right:4px">Active:</span>
+        <sc-for list="{{ activeChips }}" as="c" hint-placeholder-count="2">
+          <div onClick="{{ c.onClick }}" style="display:flex;align-items:center;gap:8px;border:1px solid #d92632;background:#3a1216;border-radius:100px;padding:7px 14px;font:600 12px Manrope,sans-serif;color:#fff;cursor:pointer">{{ c.name }} <span style="color:#e6949a">✕</span></div>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px">
+        <sc-for list="{{ products }}" as="p" hint-placeholder-count="9">
+          <a href="Product.dc.html" style="border:1px solid #1e1e1e;border-radius:6px;overflow:hidden;background:#0d0d0d;display:block;color:inherit" style-hover="border-color:#3a3a38">
+            <div style="height:210px;background:repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);display:flex;align-items:center;justify-content:center;color:#4a4a48;font:11px ui-monospace,monospace;position:relative">
+              [ product photo ]
+            </div>
+            <div style="padding:20px">
+              <div style="font-size:11px;font-weight:600;letter-spacing:.1em;color:#5b8def;text-transform:uppercase">{{ p.brandName }}</div>
+              <div style="font-size:16px;font-weight:600;margin:6px 0 4px;color:#f2f2f0">{{ p.title }}</div>
+              <div style="font-size:12px;color:#8a8a86;font-family:ui-monospace,monospace">{{ p.model }} · {{ p.subName }}</div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px">
+                <span style="font:700 9.5px Manrope,sans-serif;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;padding:6px 9px;color:{{ p.availColor }};border:1px solid {{ p.availBorder }}">{{ p.availLabel }}</span>
+                <span style="font-size:13px;font-weight:600;color:#c9c9c6;white-space:nowrap">Details →</span>
+              </div>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+    </sc-if>
+    <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+      <div style="border:1px solid #1e1e1e;border-radius:6px;background:#0d0d0d;padding:72px clamp(20px,5vw,48px);text-align:center">
+        <div style="font-size:22px;font-weight:300;margin-bottom:10px">Nothing matches that combination.</div>
+        <p style="margin:0 0 24px;font-size:15px;color:#9a9a96">Clear a filter, or tell us what you're looking for — we source outside the published range regularly.</p>
+        <a href="Contact.dc.html" style="display:inline-block;background:#d92632;color:#fff;border-radius:4px;padding:14px 30px;font:600 14px Manrope,sans-serif" style-hover="background:#e63e49">Ask our sales team</a>
+      </div>
+    </sc-if>
+  </div>
+</div>
+
+<dc-import name="SiteFooter" hint-size="100%,360px"></dc-import>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { data: null, cat: null, sub: null, brands: [], avails: [] };
+
+  componentDidMount() {
+    import("./data.js").then(d => this.setState({ data: d }));
+  }
+
+  toggle(field, key) {
+    const cur = this.state[field];
+    this.setState({ [field]: cur.includes(key) ? cur.filter(k => k !== key) : cur.concat([key]) });
+  }
+
+  row(label, active, extra) {
+    return "display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;border-radius:4px;cursor:pointer;font:" +
+      (active ? "600" : "500") + " 13px Manrope,sans-serif;color:" + (active ? "#fff" : "#c9c9c6") +
+      ";background:" + (active ? "#1a1a18" : "transparent") + ";transition:all .15s;" + (extra || "");
+  }
+  check(active) {
+    return "width:15px;height:15px;flex:none;border-radius:3px;border:1px solid " + (active ? "#d92632" : "#3a3a38") +
+      ";background:" + (active ? "#d92632" : "transparent") +
+      ";display:flex;align-items:center;justify-content:center;font:700 10px Manrope,sans-serif;color:#fff";
+  }
+
+  renderVals() {
+    const d = this.state.data;
+    if (!d) return { resultCount: "—", products: [], catRows: [], brandRows: [], availRows: [], activeChips: [], hasActive: false, hasResults: false, noResults: false, clearStyle: "display:none" };
+
+    const { cat, sub, brands, avails } = this.state;
+    const products = d.PRODUCTS.filter(p =>
+      (!cat || p.cat === cat) && (!sub || p.sub === sub) &&
+      (!brands.length || brands.includes(p.brand)) &&
+      (!avails.length || avails.includes(p.avail))
+    );
+
+    const catRows = d.CATEGORIES.map(c => ({
+      name: c.name, count: c.count, open: cat === c.key,
+      style: this.row(c.name, cat === c.key),
+      onClick: () => this.setState({ cat: cat === c.key ? null : c.key, sub: null }),
+      children: c.children.map(([k, name, n]) => ({
+        name, count: n,
+        style: this.row(name, sub === k, "padding:6px 10px;font-size:12.5px"),
+        onClick: () => this.setState({ sub: sub === k ? null : k }),
+      })),
+    }));
+
+    const boxRow = (name, active, onClick, color) => ({
+      name, tick: active ? "✓" : "", color: color || "#c9c9c6",
+      style: this.row(name, active, "justify-content:flex-start"),
+      boxStyle: this.check(active), onClick,
+    });
+
+    const brandRows = d.BRANDS.map(b => boxRow(b.name, brands.includes(b.key), () => this.toggle("brands", b.key)));
+    const availRows = Object.keys(d.AVAIL).map(k => boxRow(d.AVAIL[k].label, avails.includes(k), () => this.toggle("avails", k), d.AVAIL[k].color));
+
+    const chips = [];
+    if (cat) chips.push({ name: (d.CATEGORIES.find(c => c.key === cat) || {}).name, onClick: () => this.setState({ cat: null, sub: null }) });
+    if (sub) {
+      const c = d.CATEGORIES.find(x => x.key === cat);
+      const s = c && c.children.find(ch => ch[0] === sub);
+      chips.push({ name: s ? s[1] : sub, onClick: () => this.setState({ sub: null }) });
+    }
+    brands.forEach(k => chips.push({ name: (d.BRANDS.find(b => b.key === k) || {}).name, onClick: () => this.toggle("brands", k) }));
+    avails.forEach(k => chips.push({ name: d.AVAIL[k].label, onClick: () => this.toggle("avails", k) }));
+
+    return {
+      resultCount: products.length,
+      products, catRows, brandRows, availRows,
+      activeChips: chips,
+      hasActive: chips.length > 0,
+      hasResults: products.length > 0,
+      noResults: products.length === 0,
+      clearAll: () => this.setState({ cat: null, sub: null, brands: [], avails: [] }),
+      clearStyle: "background:transparent;border:none;padding:0;cursor:pointer;font:600 12px Manrope,sans-serif;color:" +
+        (chips.length ? "#d92632" : "#4a4a48"),
+    };
+  }
+}
+</script>
+</body>
+</html>

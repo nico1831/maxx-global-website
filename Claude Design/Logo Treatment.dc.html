@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+html,body{margin:0;background:#0a0a0a}
+body{font-family:Manrope,system-ui,sans-serif;color:#f2f2f0;-webkit-font-smoothing:antialiased}
+a{color:#5b8def;text-decoration:none}a:hover{color:#82a9f2}
+</style>
+</helmet>
+
+<section style="padding:56px 56px 80px">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:8px">
+    <span style="font:600 11px ui-monospace,monospace;background:#1a1a18;color:#fff;padding:4px 8px;border-radius:4px">Turn 1</span>
+    <span style="font:500 13px Manrope,sans-serif;color:#8a8a86">Logo on dark — four treatments, shown in the real header bar and footer</span>
+  </div>
+  <p style="margin:0 0 48px;font-size:14px;line-height:1.6;color:#6a6a66;max-width:660px">The supplied logo is navy on transparent, so it sinks into the black. Reply with an id (<a href="#1a">1a</a>, <a href="#1b">1b</a>, <a href="#1c">1c</a>, <a href="#1d">1d</a>) — or mix them, e.g. plate in the header, knockout in the footer.</p>
+
+  <div style="display:flex;flex-direction:column;gap:56px">
+
+    <div id="1a" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font:600 10.5px ui-monospace,monospace;background:rgba(255,255,255,.08);color:#fff;padding:3px 7px;border-radius:5px">1a</span>
+        <span style="font:600 13px Manrope,sans-serif;color:#e2e2de">White plate</span>
+        <span style="font:400 12.5px Manrope,sans-serif;color:#6a6a66">Brand colours stay exact. Reads as a badge; brightest option.</span>
+      </div>
+      <div style="border:1px solid #1e1e1e;border-radius:8px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 32px;background:#0a0a0a;border-bottom:1px solid #1e1e1e">
+          <div style="background:#fff;border-radius:5px;padding:7px 12px;display:flex;align-items:center"><img src="uploads/logo.png" alt="Maxx Global Resources" style="height:40px;display:block"></div>
+          <div style="display:flex;gap:26px;align-items:center;font:500 14px Manrope,sans-serif;color:#c9c9c6"><span style="color:#fff;border-bottom:2px solid #d92632;padding-bottom:4px">Catalog</span><span>Brands</span><span>Solutions</span><span>Projects</span><span>About</span></div>
+          <span style="background:#d92632;color:#fff;border-radius:4px;padding:11px 22px;font:600 14px Manrope,sans-serif">Request a Quote</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:24px;padding:28px 32px;background:#080808">
+          <div style="background:#fff;border-radius:4px;padding:6px 10px;display:flex;align-items:center;flex:none"><img src="uploads/logo.png" alt="Maxx Global Resources" style="height:30px;display:block"></div>
+          <span style="font:500 13px Manrope,sans-serif;color:#6a6a66">Footer lockup</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="1b" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font:600 10.5px ui-monospace,monospace;background:rgba(255,255,255,.08);color:#fff;padding:3px 7px;border-radius:5px">1b</span>
+        <span style="font:600 13px Manrope,sans-serif;color:#e2e2de">Lightened in place</span>
+        <span style="font:400 12.5px Manrope,sans-serif;color:#6a6a66">No plate — the navy is brightened so it reads on black. Keeps the red swoosh.</span>
+      </div>
+      <div style="border:1px solid #1e1e1e;border-radius:8px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 32px;background:#0a0a0a;border-bottom:1px solid #1e1e1e">
+          <img src="uploads/logo.png" alt="Maxx Global Resources" style="height:52px;display:block;filter:brightness(2.05) saturate(1.15)">
+          <div style="display:flex;gap:26px;align-items:center;font:500 14px Manrope,sans-serif;color:#c9c9c6"><span style="color:#fff;border-bottom:2px solid #d92632;padding-bottom:4px">Catalog</span><span>Brands</span><span>Solutions</span><span>Projects</span><span>About</span></div>
+          <span style="background:#d92632;color:#fff;border-radius:4px;padding:11px 22px;font:600 14px Manrope,sans-serif">Request a Quote</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:24px;padding:28px 32px;background:#080808">
+          <img src="uploads/logo.png" alt="Maxx Global Resources" style="height:38px;display:block;flex:none;filter:brightness(2.05) saturate(1.15)">
+          <span style="font:500 13px Manrope,sans-serif;color:#6a6a66">Footer lockup</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="1c" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font:600 10.5px ui-monospace,monospace;background:rgba(255,255,255,.08);color:#fff;padding:3px 7px;border-radius:5px">1c</span>
+        <span style="font:600 13px Manrope,sans-serif;color:#e2e2de">All-white knockout</span>
+        <span style="font:400 12.5px Manrope,sans-serif;color:#6a6a66">Cleanest and most premium on black; loses the blue and red. Ask the supplier for a true mono file.</span>
+      </div>
+      <div style="border:1px solid #1e1e1e;border-radius:8px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 32px;background:#0a0a0a;border-bottom:1px solid #1e1e1e">
+          <img src="uploads/logo.png" alt="Maxx Global Resources" style="height:52px;display:block;filter:brightness(0) invert(1)">
+          <div style="display:flex;gap:26px;align-items:center;font:500 14px Manrope,sans-serif;color:#c9c9c6"><span style="color:#fff;border-bottom:2px solid #d92632;padding-bottom:4px">Catalog</span><span>Brands</span><span>Solutions</span><span>Projects</span><span>About</span></div>
+          <span style="background:#d92632;color:#fff;border-radius:4px;padding:11px 22px;font:600 14px Manrope,sans-serif">Request a Quote</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:24px;padding:28px 32px;background:#080808">
+          <img src="uploads/logo.png" alt="Maxx Global Resources" style="height:38px;display:block;flex:none;filter:brightness(0) invert(1) opacity(.72)">
+          <span style="font:500 13px Manrope,sans-serif;color:#6a6a66">Footer lockup — held back to 72% so it sits behind the copy</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="1d" style="display:flex;flex-direction:column;gap:14px">
+      <div style="display:flex;align-items:baseline;gap:10px">
+        <span style="font:600 10.5px ui-monospace,monospace;background:rgba(255,255,255,.08);color:#fff;padding:3px 7px;border-radius:5px">1d</span>
+        <span style="font:600 13px Manrope,sans-serif;color:#e2e2de">Soft plate, hairline edge</span>
+        <span style="font:400 12.5px Manrope,sans-serif;color:#6a6a66">Warm off-white instead of pure white, smaller lockup, thin border — brand colours without the glare.</span>
+      </div>
+      <div style="border:1px solid #1e1e1e;border-radius:8px;overflow:hidden">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 32px;background:#0a0a0a;border-bottom:1px solid #1e1e1e">
+          <div style="background:#f2f0ec;border:1px solid #d8d4cc;border-radius:4px;padding:8px 13px;display:flex;align-items:center"><img src="uploads/logo.png" alt="Maxx Global Resources" style="height:34px;display:block"></div>
+          <div style="display:flex;gap:26px;align-items:center;font:500 14px Manrope,sans-serif;color:#c9c9c6"><span style="color:#fff;border-bottom:2px solid #d92632;padding-bottom:4px">Catalog</span><span>Brands</span><span>Solutions</span><span>Projects</span><span>About</span></div>
+          <span style="background:#d92632;color:#fff;border-radius:4px;padding:11px 22px;font:600 14px Manrope,sans-serif">Request a Quote</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:24px;padding:28px 32px;background:#080808">
+          <div style="background:#f2f0ec;border:1px solid #d8d4cc;border-radius:4px;padding:6px 10px;display:flex;align-items:center;flex:none"><img src="uploads/logo.png" alt="Maxx Global Resources" style="height:26px;display:block"></div>
+          <span style="font:500 13px Manrope,sans-serif;color:#6a6a66">Footer lockup</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</x-dc>
+</body>
+</html>
