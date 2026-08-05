@@ -161,8 +161,8 @@
     .map-canvas {
       position: relative;
       aspect-ratio: 7001 / 4001;
-      min-height: 280px;
-      border: 1px solid #1e1e1e; border-radius: 8px; background: #0d0d0d; overflow: hidden;
+      min-width: 680px; min-height: 280px;
+      background: #0d0d0d; overflow: hidden;
     }
     .map-grid {
       position: absolute; inset: 0; pointer-events: none;
@@ -214,21 +214,68 @@
     .leg-hint { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: #f0a63c; border-left: 1px solid #2a2a28; padding-left: 18px; }
     .chip-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
     .chip {
-      border: 1px solid #242422; border-radius: 4px; padding: 12px 22px;
+      border: 1px solid #242422; border-radius: 4px; padding: 8px 8px;
       font: 600 13px Manrope, sans-serif; color: #8a8a86; letter-spacing: .06em;
       cursor: pointer; transition: all .2s; background: transparent;
       display: inline-flex; align-items: center; justify-content: center; min-height: 52px;
     }
     .chip img {
       width: 108px; height: 36px; display: block; object-fit: contain;
-      background: #fff; padding: 4px 10px; border-radius: 3px;
-      opacity: 0.55; transition: opacity .2s;
+      background: #fff; padding: 2px 6px; border-radius: 3px;
+      opacity: 1; transition: opacity .2s;
     }
     .chip:hover { border-color: #5a5a5a; color: #c9c9c6; }
-    .chip:hover img { opacity: 1; }
     .chip.brand-on { border-color: #2f6fe0; color: #fff; background: #12203f; }
     .chip.brand-on img { opacity: 1; }
     .chip.client-on { border-color: #d92632; color: #fff; background: #3a1216; }
+
+    /* ── MAP LOGO SIDEBAR ── */
+    .map-layout {
+      display: flex; align-items: stretch;
+      border: 1px solid #1e1e1e; border-radius: 8px; overflow: hidden;
+    }
+    .map-canvas-scroll {
+      flex: 1; min-width: 0; overflow-x: auto;
+      scrollbar-width: thin; scrollbar-color: #2a2a28 #111;
+    }
+    .map-canvas-scroll::-webkit-scrollbar { height: 6px; }
+    .map-canvas-scroll::-webkit-scrollbar-track { background: #111; }
+    .map-canvas-scroll::-webkit-scrollbar-thumb { background: #2a2a28; border-radius: 3px; }
+    .map-logo-sidebar {
+      flex-shrink: 0; width: 136px;
+      display: none; flex-direction: column; gap: 6px;
+      padding: 10px 8px;
+      overflow-y: auto; overflow-x: hidden;
+      background: #0d0d0d;
+      border-right: 1px solid #1e1e1e;
+      scrollbar-width: thin; scrollbar-color: #2a2a28 transparent;
+    }
+    .map-logo-sidebar::-webkit-scrollbar { width: 4px; }
+    .map-logo-sidebar::-webkit-scrollbar-thumb { background: #2a2a28; border-radius: 2px; }
+    .sidebar-chip {
+      border: 1px solid #242422; border-radius: 4px;
+      padding: 6px 6px; cursor: pointer; transition: all .2s;
+      background: transparent; display: flex; align-items: center;
+      justify-content: center; min-height: 44px; flex-shrink: 0; width: 100%;
+    }
+    .sidebar-chip img {
+      width: 100px; height: 32px; display: block;
+      object-fit: contain; background: #fff; padding: 2px 4px;
+      border-radius: 3px; transition: opacity .2s;
+    }
+    .sidebar-chip:hover { border-color: #5a5a5a; }
+    .sidebar-chip.brand-on { border-color: #2f6fe0; background: #12203f; }
+    /* Wide: show sidebar, hide logo chip-row */
+    @media (min-width: 768px) {
+      .map-logo-sidebar.visible { display: flex; }
+      .chip-row.logo-mode { display: none; }
+    }
+    /* Narrow: sidebar hidden (default display:none), chip-row always visible, no pin labels */
+    @media (max-width: 767px) {
+      .map-canvas { min-width: 500px; }
+      .chip-row { display: flex; }
+      .pin-lbl, .manila-lbl { display: none; }
+    }
 
     /* ── CATEGORY GRID ── */
     .cat-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 16px; }
@@ -424,6 +471,9 @@
     </div>
   </div>
 
+  <div class="map-layout">
+  <div id="map-logo-sidebar" class="map-logo-sidebar"></div>
+  <div class="map-canvas-scroll">
   <div class="map-canvas">
     <div class="map-grid"></div>
 
@@ -436,7 +486,7 @@
       <div id="world-pins"></div>
       <div class="manila-pin">
         <div class="manila-dot"></div>
-        <div class="manila-lbl">MANILA — HQ &amp; SHOWROOM</div>
+        <div class="manila-lbl">Manila — HQ &amp; Showroom</div>
       </div>
     </div>
 
@@ -446,7 +496,9 @@
       <div id="ph-pins"></div>
       <div class="ph-legend" id="ph-legend"></div>
     </div>
-  </div>
+  </div><!-- /.map-canvas -->
+  </div><!-- /.map-canvas-scroll -->
+  </div><!-- /.map-layout -->
 
   <div class="chip-row" id="chip-row"></div>
 </section>
@@ -705,10 +757,30 @@ function buildPHPins() {
     `<div class="leg-hint">↗&nbsp; click pin for installation photos</div>`;
 }
 
+// ── LOGO SIDEBAR (world view, wide screens) ──────────────────────────────────
+function buildSidebarLogos() {
+  const sidebar = document.getElementById("map-logo-sidebar");
+  sidebar.innerHTML = "";
+  if (mapMode !== "world") { sidebar.classList.remove("visible"); return; }
+  sidebar.classList.add("visible");
+  BRAND_CHIPS.forEach(([name, key, logo]) => {
+    const isOn = selBrand === key;
+    const btn  = document.createElement("button");
+    btn.className = "sidebar-chip" + (isOn ? " brand-on" : "");
+    const img = document.createElement("img");
+    img.src = logo; img.alt = name;
+    btn.appendChild(img);
+    btn.addEventListener("click", () => { selBrand = isOn ? null : key; renderMap(); });
+    sidebar.appendChild(btn);
+  });
+}
+
 // ── CHIPS ────────────────────────────────────────────────────────────────────
 function buildChips() {
   const row   = document.getElementById("chip-row");
   row.innerHTML = "";
+  if (mapMode === "world") row.classList.add("logo-mode");
+  else row.classList.remove("logo-mode");
   const chips = mapMode === "world" ? BRAND_CHIPS : CLIENT_CHIPS;
   chips.forEach(([name, key, logo]) => {
     const isOn  = mapMode === "world" ? selBrand === key : selClient === key;
@@ -747,6 +819,7 @@ function renderMap() {
     : "Hotels, condos, schools, LGUs and commercial gyms — 250+ installations from Baguio to Davao.";
 
   if (isWorld) buildWorldPins(); else buildPHPins();
+  buildSidebarLogos();
   buildChips();
 }
 
