@@ -124,16 +124,34 @@
     }
     .btn-secondary:hover { border-color: #fff; color: #fff; }
 
-    /* ── STAT BAND ── */
-    .stat-band {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    /* ── FACT TICKER ── */
+    .ticker-strip {
+      position: relative; overflow: hidden;
       border-top: 1px solid #1e1e1e; border-bottom: 1px solid #1e1e1e;
+      background: #0a0a0a;
     }
-    .stat-cell { padding: 36px clamp(20px,5vw,48px); border-right: 1px solid #1e1e1e; }
-    .stat-cell:last-child { border-right: none; }
-    .stat-num { font-size: 40px; font-weight: 300; color: #fff; }
-    .stat-num .plus { color: #5b8def; }
-    .stat-label { font-size: 13px; color: #8a8a86; margin-top: 6px; }
+    .ticker-track {
+      display: flex; width: max-content;
+      animation: ticker 46s linear infinite;
+    }
+    .ticker-strip:hover .ticker-track { animation-play-state: paused; }
+    @keyframes ticker {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .ticker-group { display: flex; align-items: baseline; gap: 34px; padding-right: 34px; }
+    .ticker-fact  { display: flex; align-items: baseline; gap: 8px; padding: 15px 0; }
+    .ticker-num   { font: 500 17px/1 Manrope, sans-serif; color: #f2f2f0; white-space: nowrap; }
+    .ticker-num .plus { color: #5b8def; }
+    .ticker-lbl   { font: 400 12.5px/1 Manrope, sans-serif; color: #8a8a86; white-space: nowrap; }
+    .ticker-dot   { width: 3px; height: 3px; border-radius: 50%; background: #2e2e2c; align-self: center; flex: none; }
+    .ticker-fade  { position: absolute; top: 0; bottom: 0; width: 80px; pointer-events: none; z-index: 1; }
+    .ticker-fade-left  { left:  0; background: linear-gradient(90deg,  #0a0a0a, transparent); }
+    .ticker-fade-right { right: 0; background: linear-gradient(270deg, #0a0a0a, transparent); }
+    @media (prefers-reduced-motion: reduce) {
+      .ticker-strip { overflow-x: auto; }
+      .ticker-track { animation: none; }
+    }
 
     /* ── SECTIONS ── */
     .section { padding: 100px clamp(20px,5vw,48px) 0; }
@@ -436,25 +454,12 @@
   </div>
 </section>
 
-<!-- ════════════════════ STAT BAND ════════════════════ -->
-<div class="stat-band" role="list" aria-label="Key statistics">
-  <div class="stat-cell" role="listitem">
-    <div class="stat-num">250<span class="plus">+</span></div>
-    <div class="stat-label">Installations completed</div>
-  </div>
-  <div class="stat-cell" role="listitem">
-    <div class="stat-num">30<span class="plus">+</span></div>
-    <div class="stat-label">Provinces served</div>
-  </div>
-  <div class="stat-cell" role="listitem">
-    <div class="stat-num">10</div>
-    <div class="stat-label">Global brands</div>
-  </div>
-  <div class="stat-cell" role="listitem">
-    <div class="stat-num">20</div>
-    <div class="stat-label">Years operating</div>
-  </div>
-</div>
+<!-- ════════════════════ FACT TICKER ════════════════════ -->
+<section class="ticker-strip" aria-label="Key facts">
+  <div class="ticker-track" id="ticker-track"></div>
+  <div class="ticker-fade ticker-fade-left"  aria-hidden="true"></div>
+  <div class="ticker-fade ticker-fade-right" aria-hidden="true"></div>
+</section>
 
 <!-- ════════════════════ MAP ════════════════════ -->
 <section class="map-section" aria-labelledby="map-title-el">
@@ -597,6 +602,57 @@
 </footer>
 
 <script>
+// ── TICKER DATA ──────────────────────────────────────────────────────────────
+const TICKER_FACTS = [
+  { num:"250", plus:true,  lbl:"installations completed" },
+  { num:"30",  plus:true,  lbl:"provinces served" },
+  { num:"10",  plus:false, lbl:"global brands represented" },
+  { num:"20",  plus:false, lbl:"years operating" },
+  { num:"230", plus:true,  lbl:"products in the catalog" },
+  { num:"6",   plus:false, lbl:"market segments served" },
+  { num:"8–12",plus:false, lbl:"week indent lead time" },
+  {                         lbl:"Luzon · Visayas · Mindanao install & service" },
+  {                         lbl:"In-house technicians, no third-party contractors" },
+  {                         lbl:"Showroom in Quezon City, open Mon–Sat" },
+];
+
+function buildTickerGroup(ariaHidden) {
+  const group = document.createElement("div");
+  group.className = "ticker-group";
+  if (ariaHidden) group.setAttribute("aria-hidden", "true");
+  TICKER_FACTS.forEach(fact => {
+    const item = document.createElement("div");
+    item.className = "ticker-fact";
+    if (fact.num !== undefined) {
+      const numEl = document.createElement("span");
+      numEl.className = "ticker-num";
+      numEl.textContent = fact.num;
+      if (fact.plus) {
+        const plusEl = document.createElement("span");
+        plusEl.className = "plus";
+        plusEl.textContent = "+";
+        numEl.appendChild(plusEl);
+      }
+      item.appendChild(numEl);
+    }
+    const lblEl = document.createElement("span");
+    lblEl.className = "ticker-lbl";
+    lblEl.textContent = fact.lbl;
+    item.appendChild(lblEl);
+    group.appendChild(item);
+    const dot = document.createElement("span");
+    dot.className = "ticker-dot"; dot.setAttribute("aria-hidden","true");
+    group.appendChild(dot);
+  });
+  return group;
+}
+
+function buildTicker() {
+  const track = document.getElementById("ticker-track");
+  track.appendChild(buildTickerGroup(false));
+  track.appendChild(buildTickerGroup(true));
+}
+
 // ── DATA ────────────────────────────────────────────────────────────────────
 const SEG = {
   hotel:  { name: "Hotels & Resorts",   color: "#e64550" },
@@ -885,6 +941,7 @@ document.addEventListener("click", e => {
 });
 
 // ── INIT ─────────────────────────────────────────────────────────────────────
+buildTicker();
 renderMap();
 buildCategories();
 buildFeatured();
