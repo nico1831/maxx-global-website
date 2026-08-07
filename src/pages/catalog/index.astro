@@ -1,0 +1,499 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import ProductCard from '../../components/ProductCard.astro'
+import { client } from '../../lib/sanity'
+import { catalogProductsQuery, categoryTreeQuery, allBrandsQuery } from '../../lib/queries'
+
+const [products, categories, brands] = await Promise.all([
+  client.fetch(catalogProductsQuery),
+  client.fetch(categoryTreeQuery),
+  client.fetch(allBrandsQuery),
+])
+
+// Per design.md §5: only Available and Indent Order shown in availability filter
+const AVAIL_FILTER = [
+  { value: 'available', label: 'Available', color: '#8fb79b' },
+  { value: 'indent',    label: 'Indent Order', color: '#c2a768' },
+]
+---
+
+<Layout title="Catalog — Maxx Global Resources" description="Every commercial fitness, flooring and playground line we carry. Prices quoted per project." active="Catalog">
+  <div class="catalog-header">
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <span>/</span>
+      <span>Catalog</span>
+    </div>
+    <div class="catalog-meta">
+      <div class="catalog-intro">
+        <h1>The commercial catalog</h1>
+        <p>Every line we carry, including the flooring and playground ranges you won't find on our consumer store. Prices are quoted per project — every product page carries the manufacturer spec sheet.</p>
+      </div>
+      <div class="result-wrap">
+        <div class="result-num" id="result-count">{products.length}</div>
+        <div class="result-label">Products shown</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="catalog-body">
+    <!-- ── FILTER SIDEBAR ── -->
+    <aside class="filter-sidebar" aria-label="Product filters">
+      <div class="filter-top">
+        <span class="filter-heading">Filters</span>
+        <button id="clear-all" class="clear-btn" aria-label="Clear all filters">Clear all</button>
+      </div>
+
+      <!-- Category -->
+      <div class="filter-group">
+        <div class="filter-group-label">Category</div>
+        <div class="filter-rows" id="cat-rows">
+          {categories.map((cat: any) => (
+            <div class="cat-item" data-cat-key={cat.slug.current}>
+              <button
+                class="filter-row"
+                data-filter="cat"
+                data-value={cat.slug.current}
+                aria-pressed="false"
+              >
+                <span>{cat.title}</span>
+                <span class="filter-count">{cat.children?.length ? `${cat.children.length} sub` : ''}</span>
+              </button>
+              {cat.children?.length > 0 && (
+                <div class="sub-rows" id={`sub-${cat.slug.current}`} hidden>
+                  {cat.children.map((sub: any) => (
+                    <button
+                      class="filter-row sub"
+                      data-filter="sub"
+                      data-value={sub.slug.current}
+                      data-parent={cat.slug.current}
+                      aria-pressed="false"
+                    >
+                      <span>{sub.title}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <!-- Brand -->
+      <div class="filter-group">
+        <div class="filter-group-label">Brand</div>
+        <div class="filter-rows">
+          {brands.map((b: any) => (
+            <button
+              class="filter-row check-row"
+              data-filter="brand"
+              data-value={b.slug.current}
+              aria-pressed="false"
+            >
+              <span class="check-box" aria-hidden="true"></span>
+              <span>{b.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <!-- Availability -->
+      <div class="filter-group">
+        <div class="filter-group-label">Availability</div>
+        <div class="filter-rows">
+          {AVAIL_FILTER.map(a => (
+            <button
+              class="filter-row check-row"
+              data-filter="avail"
+              data-value={a.value}
+              aria-pressed="false"
+            >
+              <span class="check-box" aria-hidden="true"></span>
+              <span style={`color:${a.color}`}>{a.label}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── PRODUCT GRID ── -->
+    <div class="catalog-main">
+      <!-- Active filter chips -->
+      <div class="active-chips" id="active-chips" hidden>
+        <span class="chips-label">Active:</span>
+        <div class="chips-row" id="chips-row"></div>
+      </div>
+
+      <!-- Grid -->
+      <div class="product-grid" id="product-grid">
+        {products.map((p: any) => (
+          <div
+            class="product-wrapper"
+            data-brand={p.brand?.slug?.current}
+            data-cat={p.primaryCategory?.parent?.slug?.current ?? p.primaryCategory?.slug?.current}
+            data-sub={p.primaryCategory?.parent ? p.primaryCategory.slug.current : ''}
+            data-avail={p.availability}
+          >
+            <ProductCard product={p} />
+          </div>
+        ))}
+      </div>
+
+      <!-- No results -->
+      <div class="no-results" id="no-results" hidden>
+        <div class="no-results-title">Nothing matches that combination.</div>
+        <p class="no-results-body">Clear a filter, or tell us what you're looking for — we source outside the published range regularly.</p>
+        <a href="/contact" class="btn-primary">Ask our sales team</a>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* ── PAGE HEADER ── */
+  .catalog-header {
+    padding: 48px clamp(20px,5vw,48px) 36px;
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .breadcrumb {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+    color: #5a5a56;
+    margin-bottom: 16px;
+  }
+  .breadcrumb a { color: #5a5a56; }
+  .breadcrumb a:hover { color: #fff; }
+  .catalog-meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 48px;
+  }
+  .catalog-intro { max-width: 720px; }
+  .catalog-intro h1 {
+    margin: 0 0 14px;
+    font-size: clamp(28px,5.5vw,46px);
+    font-weight: 300;
+    letter-spacing: -.01em;
+    color: #fff;
+  }
+  .catalog-intro p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #9a9a96;
+  }
+  .result-wrap { flex: none; text-align: right; }
+  .result-num {
+    font-size: clamp(23px,4vw,34px);
+    font-weight: 300;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+  }
+  .result-label {
+    font-size: 12px;
+    color: #8a8a86;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ── TWO-COLUMN LAYOUT ── */
+  .catalog-body {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+  }
+
+  /* ── SIDEBAR ── */
+  .filter-sidebar {
+    flex: 1 1 250px;
+    min-width: 0;
+    position: sticky;
+    top: 112px;
+    max-height: calc(100vh - 112px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: #3a3a38 transparent;
+    padding: 32px 28px 48px;
+    border-right: 1px solid #1e1e1e;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+  .filter-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .filter-heading {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #fff;
+  }
+  .clear-btn {
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font: 600 12px Manrope, sans-serif;
+    color: #4a4a48;
+    transition: color .15s;
+  }
+  .clear-btn.has-active { color: #d92632; }
+  .filter-group-label {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: #8a8a86;
+    margin-bottom: 14px;
+  }
+  .filter-rows { display: flex; flex-direction: column; gap: 2px; }
+
+  .filter-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font: 500 13px Manrope, sans-serif;
+    color: #c9c9c6;
+    background: transparent;
+    border: none;
+    width: 100%;
+    text-align: left;
+    transition: background .15s, color .15s;
+  }
+  .filter-row:hover { background: #111; color: #fff; }
+  .filter-row[aria-pressed="true"] {
+    background: #1a1a18;
+    color: #fff;
+    font-weight: 600;
+  }
+  .filter-row.sub {
+    padding: 6px 10px;
+    font-size: 12.5px;
+  }
+  .check-row { justify-content: flex-start; }
+  .check-box {
+    width: 15px;
+    height: 15px;
+    flex: none;
+    border-radius: 3px;
+    border: 1px solid #3a3a38;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font: 700 10px Manrope, sans-serif;
+    color: #fff;
+    transition: background .12s, border-color .12s;
+    margin-right: 4px;
+  }
+  .filter-row[aria-pressed="true"] .check-box {
+    background: #d92632;
+    border-color: #d92632;
+  }
+  .filter-row[aria-pressed="true"] .check-box::after { content: '✓'; }
+  .filter-count { font: 500 11px ui-monospace, monospace; color: #5a5a56; }
+  .sub-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 4px 0 8px 12px;
+    border-left: 1px solid #242422;
+    margin-left: 8px;
+  }
+
+  /* ── MAIN AREA ── */
+  .catalog-main {
+    flex: 999 1 62%;
+    min-width: 0;
+    padding: 32px clamp(20px,5vw,48px) 88px;
+  }
+
+  .active-chips {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  .chips-label { font-size: 12px; color: #8a8a86; margin-right: 4px; }
+  .chips-row { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .no-results {
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    background: #0d0d0d;
+    padding: 72px clamp(20px,5vw,48px);
+    text-align: center;
+  }
+  .no-results-title { font-size: 22px; font-weight: 300; margin-bottom: 10px; color: #fff; }
+  .no-results-body { margin: 0 0 24px; font-size: 15px; color: #9a9a96; }
+</style>
+
+<script>
+  // Filter state
+  const state = {
+    cat: null as string | null,
+    sub: null as string | null,
+    brands: new Set<string>(),
+    avails: new Set<string>(),
+  }
+
+  function applyFilters() {
+    const wrappers = document.querySelectorAll<HTMLElement>('.product-wrapper')
+    let shown = 0
+
+    wrappers.forEach(el => {
+      const brand = el.dataset.brand ?? ''
+      const cat   = el.dataset.cat ?? ''
+      const sub   = el.dataset.sub ?? ''
+      const avail = el.dataset.avail ?? ''
+
+      const brandOk = state.brands.size === 0 || state.brands.has(brand)
+      const catOk   = !state.cat || cat === state.cat
+      const subOk   = !state.sub || sub === state.sub
+      const availOk = state.avails.size === 0 || state.avails.has(avail)
+
+      const visible = brandOk && catOk && subOk && availOk
+      el.style.display = visible ? '' : 'none'
+      if (visible) shown++
+    })
+
+    const countEl = document.getElementById('result-count')
+    if (countEl) countEl.textContent = String(shown)
+
+    const noResults = document.getElementById('no-results')!
+    noResults.hidden = shown > 0
+
+    updateChips()
+    updateClearBtn()
+    updateButtonStates()
+    updateSubRows()
+  }
+
+  function updateSubRows() {
+    document.querySelectorAll<HTMLElement>('.sub-rows').forEach(el => {
+      const parentCat = el.id.replace('sub-', '')
+      el.hidden = state.cat !== parentCat
+    })
+  }
+
+  function updateButtonStates() {
+    document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(btn => {
+      const filter = btn.dataset.filter!
+      const value  = btn.dataset.value!
+      let pressed = false
+      if (filter === 'cat')   pressed = state.cat === value
+      if (filter === 'sub')   pressed = state.sub === value
+      if (filter === 'brand') pressed = state.brands.has(value)
+      if (filter === 'avail') pressed = state.avails.has(value)
+      btn.setAttribute('aria-pressed', String(pressed))
+    })
+  }
+
+  function updateClearBtn() {
+    const hasAny = state.cat || state.sub || state.brands.size > 0 || state.avails.size > 0
+    document.getElementById('clear-all')?.classList.toggle('has-active', !!hasAny)
+  }
+
+  function updateChips() {
+    const chipsWrap = document.getElementById('active-chips')!
+    const chipsRow  = document.getElementById('chips-row')!
+    chipsRow.innerHTML = ''
+
+    const chips: { label: string; clear: () => void }[] = []
+
+    if (state.cat) {
+      const btn = document.querySelector<HTMLElement>(`[data-filter="cat"][data-value="${state.cat}"]`)
+      chips.push({ label: btn?.querySelector('span')?.textContent ?? state.cat, clear: () => { state.cat = null; state.sub = null } })
+    }
+    if (state.sub) {
+      const btn = document.querySelector<HTMLElement>(`[data-filter="sub"][data-value="${state.sub}"]`)
+      chips.push({ label: btn?.querySelector('span')?.textContent ?? state.sub, clear: () => { state.sub = null } })
+    }
+    state.brands.forEach(v => {
+      const btn = document.querySelector<HTMLElement>(`[data-filter="brand"][data-value="${v}"]`)
+      chips.push({ label: btn?.querySelector('span:last-child')?.textContent ?? v, clear: () => state.brands.delete(v) })
+    })
+    state.avails.forEach(v => {
+      const btn = document.querySelector<HTMLElement>(`[data-filter="avail"][data-value="${v}"]`)
+      chips.push({ label: btn?.querySelector('span:last-child')?.textContent ?? v, clear: () => state.avails.delete(v) })
+    })
+
+    chipsWrap.hidden = chips.length === 0
+
+    chips.forEach(c => {
+      const chip = document.createElement('button')
+      chip.className = 'chip'
+      chip.innerHTML = `${c.label} <span aria-hidden="true">✕</span>`
+      chip.addEventListener('click', () => { c.clear(); applyFilters() })
+      chipsRow.appendChild(chip)
+    })
+  }
+
+  // Wire up filter buttons
+  document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const filter = btn.dataset.filter!
+      const value  = btn.dataset.value!
+
+      if (filter === 'cat') {
+        state.cat = state.cat === value ? null : value
+        state.sub = null
+      } else if (filter === 'sub') {
+        state.sub = state.sub === value ? null : value
+      } else if (filter === 'brand') {
+        state.brands.has(value) ? state.brands.delete(value) : state.brands.add(value)
+      } else if (filter === 'avail') {
+        state.avails.has(value) ? state.avails.delete(value) : state.avails.add(value)
+      }
+
+      applyFilters()
+    })
+  })
+
+  // Clear all
+  document.getElementById('clear-all')?.addEventListener('click', () => {
+    state.cat = null; state.sub = null; state.brands.clear(); state.avails.clear()
+    applyFilters()
+  })
+
+  // Initial render
+  applyFilters()
+</script>
+
+<style is:global>
+  .chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid #d92632;
+    background: #3a1216;
+    border-radius: 100px;
+    padding: 7px 14px;
+    font: 600 12px Manrope, sans-serif;
+    color: #fff;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .chip span { color: #e6949a; }
+  .chip:hover { background: #4a1a1e; }
+</style>

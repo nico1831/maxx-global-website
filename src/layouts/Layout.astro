@@ -1,0 +1,241 @@
+---
+interface Props {
+  title: string
+  description?: string
+  active?: string
+}
+const { title, description = 'Full commercial ranges from SportsArt, Force USA, Impulse and more — specified, imported and installed across the Philippines.', active } = Astro.props
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <slot name="header">
+    <header class="site-header">
+      <div class="header-capsule" id="header-capsule">
+        <a href="/" class="header-logo">
+          <img src="/logo.png" alt="Maxx Global Resources" height="38">
+        </a>
+        <nav class="header-nav" aria-label="Primary navigation">
+          <a href="/catalog" class:list={{ active: active === 'Catalog' }}>Catalog</a>
+          <a href="/brands" class:list={{ active: active === 'Brands' }}>Brands</a>
+          <a href="/solutions" class:list={{ active: active === 'Solutions' }}>Solutions</a>
+          <a href="/projects" class:list={{ active: active === 'Projects' }}>Projects</a>
+          <a href="/about" class:list={{ active: active === 'About' }}>About</a>
+          <a href="/contact" class:list={{ active: active === 'Contact' }}>Contact</a>
+        </nav>
+        <a href="/contact" class="header-cta">Request a Quote</a>
+        <div class="mobile-actions">
+          <a href="/contact" class="mobile-cta">Get a Quote</a>
+          <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+        <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+          <a href="/catalog">Catalog</a>
+          <a href="/brands">Brands</a>
+          <a href="/solutions">Solutions</a>
+          <a href="/projects">Projects</a>
+          <a href="/about">About</a>
+          <a href="/contact">Contact</a>
+        </nav>
+      </div>
+    </header>
+  </slot>
+
+  <div style="height:92px"></div>
+
+  <main>
+    <slot />
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-grid">
+      <div>
+        <a href="/" class="footer-logo">
+          <img src="/logo.png" alt="Maxx Global Resources" height="64">
+        </a>
+        <p class="footer-blurb">Importer, installer and servicer of commercial fitness equipment, sports flooring and playground systems for the Philippine market.</p>
+      </div>
+      <div>
+        <span class="footer-col-title">Catalog</span>
+        <div class="footer-links">
+          <a href="/catalog/cardio">Cardio</a>
+          <a href="/catalog/strength">Strength</a>
+          <a href="/catalog/functional">Functional</a>
+          <a href="/catalog/cycling-studio">Cycling Studio</a>
+          <a href="/catalog/flooring">Flooring</a>
+          <a href="/catalog/playground">Playground</a>
+        </div>
+      </div>
+      <div>
+        <span class="footer-col-title">Contact</span>
+        <div class="footer-links">
+          <a href="/contact">Request a Quote</a>
+          <a href="mailto:info@maxxglobalresources.com">info@maxxglobalresources.com</a>
+          <a href="mailto:service@maxxglobalresources.com">service@maxxglobalresources.com</a>
+        </div>
+      </div>
+      <div>
+        <span class="footer-col-title">Showroom</span>
+        <p class="footer-address">Unit 202B, RBL Building<br>549 Banawe St, Lourdes<br>Santa Mesa Heights, QC 1114</p>
+        <a href="https://maps.google.com/?q=14.6305045,121.0025512" target="_blank" rel="noopener" class="footer-map-link">Open in Maps →</a>
+        <p class="footer-hours">Mon–Sat · 9 AM – 6 PM</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© {new Date().getFullYear()} Maxx Global Resources Corporation</span>
+      <div class="footer-social">
+        <a href="#" aria-label="Facebook">Facebook</a>
+        <a href="#" aria-label="Instagram">Instagram</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style is:global>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0a0a0a; }
+  body { font-family: Manrope, system-ui, sans-serif; color: #f2f2f0; -webkit-font-smoothing: antialiased; }
+  a { color: #5b8def; text-decoration: none; }
+  a:hover { color: #82a9f2; }
+
+  /* ── HEADER ── */
+  .site-header { position: fixed; top: 0; left: 0; right: 0; z-index: 50; }
+  .header-capsule {
+    display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    margin: 14px clamp(12px,3.5vw,24px);
+    padding: 8px 10px 8px clamp(14px,4vw,26px);
+    border-radius: 100px;
+    background: rgba(18,18,18,.72);
+    border: 1px solid rgba(255,255,255,.09);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    box-shadow: 0 12px 40px rgba(0,0,0,.5);
+    position: relative;
+  }
+  .header-logo {
+    display: flex; align-items: center; flex: none;
+    filter: brightness(0) invert(1); transition: filter .2s ease;
+  }
+  .header-capsule:hover .header-logo { filter: none; }
+  .header-logo img { height: clamp(28px,7vw,38px); display: block; }
+  .header-nav { display: flex; gap: clamp(16px,2vw,28px); align-items: center; }
+  .header-nav a {
+    font: 600 13.5px Manrope, sans-serif; text-decoration: none;
+    white-space: nowrap; color: #a8a8a4; transition: color .15s;
+  }
+  .header-nav a:hover, .header-nav a.active { color: #fff; }
+  .header-cta {
+    background: #d92632; color: #fff; border-radius: 100px;
+    padding: 12px 24px; font: 600 13.5px Manrope, sans-serif;
+    text-decoration: none; white-space: nowrap; flex: none; transition: background .15s;
+  }
+  .header-cta:hover { background: #e63e49; color: #fff; }
+  .mobile-actions { display: none; align-items: center; gap: 10px; flex: none; }
+  .mobile-cta {
+    background: #d92632; color: #fff; border-radius: 100px;
+    padding: 11px 18px; font: 600 13px Manrope, sans-serif; text-decoration: none;
+  }
+  .hamburger {
+    width: 44px; height: 44px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,.14); background: rgba(255,255,255,.05);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; cursor: pointer; padding: 0;
+  }
+  .hamburger span {
+    width: 17px; height: 1.5px; border-radius: 2px; background: #f2f2f0; display: block;
+    transition: transform .18s ease, opacity .18s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+  .mobile-menu {
+    display: none; position: absolute; top: calc(100% + 10px); left: 0; right: 0;
+    background: rgba(16,16,16,.96); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255,255,255,.09); border-radius: 22px;
+    box-shadow: 0 18px 50px rgba(0,0,0,.6); padding: 10px; flex-direction: column;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    display: block; padding: 15px 18px; border-radius: 14px;
+    font: 600 16px Manrope, sans-serif; text-decoration: none;
+    color: #c9c9c6; transition: background .15s;
+  }
+  .mobile-menu a:hover { background: rgba(255,255,255,.07); color: #fff; }
+  @media (max-width: 900px) {
+    .header-nav, .header-cta { display: none; }
+    .mobile-actions { display: flex; }
+  }
+
+  /* ── FOOTER ── */
+  .site-footer { border-top: 1px solid #1e1e1e; padding: 56px clamp(20px,5vw,48px) 40px; background: #080808; }
+  .footer-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(190px,1fr)); gap: 48px; }
+  .footer-logo {
+    display: inline-flex; align-items: center;
+    filter: brightness(0) invert(1); opacity: .72; transition: filter .2s ease, opacity .2s;
+  }
+  .site-footer:hover .footer-logo { filter: none; opacity: 1; }
+  .footer-logo img { height: 64px; display: block; }
+  .footer-blurb { font-size: 13px; line-height: 1.7; color: #8a8a86; margin: 18px 0 0; max-width: 300px; }
+  .footer-col-title { color: #fff; font-weight: 600; font-size: 13px; display: block; margin-bottom: 12px; }
+  .footer-links { display: flex; flex-direction: column; gap: 9px; }
+  .footer-links a { font-size: 13px; color: #8a8a86; text-decoration: none; transition: color .15s; }
+  .footer-links a:hover { color: #fff; }
+  .footer-address { font-size: 13px; line-height: 1.7; color: #8a8a86; }
+  .footer-map-link { font-size: 13px; color: #5b8def; font-weight: 600; text-decoration: none; margin-top: 4px; display: inline-block; transition: color .15s; }
+  .footer-map-link:hover { color: #82a9f2; }
+  .footer-hours { font-size: 13px; color: #8a8a86; margin-top: 10px; }
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 48px; padding-top: 24px; border-top: 1px solid #161616;
+    font-size: 12px; color: #5a5a56;
+  }
+  .footer-social { display: flex; gap: 18px; }
+  .footer-social a { color: #5a5a56; text-decoration: none; transition: color .15s; }
+  .footer-social a:hover { color: #fff; }
+
+  /* ── SHARED UTILITIES ── */
+  .btn-primary {
+    background: #d92632; color: #fff; border-radius: 4px;
+    padding: 16px 34px; font: 600 15px Manrope, sans-serif;
+    text-decoration: none; text-align: center; display: inline-block; transition: background .15s;
+  }
+  .btn-primary:hover { background: #e63e49; color: #fff; }
+  .btn-secondary {
+    color: #fff; border: 1px solid #3a3a38; border-radius: 4px;
+    padding: 16px 34px; font: 600 15px Manrope, sans-serif;
+    text-decoration: none; text-align: center; display: inline-block; transition: border-color .15s;
+  }
+  .btn-secondary:hover { border-color: #fff; }
+  .eyebrow { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+  .eyebrow-bar { width: 22px; height: 3px; background: #d92632; flex: none; }
+  .eyebrow-label { font-size: 13px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #5b8def; }
+</style>
+
+<script>
+  const hamburger = document.getElementById('hamburger')!
+  const mobileMenu = document.getElementById('mobile-menu')!
+  const capsule = document.getElementById('header-capsule')!
+
+  hamburger.addEventListener('click', () => {
+    const open = hamburger.classList.toggle('open')
+    mobileMenu.classList.toggle('open', open)
+    hamburger.setAttribute('aria-expanded', String(open))
+  })
+  document.addEventListener('click', (e) => {
+    if (!capsule.contains(e.target as Node)) {
+      hamburger.classList.remove('open')
+      mobileMenu.classList.remove('open')
+      hamburger.setAttribute('aria-expanded', 'false')
+    }
+  })
+</script>

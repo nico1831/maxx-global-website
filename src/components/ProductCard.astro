@@ -1,0 +1,107 @@
+---
+import AvailabilityBadge from './AvailabilityBadge.astro'
+import { urlFor } from '../lib/sanity'
+
+interface Props {
+  product: {
+    _id: string
+    title: string
+    slug: { current: string }
+    modelCode?: string
+    availability: string
+    brand: { name: string; slug: { current: string } }
+    primaryCategory: {
+      title: string
+      slug: { current: string }
+      parent?: { title: string; slug: { current: string } } | null
+    }
+    image?: { asset: { _ref: string }; alt?: string } | null
+  }
+}
+
+const { product } = Astro.props
+const imageUrl = product.image?.asset
+  ? urlFor(product.image).width(560).height(420).format('webp').url()
+  : null
+---
+
+<a href={`/products/${product.slug.current}`} class="product-card">
+  <div class="product-img">
+    {imageUrl ? (
+      <img src={imageUrl} alt={product.image?.alt ?? product.title} loading="lazy" width="280" height="210">
+    ) : (
+      <span class="img-ph">[ product photo ]</span>
+    )}
+  </div>
+  <div class="product-info">
+    <div class="product-brand">{product.brand.name}</div>
+    <div class="product-title">{product.title}</div>
+    <div class="product-model">
+      {product.modelCode && <>{product.modelCode}</>}
+      {product.modelCode && product.primaryCategory.title && ' · '}
+      {product.primaryCategory.title}
+    </div>
+    <div class="product-footer">
+      <AvailabilityBadge availability={product.availability} />
+      <span class="product-cta">Details →</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .product-card {
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #0d0d0d;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color .18s ease;
+  }
+  .product-card:hover { border-color: #3a3a38; }
+
+  .product-img {
+    height: 210px;
+    overflow: hidden;
+    background: repeating-linear-gradient(45deg, #101010 0 14px, #151515 14px 28px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .product-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .img-ph { color: #4a4a48; font: 11px ui-monospace, monospace; }
+
+  .product-info { padding: 20px; }
+  .product-brand {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    color: #5b8def;
+    text-transform: uppercase;
+  }
+  .product-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin: 6px 0 4px;
+    color: #f2f2f0;
+    text-wrap: pretty;
+  }
+  .product-model {
+    font-size: 12px;
+    color: #8a8a86;
+    font-family: ui-monospace, monospace;
+  }
+  .product-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+  }
+  .product-cta {
+    font-size: 13px;
+    font-weight: 600;
+    color: #c9c9c6;
+    white-space: nowrap;
+  }
+</style>

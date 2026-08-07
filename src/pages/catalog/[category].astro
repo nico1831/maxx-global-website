@@ -1,0 +1,147 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import ProductCard from '../../components/ProductCard.astro'
+import { client } from '../../lib/sanity'
+import { categoryTreeQuery, categoryWithProductsQuery } from '../../lib/queries'
+
+export async function getStaticPaths() {
+  const categories = await client.fetch(categoryTreeQuery)
+  return categories.map((cat: any) => ({
+    params: { category: cat.slug.current },
+    props: { categorySlug: cat.slug.current },
+  }))
+}
+
+const { categorySlug } = Astro.props
+const cat = await client.fetch(categoryWithProductsQuery, { slug: categorySlug })
+
+if (!cat) return Astro.redirect('/catalog')
+
+const hasSubs = cat.children?.length > 0
+---
+
+<Layout
+  title={`${cat.title} — Maxx Global Resources Catalog`}
+  description={`Commercial ${cat.title.toLowerCase()} from SportsArt, Force USA, Impulse and more. Quoted per project for the Philippine market.`}
+  active="Catalog"
+>
+  <div class="cat-header">
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <span>/</span>
+      <a href="/catalog">Catalog</a>
+      <span>/</span>
+      <span>{cat.title}</span>
+    </div>
+    <h1 class="cat-h1">{cat.title}</h1>
+    {cat.description && (
+      <p class="cat-desc">
+        {cat.description.map((b: any) => b.children?.map((c: any) => c.text).join('')).join(' ')}
+      </p>
+    )}
+  </div>
+
+  {hasSubs && (
+    <div class="sub-chips">
+      <a href={`/catalog/${categorySlug}`} class="sub-chip active">All</a>
+      {cat.children.map((sub: any) => (
+        <a href={`/catalog/${categorySlug}/${sub.slug.current}`} class="sub-chip">
+          {sub.title}
+          {sub.productCount > 0 && <span class="sub-count">{sub.productCount}</span>}
+        </a>
+      ))}
+    </div>
+  )}
+
+  <div class="cat-grid-wrap">
+    {cat.products?.length > 0 ? (
+      <div class="product-grid">
+        {cat.products.map((p: any) => <ProductCard product={p} />)}
+      </div>
+    ) : (
+      <div class="empty">
+        <div class="empty-title">No products in this category yet.</div>
+        <p class="empty-body">We're populating the catalog. <a href="/contact">Contact us</a> about specific equipment.</p>
+      </div>
+    )}
+  </div>
+</Layout>
+
+<style>
+  .cat-header {
+    padding: 48px clamp(20px,5vw,48px) 36px;
+    border-bottom: 1px solid #1e1e1e;
+    max-width: 780px;
+  }
+  .breadcrumb {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+    color: #5a5a56;
+    margin-bottom: 20px;
+  }
+  .breadcrumb a { color: #5a5a56; }
+  .breadcrumb a:hover { color: #fff; }
+  .cat-h1 {
+    margin: 0 0 16px;
+    font-size: clamp(28px,5.5vw,46px);
+    font-weight: 300;
+    letter-spacing: -.01em;
+    color: #fff;
+    text-wrap: pretty;
+  }
+  .cat-desc {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #9a9a96;
+  }
+
+  .sub-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 24px clamp(20px,5vw,48px);
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .sub-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 9px 18px;
+    border-radius: 100px;
+    font: 600 13px Manrope, sans-serif;
+    color: #c9c9c6;
+    background: #111;
+    border: 1px solid #242422;
+    text-decoration: none;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .sub-chip:hover { background: #1a1a18; border-color: #3a3a38; color: #fff; }
+  .sub-chip.active { background: #f2f2f0; color: #0a0a0a; border-color: #f2f2f0; }
+  .sub-count {
+    font: 500 11px ui-monospace, monospace;
+    color: #8a8a86;
+  }
+  .sub-chip.active .sub-count { color: #5a5a56; }
+
+  .cat-grid-wrap {
+    padding: 36px clamp(20px,5vw,48px) 88px;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .empty {
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    background: #0d0d0d;
+    padding: 72px clamp(20px,5vw,48px);
+    text-align: center;
+  }
+  .empty-title { font-size: 22px; font-weight: 300; margin-bottom: 10px; color: #fff; }
+  .empty-body { margin: 0; font-size: 15px; color: #9a9a96; }
+</style>

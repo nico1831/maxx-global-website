@@ -1,0 +1,731 @@
+---
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout title="Maxx Global Resources — Commercial Fitness Equipment Philippines">
+  <!-- ════════════════════ HERO ════════════════════ -->
+  <section class="hero" aria-label="Hero">
+    <div class="hero-bg">[ hero photo — commercial gym floor, low light, equipment silhouettes ]</div>
+    <div class="hero-scrim"></div>
+    <div class="hero-content">
+      <div class="hero-text">
+        <div class="eyebrow">
+          <span class="eyebrow-bar"></span>
+          <span class="eyebrow-label">Commercial fitness · Flooring · Playground</span>
+        </div>
+        <h1 class="hero-h1">Equip your facility with the world's commercial brands.</h1>
+        <p class="hero-lead">Full commercial ranges from SportsArt, Force USA, Impulse and more — specified, imported and installed across the Philippines.</p>
+      </div>
+      <div class="hero-ctas">
+        <a href="/contact" class="btn-primary">Request a Quote</a>
+        <a href="/catalog" class="btn-secondary">Browse the Catalog</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ FACT TICKER ════════════════════ -->
+  <section class="ticker-strip" aria-label="Key facts">
+    <div class="ticker-track" id="ticker-track"></div>
+    <div class="ticker-fade ticker-fade-left" aria-hidden="true"></div>
+    <div class="ticker-fade ticker-fade-right" aria-hidden="true"></div>
+  </section>
+
+  <!-- ════════════════════ MAP ════════════════════ -->
+  <section class="map-section" aria-labelledby="map-title-el">
+    <div class="map-header">
+      <div class="map-eyebrow" id="map-eyebrow-el">Supplier provenance</div>
+      <h2 class="map-title" id="map-title-el">From the world to your floor</h2>
+      <p class="map-sub" id="map-sub-el">Principal relationships with manufacturers across four continents — imported directly, supported locally from Manila.</p>
+    </div>
+
+    <div class="map-toggle">
+      <div class="map-segmented">
+        <button class="map-btn world-active" id="btn-world">Global suppliers</button>
+        <button class="map-btn" id="btn-ph">Our clients in the Philippines</button>
+      </div>
+    </div>
+
+    <div class="map-layout">
+      <div id="map-logo-sidebar" class="map-logo-sidebar"></div>
+      <div class="map-canvas-scroll">
+        <div class="map-canvas">
+          <div class="map-grid"></div>
+
+          <!-- World view -->
+          <div id="world-view">
+            <div class="world-map-wrap">
+              <img src="/images/world-map.jpg" class="world-map-base" alt="">
+              <img src="/images/world-map.jpg" class="world-map-bloom" alt="">
+            </div>
+            <div id="world-pins"></div>
+            <div class="manila-pin">
+              <div class="manila-dot"></div>
+              <div class="manila-lbl">Manila — HQ &amp; Showroom</div>
+            </div>
+          </div>
+
+          <!-- PH view -->
+          <div id="ph-view" style="display:none">
+            <div class="map-placeholder">[ Philippines outline SVG — single flat tone #1a1a1a ]</div>
+            <div id="ph-pins"></div>
+            <div class="ph-legend" id="ph-legend"></div>
+          </div>
+        </div><!-- /.map-canvas -->
+      </div><!-- /.map-canvas-scroll -->
+    </div><!-- /.map-layout -->
+
+    <div class="chip-row" id="chip-row"></div>
+  </section>
+
+  <!-- ════════════════════ CATEGORY GRID ════════════════════ -->
+  <section class="section" aria-labelledby="cat-title">
+    <div class="section-header">
+      <h2 class="section-title" id="cat-title">The complete commercial range</h2>
+      <a href="/catalog" class="view-all">View all categories →</a>
+    </div>
+    <div class="cat-grid" id="cat-grid"></div>
+  </section>
+
+  <!-- ════════════════════ FEATURED PRODUCTS ════════════════════ -->
+  <section class="section" aria-labelledby="feat-title">
+    <div class="section-header">
+      <h2 class="section-title" id="feat-title">Featured equipment</h2>
+      <a href="/catalog" class="view-all">Full catalog →</a>
+    </div>
+    <div class="product-grid" id="product-grid"></div>
+  </section>
+
+  <!-- ════════════════════ PROJECTS TEASER ════════════════════ -->
+  <section class="section" aria-labelledby="proj-title">
+    <div class="projects-teaser">
+      <div class="projects-photo">[ installation photo — completed hotel gym fit-out ]</div>
+      <div class="projects-copy">
+        <div class="eyebrow" style="margin-bottom:16px">
+          <span class="eyebrow-bar"></span>
+          <span class="eyebrow-label">Installations</span>
+        </div>
+        <h2 class="projects-h2" id="proj-title">Proof, delivered. Hotels, condos, schools and LGUs across the Philippines.</h2>
+        <p class="projects-p">From five-star hotel gyms in Makati to municipal playgrounds in Mindanao — every project specified, imported and installed by our own team.</p>
+        <div><a href="/projects" class="btn-secondary" style="padding:14px 28px;font-size:14px">See our projects</a></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ CTA BAND ════════════════════ -->
+  <section class="section section-last" aria-label="Contact call to action">
+    <div class="cta-band">
+      <div class="cta-band-text">
+        <h2 class="cta-band-h2">Speccing a facility? We'll help you build the case.</h2>
+        <p class="cta-band-p">Send us your floor area and budget range and we'll come back with an equipment mix, manufacturer spec sheets and an indicative quotation — usually within one business day.</p>
+      </div>
+      <div class="cta-band-actions">
+        <a href="/contact" class="btn-primary" style="padding:16px 36px">Request a Quote</a>
+        <a href="https://wa.me/639178333202" target="_blank" rel="noopener noreferrer" class="btn-wa">Message us on WhatsApp</a>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<style is:global>
+  /* ── HERO ── */
+  .hero { position: relative; min-height: clamp(520px,82vh,680px); display: flex; align-items: flex-end; }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, #101010 0 16px, #161616 16px 32px);
+    display: flex; align-items: flex-start; justify-content: flex-end;
+    padding: 20px; color: #4a4a48; font: 11px ui-monospace, monospace;
+  }
+  .hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(10,10,10,.25) 0%, rgba(10,10,10,.05) 45%, rgba(10,10,10,.92) 100%);
+  }
+  .hero-content {
+    position: relative; width: 100%;
+    padding: 118px clamp(20px,5vw,48px) 64px;
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 60px;
+  }
+  .hero-text { max-width: 760px; }
+  .hero-h1 {
+    margin: 0 0 20px; font-size: clamp(34px,7vw,64px);
+    line-height: 1.05; font-weight: 300; letter-spacing: -.01em; text-wrap: pretty; color: #fff;
+  }
+  .hero-lead { margin: 0; font-size: 18px; line-height: 1.6; color: #b8b8b4; max-width: 560px; }
+  .hero-ctas { display: flex; flex-direction: column; gap: 12px; flex: none; }
+
+  /* ── FACT TICKER ── */
+  .ticker-strip {
+    position: relative; overflow: hidden;
+    border-top: 1px solid #1e1e1e; border-bottom: 1px solid #1e1e1e;
+    background: #0a0a0a;
+  }
+  .ticker-track {
+    display: flex; width: max-content;
+    animation: ticker 46s linear infinite;
+  }
+  .ticker-strip:hover .ticker-track { animation-play-state: paused; }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+  .ticker-group { display: flex; align-items: baseline; gap: 34px; padding-right: 34px; }
+  .ticker-fact  { display: flex; align-items: baseline; gap: 8px; padding: 15px 0; }
+  .ticker-num   { font: 500 17px/1 Manrope, sans-serif; color: #f2f2f0; white-space: nowrap; }
+  .ticker-num .plus { color: #5b8def; }
+  .ticker-lbl   { font: 400 12.5px/1 Manrope, sans-serif; color: #8a8a86; white-space: nowrap; }
+  .ticker-dot   { width: 3px; height: 3px; border-radius: 50%; background: #2e2e2c; align-self: center; flex: none; }
+  .ticker-fade  { position: absolute; top: 0; bottom: 0; width: 80px; pointer-events: none; z-index: 1; }
+  .ticker-fade-left  { left:  0; background: linear-gradient(90deg,  #0a0a0a, transparent); }
+  .ticker-fade-right { right: 0; background: linear-gradient(270deg, #0a0a0a, transparent); }
+  @media (prefers-reduced-motion: reduce) {
+    .ticker-strip { overflow-x: auto; }
+    .ticker-track { animation: none; }
+  }
+
+  /* ── SECTIONS ── */
+  .section { padding: 100px clamp(20px,5vw,48px) 0; }
+  .section-last { padding-bottom: 100px; }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 36px; }
+  .section-title { margin: 0; font-size: clamp(24px,4.4vw,38px); font-weight: 300; color: #fff; }
+  .view-all { font-size: 14px; color: #5b8def; font-weight: 600; white-space: nowrap; transition: color .15s; }
+  .view-all:hover { color: #82a9f2; }
+
+  /* ── MAP ── */
+  .map-section { padding: 88px clamp(20px,5vw,48px) 0; }
+  .map-header { text-align: center; max-width: 680px; margin: 0 auto 32px; }
+  .map-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #5b8def; margin-bottom: 14px; }
+  .map-title { margin: 0 0 14px; font-size: clamp(24px,4.4vw,38px); font-weight: 300; color: #fff; }
+  .map-sub { margin: 0; font-size: 16px; line-height: 1.6; color: #9a9a96; }
+  .map-toggle { display: flex; justify-content: center; margin-bottom: 24px; }
+  .map-segmented { display: flex; background: #111; border: 1px solid #242422; border-radius: 100px; padding: 5px; gap: 5px; }
+  .map-btn {
+    border: none; border-radius: 100px; padding: 11px 24px;
+    font: 600 13px Manrope, sans-serif; cursor: pointer; transition: all .2s;
+    background: transparent; color: #8a8a86;
+  }
+  .map-btn.world-active { background: #2f6fe0; color: #fff; }
+  .map-btn.ph-active   { background: #d92632; color: #fff; }
+  .map-canvas {
+    position: relative;
+    aspect-ratio: 7001 / 4001;
+    min-width: 680px; min-height: 280px;
+    background: #0d0d0d; overflow: hidden;
+  }
+  .map-grid {
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(#141414 1px,transparent 1px), linear-gradient(90deg,#141414 1px,transparent 1px);
+    background-size: 62px 62px;
+  }
+  .map-placeholder {
+    position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%);
+    color: #3a3a38; font: 11px ui-monospace, monospace; pointer-events: none; text-align: center;
+  }
+  .world-map-wrap { position: absolute; inset: 0; pointer-events: none; }
+  .world-map-base {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    opacity: 0.7;
+  }
+  .world-map-bloom {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover; object-position: center;
+    filter: blur(10px) brightness(2);
+    mix-blend-mode: screen;
+    opacity: 0.2;
+  }
+  .pin {
+    position: absolute; display: flex; align-items: center; gap: 7px;
+    cursor: pointer; transition: opacity .2s; z-index: 2;
+  }
+  .pin.dim { opacity: .3; z-index: 1; }
+  .pin-dot { border-radius: 50%; flex: none; transition: all .2s; }
+  .pin-lbl {
+    font-size: 11px; font-weight: 600; white-space: nowrap;
+    padding: 3px 8px; border-radius: 3px; transition: all .2s;
+    color: #c9c9c6; background: rgba(10,10,10,.75);
+  }
+  .pin.hi .pin-lbl { color: #0a0a0a; background: #fff; }
+  .manila-pin {
+    position: absolute; left: 76.25%; top: 60%; transform: translate(-5px,-50%);
+    display: flex; flex-direction: row; align-items: center; gap: 7px; z-index: 3; pointer-events: none;
+  }
+  .manila-dot { width: 6px; height: 6px; border-radius: 50%; background: #2f6fe0; box-shadow: 0 0 18px 6px rgba(47,111,224,.55); }
+  .manila-lbl { font-size: 11px; font-weight: 600; color: #fff; white-space: nowrap; background: #2f6fe0; padding: 3px 8px; border-radius: 3px; }
+  .ph-legend {
+    position: absolute; left: 24px; bottom: 20px; z-index: 4;
+    display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
+    background: rgba(10,10,10,.8); border: 1px solid #1e1e1e; border-radius: 6px; padding: 12px 18px;
+  }
+  .leg-item { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: #9a9a96; }
+  .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
+  .leg-hint { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: #f0a63c; border-left: 1px solid #2a2a28; padding-left: 18px; }
+  .chip-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+  .chip {
+    border: 1px solid #242422; border-radius: 4px; padding: 8px 8px;
+    font: 600 13px Manrope, sans-serif; color: #8a8a86; letter-spacing: .06em;
+    cursor: pointer; transition: all .2s; background: transparent;
+    display: inline-flex; align-items: center; justify-content: center; min-height: 52px;
+  }
+  .chip img {
+    width: 108px; height: 36px; display: block; object-fit: contain;
+    background: #fff; padding: 2px 6px; border-radius: 3px;
+    opacity: 1; transition: opacity .2s;
+  }
+  .chip:hover { border-color: #5a5a5a; color: #c9c9c6; }
+  .chip.brand-on { border-color: #2f6fe0; color: #fff; background: #12203f; }
+  .chip.brand-on img { opacity: 1; }
+  .chip.client-on { border-color: #d92632; color: #fff; background: #3a1216; }
+
+  /* ── MAP LOGO SIDEBAR ── */
+  .map-layout {
+    display: flex; align-items: stretch;
+    border: 1px solid #1e1e1e; border-radius: 8px; overflow: hidden;
+  }
+  .map-canvas-scroll {
+    flex: 1; min-width: 0; overflow-x: auto;
+    scrollbar-width: thin; scrollbar-color: #2a2a28 #111;
+  }
+  .map-canvas-scroll::-webkit-scrollbar { height: 6px; }
+  .map-canvas-scroll::-webkit-scrollbar-track { background: #111; }
+  .map-canvas-scroll::-webkit-scrollbar-thumb { background: #2a2a28; border-radius: 3px; }
+  .map-logo-sidebar {
+    flex-shrink: 0; width: 136px;
+    display: none; flex-direction: column; gap: 6px;
+    padding: 10px 8px;
+    overflow-y: auto; overflow-x: hidden;
+    background: #0d0d0d;
+    border-right: 1px solid #1e1e1e;
+    scrollbar-width: thin; scrollbar-color: #2a2a28 transparent;
+  }
+  .map-logo-sidebar::-webkit-scrollbar { width: 4px; }
+  .map-logo-sidebar::-webkit-scrollbar-thumb { background: #2a2a28; border-radius: 2px; }
+  .sidebar-chip {
+    border: 1px solid #242422; border-radius: 4px;
+    padding: 6px 6px; cursor: pointer; transition: all .2s;
+    background: transparent; display: flex; align-items: center;
+    justify-content: center; min-height: 44px; flex-shrink: 0; width: 100%;
+  }
+  .sidebar-chip img {
+    width: 100px; height: 32px; display: block;
+    object-fit: contain; background: #fff; padding: 2px 4px;
+    border-radius: 3px; transition: opacity .2s;
+  }
+  .sidebar-chip:hover { border-color: #5a5a5a; }
+  .sidebar-chip.brand-on { border-color: #2f6fe0; background: #12203f; }
+  @media (min-width: 768px) {
+    .map-logo-sidebar.visible { display: flex; }
+    .chip-row.logo-mode { display: none; }
+  }
+  @media (max-width: 767px) {
+    .map-canvas { min-width: 500px; }
+    .chip-row { display: flex; }
+    .pin-lbl, .manila-lbl { display: none; }
+  }
+
+  /* ── CATEGORY GRID ── */
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 16px; }
+  .cat-card {
+    position: relative; height: 300px; border-radius: 6px; overflow: hidden; display: block;
+    background: repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);
+    transition: outline .15s; text-decoration: none;
+  }
+  .cat-card:hover { outline: 1px solid #3a3a38; }
+  .cat-card-ph { position: absolute; top: 14px; right: 16px; color: #4a4a48; font: 11px ui-monospace,monospace; }
+  .cat-scrim { position: absolute; inset: 0; background: linear-gradient(180deg,transparent 40%,rgba(10,10,10,.9) 100%); }
+  .cat-body { position: absolute; left: 24px; bottom: 20px; right: 24px; }
+  .cat-name { font-size: 22px; font-weight: 600; color: #fff; }
+  .cat-sub  { font-size: 13px; color: #9a9a96; margin-top: 4px; }
+
+  /* ── PRODUCT GRID ── */
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 16px; }
+  .product-card {
+    border: 1px solid #1e1e1e; border-radius: 6px; overflow: hidden;
+    background: #0d0d0d; display: block; color: inherit; text-decoration: none; transition: border-color .18s;
+  }
+  .product-card:hover { border-color: #3a3a38; }
+  .product-img {
+    height: 240px;
+    background: repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);
+    display: flex; align-items: center; justify-content: center;
+    color: #4a4a48; font: 11px ui-monospace,monospace;
+  }
+  .product-info { padding: 20px; }
+  .product-brand { font-size: 11px; font-weight: 600; letter-spacing: .1em; color: #5b8def; text-transform: uppercase; }
+  .product-title { font-size: 17px; font-weight: 600; margin: 6px 0 4px; color: #f2f2f0; }
+  .product-model { font-size: 12px; color: #8a8a86; font-family: ui-monospace, monospace; }
+  .product-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 16px; }
+  .avail-tag {
+    font: 700 9.5px Manrope,sans-serif; letter-spacing: .14em; text-transform: uppercase;
+    white-space: nowrap; padding: 6px 9px; border: 1px solid; border-radius: 0;
+  }
+  .product-cta { font-size: 13px; font-weight: 600; color: #c9c9c6; white-space: nowrap; }
+
+  /* ── PROJECTS TEASER ── */
+  .projects-teaser {
+    display: grid; grid-template-columns: 1.2fr 1fr; gap: 16px;
+    border: 1px solid #1e1e1e; border-radius: 8px; overflow: hidden;
+  }
+  .projects-photo {
+    height: clamp(340px,52vh,440px);
+    background: repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);
+    display: flex; align-items: center; justify-content: center;
+    color: #4a4a48; font: 11px ui-monospace,monospace;
+  }
+  .projects-copy { padding: 56px; display: flex; flex-direction: column; justify-content: center; background: #0d0d0d; }
+  .projects-h2 { margin: 0 0 16px; font-size: 32px; font-weight: 300; line-height: 1.2; text-wrap: pretty; color: #fff; }
+  .projects-p  { margin: 0 0 28px; font-size: 15px; line-height: 1.65; color: #9a9a96; }
+  @media (max-width: 768px) {
+    .projects-teaser { grid-template-columns: 1fr; }
+    .projects-copy { padding: 32px clamp(20px,5vw,32px); }
+  }
+
+  /* ── CTA BAND ── */
+  .cta-band {
+    border: 1px solid #1e1e1e; border-radius: 8px; background: #0d0d0d;
+    padding: 64px clamp(20px,5vw,56px);
+    display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 56px;
+  }
+  .cta-band-text { max-width: 640px; }
+  .cta-band-h2 { margin: 0 0 14px; font-size: clamp(23px,4vw,34px); font-weight: 300; line-height: 1.2; color: #fff; }
+  .cta-band-p  { margin: 0; font-size: 16px; line-height: 1.65; color: #9a9a96; }
+  .cta-band-actions { display: flex; flex-direction: column; gap: 12px; flex: none; }
+  .btn-wa {
+    color: #fff; border: 1px solid #3a3a38; border-radius: 4px;
+    padding: 16px 36px; font: 600 15px Manrope,sans-serif;
+    text-align: center; text-decoration: none; display: inline-block; transition: border-color .15s;
+  }
+  .btn-wa:hover { border-color: #fff; color: #fff; }
+</style>
+
+<script>
+  // ── TICKER DATA ──────────────────────────────────────────────────────────
+  const TICKER_FACTS = [
+    { num: '250', plus: true,  lbl: 'installations completed' },
+    { num: '30',  plus: true,  lbl: 'provinces served' },
+    { num: '10',  plus: false, lbl: 'global brands represented' },
+    { num: '20',  plus: false, lbl: 'years operating' },
+    { num: '230', plus: true,  lbl: 'products in the catalog' },
+    { num: '6',   plus: false, lbl: 'market segments served' },
+    { num: '8–12',plus: false, lbl: 'week indent lead time' },
+    { lbl: 'Luzon · Visayas · Mindanao install & service' },
+    { lbl: 'In-house technicians, no third-party contractors' },
+    { lbl: 'Showroom in Quezon City, open Mon–Sat' },
+  ]
+
+  function buildTickerGroup(ariaHidden: boolean) {
+    const group = document.createElement('div')
+    group.className = 'ticker-group'
+    if (ariaHidden) group.setAttribute('aria-hidden', 'true')
+    TICKER_FACTS.forEach(fact => {
+      const item = document.createElement('div')
+      item.className = 'ticker-fact'
+      if (fact.num !== undefined) {
+        const numEl = document.createElement('span')
+        numEl.className = 'ticker-num'
+        numEl.textContent = fact.num
+        if (fact.plus) {
+          const plusEl = document.createElement('span')
+          plusEl.className = 'plus'
+          plusEl.textContent = '+'
+          numEl.appendChild(plusEl)
+        }
+        item.appendChild(numEl)
+      }
+      const lblEl = document.createElement('span')
+      lblEl.className = 'ticker-lbl'
+      lblEl.textContent = fact.lbl
+      item.appendChild(lblEl)
+      group.appendChild(item)
+      const dot = document.createElement('span')
+      dot.className = 'ticker-dot'
+      dot.setAttribute('aria-hidden', 'true')
+      group.appendChild(dot)
+    })
+    return group
+  }
+
+  function buildTicker() {
+    const track = document.getElementById('ticker-track')!
+    track.appendChild(buildTickerGroup(false))
+    track.appendChild(buildTickerGroup(true))
+  }
+
+  // ── DATA ─────────────────────────────────────────────────────────────────
+  const SEG: Record<string, { name: string; color: string }> = {
+    hotel:  { name: 'Hotels & Resorts',   color: '#e64550' },
+    condo:  { name: 'Condominiums',       color: '#f0a63c' },
+    corp:   { name: 'Corporate',          color: '#5b8def' },
+    school: { name: 'Schools',            color: '#a78bfa' },
+    lgu:    { name: 'Government / LGU',   color: '#4ade80' },
+    gym:    { name: 'Commercial Gyms',    color: '#e8e8e6' },
+  }
+
+  const CATS = [
+    { key: 'cardio',     name: 'Cardio',        sub: 'Treadmills · Ellipticals · Bikes · Rowers',    img: 'cardio row photo',         href: '/catalog/cardio' },
+    { key: 'strength',   name: 'Strength',      sub: 'Plate loaded · Selectorized · Racks',          img: 'strength floor photo',     href: '/catalog/strength' },
+    { key: 'functional', name: 'Functional',    sub: 'All-in-one trainers · Rigs · Accessories',     img: 'functional rig photo',     href: '/catalog/functional' },
+    { key: 'cycling',    name: 'Cycling Studio',sub: 'Indoor cycles · Power meters · Studio systems',img: 'cycling studio photo',     href: '/catalog/cycling-studio' },
+    { key: 'flooring',   name: 'Flooring',      sub: 'Rubber tiles · Rolls · PVC · Platforms',       img: 'rubber flooring detail',   href: '/catalog/flooring' },
+    { key: 'playground', name: 'Playground',    sub: 'Play systems · Swings · Slides',               img: 'playground install photo', href: '/catalog/playground' },
+  ]
+
+  // [label, left, top, side, brandKeys[]]
+  // left = (lng + 180) / 360 * 100 · top = (90 - lat) / 180 * 100
+  const WORLD_PINS: [string, string, string, string, string[]][] = [
+    ['Washington, USA — SportsArt HQ', '17.5%', '43%',   'r', ['sportsart']],
+    ['Utah, USA — Force USA',          '19.5%', '48.5%', 'l', ['forceusa']],
+    ['Boulder, USA — Stages',          '21.5%', '48.5%', 'r', ['stages']],
+    ['Qingdao, CN — Impulse',          '75.5%', '50%',   'l', ['impulse']],
+    ['Zhejiang, CN — Liben',           '75.5%', '54%',   'l', ['liben']],
+    ['Taoyuan, TW — Intenza',          '76.5%', '56%',   'r', ['intenza', 'fitplus']],
+    ['Tainan, TW — SportsArt Factory', '75.75%','57%',   'l', ['sportsart']],
+    ['Selangor, MY — Shamrock Arena',  '71.5%', '65%',   'l', ['shamrock']],
+    ['Bassendean, AU — First Degree',  '75%',   '81%',   'l', ['firstdegree']],
+    ['Saint Marys, AU — VersaFit',     '83%',   '81%',   'r', ['versafit']],
+  ]
+
+  // [label, left, top, side, segment, clientKey, hasPhotos]
+  const PH_PINS: [string, string, string, string, string, string, boolean][] = [
+    ['SM North EDSA, QC — Corporate gym', '46%', '25%', 'r', 'corp',   'sm',        true],
+    ['Shangri-La Plaza, Ortigas — Hotel', '50%', '31%', 'r', 'hotel',  'shangrila', true],
+    ['Ayala Tower, Makati — Office',      '42%', '34%', 'l', 'corp',   'ayala',     false],
+    ['Megaworld BGC — Condo amenity',     '48%', '39%', 'r', 'condo',  'megaworld', true],
+    ['Anvaya Cove, Bataan — Resort gym',  '37%', '27%', 'l', 'hotel',  'ayala',     true],
+    ['State university, Baguio',          '41%', '14%', 'r', 'school', 'lgu',       false],
+    ['Robinsons, Iloilo — Mall gym',      '43%', '58%', 'l', 'gym',    'robinsons', false],
+    ['SM Seaside, Cebu',                  '56%', '55%', 'r', 'gym',    'sm',        true],
+    ['LGU playground, Cagayan de Oro',    '58%', '70%', 'r', 'lgu',    'lgu',       true],
+    ['SM Lanang, Davao — Hotel gym',      '62%', '80%', 'r', 'hotel',  'sm',        false],
+  ]
+
+  const BRAND_CHIPS: [string, string, string][] = [
+    ['SportsArt',      'sportsart',   '/images/brands/sportsart.png'],
+    ['Force USA',      'forceusa',    '/images/brands/forceusa.png'],
+    ['Impulse',        'impulse',     '/images/brands/impulse.png'],
+    ['Stages Cycling', 'stages',      '/images/brands/stages.png'],
+    ['Intenza',        'intenza',     '/images/brands/intenza.png'],
+    ['First Degree',   'firstdegree', '/images/brands/fdf.png'],
+    ['VersaFit',       'versafit',    '/images/brands/versafit.png'],
+    ['FitPlus Floor',  'fitplus',     '/images/brands/fitplus-floor-black-transparent.png'],
+    ['Liben',          'liben',       '/images/brands/liben.png'],
+    ['Shamrock Arena', 'shamrock',    '/images/brands/shamrock.png'],
+  ]
+  const CLIENT_CHIPS: [string, string][] = [
+    ['SM Supermalls', 'sm'], ['Ayala Land', 'ayala'], ['Shangri-La', 'shangrila'],
+    ['Megaworld', 'megaworld'], ['Robinsons Land', 'robinsons'], ["Gov't & LGU", 'lgu'],
+  ]
+
+  const FEATURED = [
+    { title: 'G690 Verde Treadmill', model: 'G690',    brand: 'SportsArt', avail: 'available' },
+    { title: 'G20 Pro All-In-One',   model: 'G20-PRO', brand: 'Force USA', avail: 'indent' },
+    { title: 'IT9527 Leg Press',     model: 'IT9527',  brand: 'Impulse',   avail: 'indent' },
+    { title: 'SC3 Indoor Cycle',     model: 'SC3',      brand: 'Stages',    avail: 'available' },
+  ]
+  const AVAIL: Record<string, { label: string; color: string; border: string }> = {
+    available: { label: 'In Stock',     color: '#8fb79b', border: '#3c5a45' },
+    indent:    { label: 'Indent Order', color: '#c2a768', border: '#5c4e2e' },
+  }
+
+  // ── STATE ────────────────────────────────────────────────────────────────
+  let mapMode: 'world' | 'ph' = 'world'
+  let selBrand: string | null = null
+  let selClient: string | null = null
+
+  // ── HELPERS ──────────────────────────────────────────────────────────────
+  function pinTF(side: string) {
+    if (side === 'l') return 'translate(calc(-100% + 5px),-50%)'
+    if (side === 'b') return 'translate(-50%,-5px)'
+    return 'translate(-5px,-50%)'
+  }
+  function pinDir(side: string) {
+    return side === 'l' ? 'row-reverse' : side === 'b' ? 'column' : 'row'
+  }
+
+  // ── WORLD PINS ───────────────────────────────────────────────────────────
+  function buildWorldPins() {
+    const container = document.getElementById('world-pins')!
+    container.innerHTML = ''
+    WORLD_PINS.forEach(([label, left, top, side, keys]) => {
+      const isHi  = !!selBrand && keys.includes(selBrand)
+      const isDim = !!selBrand && !isHi
+      const color  = isHi ? '#5b8def' : '#e8e8e6'
+      const glow   = isHi ? 'rgba(91,141,239,.6)' : 'rgba(255,255,255,.35)'
+      const sz     = isHi ? 8 : 6
+      const glowSz = isHi ? '18px 6px' : '12px 3px'
+
+      const dot = document.createElement('div')
+      dot.className = 'pin-dot'
+      dot.style.cssText = `width:${sz}px;height:${sz}px;background:${color};box-shadow:0 0 ${glowSz} ${glow}`
+
+      const lbl = document.createElement('div')
+      lbl.className = 'pin-lbl'
+      lbl.textContent = label
+      if (isHi) { lbl.style.color = '#0a0a0a'; lbl.style.background = '#fff' }
+
+      const pin = document.createElement('div')
+      pin.className = 'pin' + (isDim ? ' dim' : '') + (isHi ? ' hi' : '')
+      pin.style.cssText = `left:${left};top:${top};transform:${pinTF(side)};flex-direction:${pinDir(side)}`
+      pin.append(dot, lbl)
+      pin.addEventListener('click', () => { selBrand = isHi ? null : keys[0]; renderMap() })
+      container.appendChild(pin)
+    })
+  }
+
+  // ── PH PINS ──────────────────────────────────────────────────────────────
+  function buildPHPins() {
+    const container = document.getElementById('ph-pins')!
+    container.innerHTML = ''
+    PH_PINS.forEach(([label, left, top, side, seg, client, photos]) => {
+      const isHi  = selClient === client
+      const isDim = !!selClient && !isHi
+      const color  = SEG[seg].color
+      const sz     = isHi ? 14 : 10
+      const glowSz = isHi ? '18px 6px' : '12px 3px'
+      const glow   = color + (isHi ? '99' : '59')
+
+      const dot = document.createElement('div')
+      dot.className = 'pin-dot'
+      dot.style.cssText = `width:${sz}px;height:${sz}px;background:${color};box-shadow:0 0 ${glowSz} ${glow}`
+
+      const lbl = document.createElement('div')
+      lbl.className = 'pin-lbl'
+      lbl.textContent = photos ? label + '  ↗' : label
+      if (isHi) { lbl.style.color = '#0a0a0a'; lbl.style.background = '#fff' }
+
+      const pin = document.createElement('a')
+      pin.className = 'pin' + (isDim ? ' dim' : '') + (isHi ? ' hi' : '')
+      pin.style.cssText = `left:${left};top:${top};transform:${pinTF(side)};flex-direction:${pinDir(side)}`
+      pin.href  = photos ? '/projects/detail' : '/projects'
+      pin.title = photos ? 'Open installation photos' : 'No published photos for this site'
+      pin.append(dot, lbl)
+      container.appendChild(pin)
+    })
+
+    const leg = document.getElementById('ph-legend')!
+    leg.innerHTML =
+      Object.values(SEG).map(s =>
+        `<div class="leg-item"><span class="leg-dot" style="background:${s.color}"></span>${s.name}</div>`
+      ).join('') +
+      `<div class="leg-hint">↗&nbsp; click pin for installation photos</div>`
+  }
+
+  // ── LOGO SIDEBAR (world view, wide screens) ─────────────────────────────
+  function buildSidebarLogos() {
+    const sidebar = document.getElementById('map-logo-sidebar')!
+    sidebar.innerHTML = ''
+    if (mapMode !== 'world') { sidebar.classList.remove('visible'); return }
+    sidebar.classList.add('visible')
+    BRAND_CHIPS.forEach(([name, key, logo]) => {
+      const isOn = selBrand === key
+      const btn  = document.createElement('button')
+      btn.className = 'sidebar-chip' + (isOn ? ' brand-on' : '')
+      const img = document.createElement('img')
+      img.src = logo; img.alt = name
+      btn.appendChild(img)
+      btn.addEventListener('click', () => { selBrand = isOn ? null : key; renderMap() })
+      sidebar.appendChild(btn)
+    })
+  }
+
+  // ── CHIPS ────────────────────────────────────────────────────────────────
+  function buildChips() {
+    const row = document.getElementById('chip-row')!
+    row.innerHTML = ''
+    if (mapMode === 'world') row.classList.add('logo-mode')
+    else row.classList.remove('logo-mode')
+    const chips = mapMode === 'world' ? BRAND_CHIPS : CLIENT_CHIPS
+    chips.forEach(([name, key, logo]) => {
+      const isOn = mapMode === 'world' ? selBrand === key : selClient === key
+      const btn  = document.createElement('button')
+      btn.className = 'chip' + (isOn ? (mapMode === 'world' ? ' brand-on' : ' client-on') : '')
+      if (logo) {
+        const img = document.createElement('img')
+        img.src = logo; img.alt = name
+        btn.appendChild(img)
+      } else {
+        btn.textContent = name
+      }
+      btn.addEventListener('click', () => {
+        if (mapMode === 'world') selBrand  = isOn ? null : key
+        else                     selClient = isOn ? null : key
+        renderMap()
+      })
+      row.appendChild(btn)
+    })
+  }
+
+  // ── RENDER ───────────────────────────────────────────────────────────────
+  function renderMap() {
+    const isWorld = mapMode === 'world'
+
+    ;(document.getElementById('world-view') as HTMLElement).style.display = isWorld ? '' : 'none'
+    ;(document.getElementById('ph-view') as HTMLElement).style.display    = isWorld ? 'none' : ''
+
+    document.getElementById('btn-world')!.className = 'map-btn' + (isWorld ? ' world-active' : '')
+    document.getElementById('btn-ph')!.className    = 'map-btn' + (!isWorld ? ' ph-active' : '')
+
+    document.getElementById('map-eyebrow-el')!.textContent = isWorld ? 'Supplier provenance' : 'Installations'
+    document.getElementById('map-title-el')!.textContent   = isWorld ? 'From the world to your floor' : 'Delivered across the Philippines'
+    document.getElementById('map-sub-el')!.textContent     = isWorld
+      ? 'Principal relationships with manufacturers across four continents — imported directly, supported locally from Manila.'
+      : 'Hotels, condos, schools, LGUs and commercial gyms — 250+ installations from Baguio to Davao.'
+
+    if (isWorld) buildWorldPins(); else buildPHPins()
+    buildSidebarLogos()
+    buildChips()
+  }
+
+  function showMap(mode: 'world' | 'ph') {
+    mapMode = mode; selBrand = null; selClient = null
+    renderMap()
+  }
+
+  // ── CATEGORIES ───────────────────────────────────────────────────────────
+  function buildCategories() {
+    const grid = document.getElementById('cat-grid')!
+    CATS.forEach(cat => {
+      const a = document.createElement('a')
+      a.href = cat.href; a.className = 'cat-card'
+      a.innerHTML = `
+        <div class="cat-card-ph">[ ${cat.img} ]</div>
+        <div class="cat-scrim"></div>
+        <div class="cat-body">
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-sub">${cat.sub}</div>
+        </div>`
+      grid.appendChild(a)
+    })
+  }
+
+  // ── FEATURED PRODUCTS ───────────────────────────────────────────────────
+  function buildFeatured() {
+    const grid = document.getElementById('product-grid')!
+    FEATURED.forEach(p => {
+      const av = AVAIL[p.avail]
+      const slug = p.brand.toLowerCase().replace(/[^a-z0-9]+/g, '-') + '-' + p.model.toLowerCase().replace(/[^a-z0-9]+/g, '-')
+      const card = document.createElement('a')
+      card.href = `/products/${slug}`; card.className = 'product-card'
+      card.innerHTML = `
+        <div class="product-img">[ product photo ]</div>
+        <div class="product-info">
+          <div class="product-brand">${p.brand}</div>
+          <div class="product-title">${p.title}</div>
+          <div class="product-model">${p.model}</div>
+          <div class="product-footer">
+            <span class="avail-tag" style="color:${av.color};border-color:${av.border}">${av.label}</span>
+            <span class="product-cta">Request quote →</span>
+          </div>
+        </div>`
+      grid.appendChild(card)
+    })
+  }
+
+  // ── MAP TOGGLE BUTTONS ───────────────────────────────────────────────────
+  document.getElementById('btn-world')!.addEventListener('click', () => showMap('world'))
+  document.getElementById('btn-ph')!.addEventListener('click', () => showMap('ph'))
+
+  // ── INIT ─────────────────────────────────────────────────────────────────
+  buildTicker()
+  renderMap()
+  buildCategories()
+  buildFeatured()
+</script>
