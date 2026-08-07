@@ -249,7 +249,7 @@
 
     /* ── MAP LOGO SIDEBAR ── */
     .map-layout {
-      display: flex; align-items: stretch;
+      display: flex; align-items: flex-start;
       border: 1px solid #1e1e1e; border-radius: 8px; overflow: hidden;
     }
     .map-canvas-scroll {
@@ -688,6 +688,16 @@ const WORLD_PINS = [
   ["Selangor, MY — Shamrock Arena",    "71.5%", "65%", "l", ["shamrock"]],   // 3.07°N 101.5°E
   ["Bassendean, AU — First Degree",         "75%", "81%", "l", ["firstdegree"]], // 31.95°S 115.86°E
   ["Saint Marys, AU — VersaFit",         "83%", "81%",   "r", ["versafit"]],   // 37.81°S 144.96°E
+  // Americas (new)
+  ["Rochester, USA — MX Select HQ",    "27%",   "46%", "r", ["mxselect"]],  // 44.02°N 92.47°W
+  ["Arkansas, USA — Spirit HQ",        "27%",   "52%", "l", ["spirit"]],    // ~35°N 92.4°W
+  // East Asia (new)
+  ["Shandong, CN — Ironbull Fitness",  "73.5%", "51%", "l", ["ironbull"]],  // ~36.5°N 117°E
+  ["Xiamen, CN — Housefit",            "74%",   "56%", "l", ["housefit"]],  // 24.48°N 118.08°E
+  ["Taipei, TW — Spirit Factory",      "77%",   "55.5%","r", ["spirit"]],   // 25.03°N 121.56°E
+  ["Taichung, TW — Aeon Fitness",      "76%",   "56.5%","r", ["aeon"]],     // 24.15°N 120.67°E
+  // Europe (new)
+  ["Wallenried, CH — Inotec HQ",       "52%",   "44%", "r", ["inotec"]],    // 46.87°N 7.10°E
 ];
 
 // [label, left, top, side, segment, clientKey, hasPhotos]
@@ -715,6 +725,12 @@ const BRAND_CHIPS  = [
   ["FitPlus Floor", "fitplus",     "uploads/logos - cropped/fitplus-floor-black-transparent.png"],
   ["Liben",         "liben",       "uploads/logos - cropped/liben.png"],
   ["Shamrock Arena","shamrock",    "uploads/logos - cropped/shamrock.png"],
+  ["MX Select",     "mxselect",    "uploads/logos - cropped/mx select.png"],
+  ["Ironbull Fitness","ironbull",  "uploads/logos - cropped/ironbull.png"],
+  ["Housefit",      "housefit",    "uploads/logos - cropped/housefit.png"],
+  ["Inotec",        "inotec",      "uploads/logos - cropped/inotec.png"],
+  ["Spirit Fitness","spirit",      "uploads/logos - cropped/spirit.png"],
+  ["Aeon Fitness",  "aeon",        "uploads/logos - cropped/aeon.png"],
 ];
 const CLIENT_CHIPS = [["SM Supermalls","sm"],["Ayala Land","ayala"],["Shangri-La","shangrila"],["Megaworld","megaworld"],["Robinsons Land","robinsons"],["Gov't & LGU","lgu"]];
 
@@ -751,9 +767,9 @@ function buildWorldPins() {
   WORLD_PINS.forEach(([label, left, top, side, keys]) => {
     const isHi  = !!selBrand && keys.includes(selBrand);
     const isDim = !!selBrand && !isHi;
-    const color  = isHi ? "#5b8def" : "#e8e8e6";
-    const glow   = isHi ? "rgba(91,141,239,.6)" : "rgba(255,255,255,.35)";
-    const sz     = isHi ? 8 : 6;
+    const color  = "#5b8def";
+    const glow   = isHi ? "rgba(91,141,239,.6)" : "rgba(91,141,239,.35)";
+    const sz     = isHi ? 6 : 4;
     const glowSz = isHi ? "18px 6px" : "12px 3px";
 
     const dot = document.createElement("div");
@@ -763,6 +779,7 @@ function buildWorldPins() {
     const lbl = document.createElement("div");
     lbl.className = "pin-lbl";
     lbl.textContent = label;
+    lbl.style.display = isHi ? "" : "none";
     if (isHi) { lbl.style.color = "#0a0a0a"; lbl.style.background = "#fff"; }
 
     const pin = document.createElement("div");
@@ -877,11 +894,20 @@ function renderMap() {
   if (isWorld) buildWorldPins(); else buildPHPins();
   buildSidebarLogos();
   buildChips();
+  syncSidebarHeight();
 }
 
 function showMap(mode) {
   mapMode = mode; selBrand = null; selClient = null;
   renderMap();
+}
+
+// ── SIDEBAR HEIGHT SYNC (cap logo list to the map's rendered height) ────────
+function syncSidebarHeight() {
+  const canvas  = document.querySelector(".map-canvas-scroll");
+  const sidebar = document.getElementById("map-logo-sidebar");
+  if (!canvas || !sidebar) return;
+  sidebar.style.maxHeight = canvas.offsetHeight + "px";
 }
 
 // ── CATEGORIES ───────────────────────────────────────────────────────────────
@@ -945,6 +971,8 @@ buildTicker();
 renderMap();
 buildCategories();
 buildFeatured();
+syncSidebarHeight();
+window.addEventListener("resize", syncSidebarHeight);
 </script>
 </body>
 </html>

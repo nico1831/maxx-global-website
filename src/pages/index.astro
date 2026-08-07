@@ -277,7 +277,7 @@ import Layout from '../layouts/Layout.astro'
 
   /* ── MAP LOGO SIDEBAR ── */
   .map-layout {
-    display: flex; align-items: stretch;
+    display: flex; align-items: flex-start;
     border: 1px solid #1e1e1e; border-radius: 8px; overflow: hidden;
   }
   .map-canvas-scroll {
@@ -473,14 +473,21 @@ import Layout from '../layouts/Layout.astro'
   const WORLD_PINS: [string, string, string, string, string[]][] = [
     ['Washington, USA — SportsArt HQ', '17.5%', '43%',   'r', ['sportsart']],
     ['Utah, USA — Force USA',          '19.5%', '48.5%', 'l', ['forceusa']],
-    ['Boulder, USA — Stages',          '21.5%', '48.5%', 'r', ['stages']],
-    ['Qingdao, CN — Impulse',          '75.5%', '50%',   'l', ['impulse']],
+    ['Colarado, USA — Stages',          '21.5%', '48.5%', 'r', ['stages']],
+    ['Shangdong, CN — Impulse',          '75.5%', '50%',   'l', ['impulse']],
     ['Zhejiang, CN — Liben',           '75.5%', '54%',   'l', ['liben']],
     ['Taoyuan, TW — Intenza',          '76.5%', '56%',   'r', ['intenza', 'fitplus']],
     ['Tainan, TW — SportsArt Factory', '75.75%','57%',   'l', ['sportsart']],
     ['Selangor, MY — Shamrock Arena',  '71.5%', '65%',   'l', ['shamrock']],
     ['Bassendean, AU — First Degree',  '75%',   '81%',   'l', ['firstdegree']],
     ['Saint Marys, AU — VersaFit',     '83%',   '81%',   'r', ['versafit']],
+    ['New York, USA — MX Select HQ',  '28.5%',   '45.5%',   'r', ['mxselect']],
+    ['Arkansas, USA — Spirit HQ',      '24%',   '50%',   'l', ['spirit']],
+    ['Shandong, CN — Ironbull Fitness','75.5%', '50%',   'r', ['ironbull']],
+    ['Xiamen, CN — Housefit',          '75%',   '56%',   'l', ['housefit']],
+    ['Taipei, TW — Spirit Factory',    '76.5%',   '56%', 'r', ['spirit']],
+    ['Taichung, TW — Aeon Fitness',    '76%',   '56.5%', 'r', ['aeon']],
+    ['Wallenried, CH — Inotec HQ',     '49%',   '43%',   'r', ['inotec']],
   ]
 
   // [label, left, top, side, segment, clientKey, hasPhotos]
@@ -508,6 +515,12 @@ import Layout from '../layouts/Layout.astro'
     ['FitPlus Floor',  'fitplus',     '/images/brands/fitplus-floor-black-transparent.png'],
     ['Liben',          'liben',       '/images/brands/liben.png'],
     ['Shamrock Arena', 'shamrock',    '/images/brands/shamrock.png'],
+    ['MX Select',      'mxselect',    '/images/brands/mxselect.png'],
+    ['Ironbull Fitness','ironbull',   '/images/brands/ironbull.png'],
+    ['Housefit',       'housefit',    '/images/brands/housefit.png'],
+    ['Inotec',         'inotec',      '/images/brands/inotec.png'],
+    ['Spirit Fitness', 'spirit',      '/images/brands/spirit.png'],
+    ['Aeon Fitness',   'aeon',        '/images/brands/aeon.png'],
   ]
   const CLIENT_CHIPS: [string, string][] = [
     ['SM Supermalls', 'sm'], ['Ayala Land', 'ayala'], ['Shangri-La', 'shangrila'],
@@ -547,9 +560,9 @@ import Layout from '../layouts/Layout.astro'
     WORLD_PINS.forEach(([label, left, top, side, keys]) => {
       const isHi  = !!selBrand && keys.includes(selBrand)
       const isDim = !!selBrand && !isHi
-      const color  = isHi ? '#5b8def' : '#e8e8e6'
-      const glow   = isHi ? 'rgba(91,141,239,.6)' : 'rgba(255,255,255,.35)'
-      const sz     = isHi ? 8 : 6
+      const color  = '#5b8def'
+      const glow   = isHi ? 'rgba(91,141,239,.6)' : 'rgba(91,141,239,.35)'
+      const sz     = isHi ? 6 : 4
       const glowSz = isHi ? '18px 6px' : '12px 3px'
 
       const dot = document.createElement('div')
@@ -559,6 +572,7 @@ import Layout from '../layouts/Layout.astro'
       const lbl = document.createElement('div')
       lbl.className = 'pin-lbl'
       lbl.textContent = label
+      lbl.style.display = isHi ? '' : 'none'
       if (isHi) { lbl.style.color = '#0a0a0a'; lbl.style.background = '#fff' }
 
       const pin = document.createElement('div')
@@ -672,11 +686,20 @@ import Layout from '../layouts/Layout.astro'
     if (isWorld) buildWorldPins(); else buildPHPins()
     buildSidebarLogos()
     buildChips()
+    syncSidebarHeight()
   }
 
   function showMap(mode: 'world' | 'ph') {
     mapMode = mode; selBrand = null; selClient = null
     renderMap()
+  }
+
+  // ── SIDEBAR HEIGHT SYNC (cap logo list to the map's rendered height) ──────
+  function syncSidebarHeight() {
+    const canvas  = document.querySelector('.map-canvas-scroll') as HTMLElement | null
+    const sidebar = document.getElementById('map-logo-sidebar') as HTMLElement | null
+    if (!canvas || !sidebar) return
+    sidebar.style.maxHeight = canvas.offsetHeight + 'px'
   }
 
   // ── CATEGORIES ───────────────────────────────────────────────────────────
@@ -728,4 +751,6 @@ import Layout from '../layouts/Layout.astro'
   renderMap()
   buildCategories()
   buildFeatured()
+  syncSidebarHeight()
+  window.addEventListener('resize', syncSidebarHeight)
 </script>
