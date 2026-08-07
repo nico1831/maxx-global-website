@@ -1,0 +1,223 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import { client } from '../../lib/sanity'
+import { urlFor } from '../../lib/sanity'
+import { brandsQuery } from '../../lib/queries'
+
+const brands = await client.fetch(brandsQuery)
+
+function originLabel(brand: any) {
+  const parts = []
+  if (brand.originCity || brand.originCountry) {
+    parts.push([brand.originCity, brand.originCountry].filter(Boolean).join(', '))
+  }
+  if (brand.secondaryOrigin?.city || brand.secondaryOrigin?.country) {
+    parts.push([brand.secondaryOrigin.city, brand.secondaryOrigin.country].filter(Boolean).join(', '))
+  }
+  return parts.join(' · ')
+}
+---
+
+<Layout title="Brands — Maxx Global Resources" description="Every commercial fitness, flooring and playground line we hold under a direct principal relationship — imported, stocked and serviced by our own team." active="Brands">
+  <div class="brands-header">
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <span>/</span>
+      <span>Brands</span>
+    </div>
+    <div class="eyebrow">
+      <span class="eyebrow-bar"></span>
+      <span class="eyebrow-label">{brands.length} principal{brands.length === 1 ? '' : 's'} · Four continents</span>
+    </div>
+    <h1>The brands we represent</h1>
+    <p>Every line below is held under a direct principal relationship — we import it, we stock the parts, and our own technicians service it. Country of origin is stated for each, because tenders ask.</p>
+  </div>
+
+  <div class="brands-grid-wrap">
+    {brands.length > 0 ? (
+      <div class="brands-grid">
+        {brands.map((brand: any) => {
+          const logoUrl = brand.logo?.asset ? urlFor(brand.logo).width(300).fit('max').url() : null
+          const origin = originLabel(brand)
+          return (
+            <a href={`/brands/${brand.slug.current}`} class="brand-card">
+              <div class="brand-logo-box">
+                {logoUrl ? (
+                  <img src={logoUrl} alt={brand.name} loading="lazy">
+                ) : (
+                  <span class="brand-logo-ph">[ {brand.name} logo ]</span>
+                )}
+              </div>
+              <div class="brand-info">
+                <div class="brand-name-row">
+                  <div class="brand-name">{brand.name}</div>
+                </div>
+                {brand.tagline && <div class="brand-tagline">{brand.tagline}</div>}
+                <div class="brand-stats">
+                  <div class="brand-stat">
+                    <div class="brand-stat-label">Origin</div>
+                    <div class="brand-stat-value">{origin || '—'}</div>
+                  </div>
+                  <div class="brand-stat">
+                    <div class="brand-stat-label">Range</div>
+                    <div class="brand-stat-value">{brand.productCount} product{brand.productCount === 1 ? '' : 's'}</div>
+                  </div>
+                </div>
+              </div>
+            </a>
+          )
+        })}
+      </div>
+    ) : (
+      <div class="brands-empty">
+        <div class="brands-empty-title">Brand list coming shortly.</div>
+        <p class="brands-empty-body">We're finishing setup on our principal relationships — check back soon, or ask our sales team directly about a specific manufacturer.</p>
+        <a href="/contact" class="btn-primary">Ask our sales team</a>
+      </div>
+    )}
+  </div>
+
+  <div class="brands-cta-wrap">
+    <div class="brands-cta">
+      <div class="brands-cta-text">
+        <h2>Looking for a brand we don't list?</h2>
+        <p>We source outside the published range regularly — particularly for tender specifications that name a particular manufacturer. Send us the spec and we'll tell you honestly whether we can supply it.</p>
+      </div>
+      <a href="/contact" class="btn-primary">Talk to sales</a>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* ── PAGE HEADER ── */
+  .brands-header {
+    padding: 48px clamp(20px,5vw,48px) 40px;
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .breadcrumb {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    font-size: 12px;
+    color: #5a5a56;
+    margin-bottom: 16px;
+  }
+  .breadcrumb a { color: #5a5a56; }
+  .breadcrumb a:hover { color: #fff; }
+  .brands-header h1 {
+    margin: 0 0 14px;
+    font-size: clamp(28px,5.5vw,46px);
+    font-weight: 300;
+    letter-spacing: -.01em;
+    color: #fff;
+  }
+  .brands-header p {
+    margin: 0;
+    max-width: 680px;
+    font-size: 16px;
+    line-height: 1.65;
+    color: #9a9a96;
+  }
+
+  /* ── GRID ── */
+  .brands-grid-wrap { padding: 40px clamp(20px,5vw,48px) 88px; }
+  .brands-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(420px, 100%), 1fr));
+    gap: 16px;
+  }
+  .brand-card {
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    background: #0d0d0d;
+    padding: 32px;
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 32px;
+    align-items: center;
+    color: inherit;
+    text-decoration: none;
+    transition: border-color .15s;
+  }
+  .brand-card:hover { border-color: #3a3a38; }
+  @media (max-width: 460px) {
+    .brand-card { grid-template-columns: 1fr; padding: 24px; }
+    .brand-logo-box { max-width: 180px; margin: 0 auto; }
+  }
+
+  .brand-logo-box {
+    aspect-ratio: 3 / 2;
+    border-radius: 4px;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px;
+  }
+  .brand-logo-box img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+  .brand-logo-ph { color: #5a5a56; font: 10px ui-monospace, monospace; text-align: center; }
+
+  .brand-info { min-width: 0; }
+  .brand-name-row { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+  .brand-name { font-size: clamp(19px,3vw,24px); font-weight: 600; color: #f2f2f0; }
+  .brand-tagline { font-size: 14px; color: #b8b8b4; margin-top: 6px; }
+
+  .brand-stats {
+    display: flex;
+    gap: 24px;
+    margin-top: 20px;
+    padding-top: 18px;
+    border-top: 1px solid #1a1a18;
+  }
+  .brand-stat { min-width: 0; }
+  .brand-stat-label {
+    font: 500 10px ui-monospace, monospace;
+    color: #5a5a56;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+  }
+  .brand-stat-value {
+    font-size: 13px;
+    color: #c9c9c6;
+    margin-top: 4px;
+  }
+
+  /* ── EMPTY STATE ── */
+  .brands-empty {
+    border: 1px solid #1e1e1e;
+    border-radius: 6px;
+    background: #0d0d0d;
+    padding: 72px clamp(20px,5vw,48px);
+    text-align: center;
+  }
+  .brands-empty-title { font-size: 22px; font-weight: 300; margin-bottom: 10px; color: #fff; }
+  .brands-empty-body { margin: 0 0 24px; font-size: 15px; color: #9a9a96; }
+
+  /* ── CTA BAND ── */
+  .brands-cta-wrap { padding: 0 clamp(20px,5vw,48px) 100px; }
+  .brands-cta {
+    border: 1px solid #1e1e1e;
+    border-radius: 8px;
+    background: #0d0d0d;
+    padding: 56px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 48px;
+  }
+  .brands-cta-text { max-width: 620px; }
+  .brands-cta-text h2 {
+    margin: 0 0 12px;
+    font-size: clamp(22px,3.6vw,30px);
+    font-weight: 300;
+    line-height: 1.25;
+    color: #fff;
+  }
+  .brands-cta-text p {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.65;
+    color: #9a9a96;
+  }
+</style>

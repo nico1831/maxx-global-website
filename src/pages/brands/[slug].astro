@@ -1,0 +1,286 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import ProductCard from '../../components/ProductCard.astro'
+import { client, urlFor } from '../../lib/sanity'
+import { brandsQuery, brandBySlugQuery } from '../../lib/queries'
+import { toHTML } from '@portabletext/to-html'
+
+export async function getStaticPaths() {
+  const brands = await client.fetch(brandsQuery)
+  return brands.map((b: any) => ({
+    params: { slug: b.slug.current },
+    props: { slug: b.slug.current },
+  }))
+}
+
+const { slug } = Astro.props
+const brand = await client.fetch(brandBySlugQuery, { slug })
+
+if (!brand) return Astro.redirect('/brands')
+
+const originHeadquarters = [brand.originCity, brand.originCountry].filter(Boolean)
+const hasSecondaryOrigin = !!(brand.secondaryOrigin?.city || brand.secondaryOrigin?.country)
+const secondaryOriginLine = [brand.secondaryOrigin?.city, brand.secondaryOrigin?.country].filter(Boolean)
+
+const categoryNames: string[] = [...new Set((brand.categoryTitles ?? []).filter(Boolean))]
+
+const logoUrl = brand.logo?.asset ? urlFor(brand.logo).width(360).fit('max').url() : null
+const heroUrl = brand.heroImage?.asset ? urlFor(brand.heroImage).width(1800).height(760).fit('crop').url() : null
+
+const descriptionHtml = brand.description?.length ? toHTML(brand.description) : null
+
+function projectDisplayName(p: any) {
+  if (p.displayAs === 'anonymised') return p.anonymisedLabel || 'A Philippine client'
+  return p.clientName || p.title
+}
+---
+
+<Layout
+  title={`${brand.name} — Maxx Global Resources`}
+  description={brand.tagline || `${brand.name} commercial equipment, imported and serviced by Maxx Global Resources across the Philippines.`}
+  active="Brands"
+>
+  <!-- ════════════════════ HERO ════════════════════ -->
+  <section class="brand-hero">
+    {heroUrl ? (
+      <img src={heroUrl} class="brand-hero-img" alt="" />
+    ) : (
+      <div class="brand-hero-ph">[ {brand.name} brand banner ]</div>
+    )}
+    <div class="brand-hero-scrim"></div>
+    <div class="brand-hero-content">
+      <div class="breadcrumb">
+        <a href="/">Home</a>
+        <span>/</span>
+        <a href="/brands">Brands</a>
+        <span>/</span>
+        <span>{brand.name}</span>
+      </div>
+      <div class="brand-hero-row">
+        <div class="brand-hero-logo">
+          {logoUrl ? (
+            <img src={logoUrl} alt={brand.name} />
+          ) : (
+            <span class="brand-hero-logo-ph">[ {brand.name} logo ]</span>
+          )}
+        </div>
+        <div>
+          <h1>{brand.name}</h1>
+          {brand.tagline && <div class="brand-hero-tagline">{brand.tagline}</div>}
+        </div>
+        <div class="brand-hero-cta">
+          <a href={`/catalog?brand=${brand.slug.current}`} class="btn-primary">
+            See all {brand.productCount} product{brand.productCount === 1 ? '' : 's'}
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════ QUICK FACTS ════════════════════ -->
+  <div class="fact-bar">
+    <div class="fact-cell">
+      <div class="fact-label">Headquarters</div>
+      <div class="fact-value">{originHeadquarters[0] ?? '—'}</div>
+      {originHeadquarters[1] && <div class="fact-sub">{originHeadquarters[1]}</div>}
+    </div>
+    {hasSecondaryOrigin && (
+      <div class="fact-cell">
+        <div class="fact-label">{brand.secondaryOrigin.label || 'Secondary origin'}</div>
+        <div class="fact-value">{secondaryOriginLine[0] ?? '—'}</div>
+        {secondaryOriginLine[1] && <div class="fact-sub">{secondaryOriginLine[1]}</div>}
+      </div>
+    )}
+    <div class="fact-cell">
+      <div class="fact-label">Range with us</div>
+      <div class="fact-value">{brand.productCount} product{brand.productCount === 1 ? '' : 's'}</div>
+      <div class="fact-sub">{categoryNames.length > 0 ? categoryNames.join(' · ') : '—'}</div>
+    </div>
+    <div class="fact-cell">
+      <div class="fact-label">Deployed in</div>
+      <div class="fact-value">{brand.projectCount > 0 ? `${brand.projectCount} installation${brand.projectCount === 1 ? '' : 's'}` : '—'}</div>
+      <div class="fact-sub">{brand.projectCount > 0 ? `Philippines${brand.firstProjectYear ? `, since ${brand.firstProjectYear}` : ''}` : 'No published installations yet'}</div>
+    </div>
+  </div>
+
+  <!-- ════════════════════ ABOUT ════════════════════ -->
+  <section class="about-grid">
+    <div>
+      <div class="eyebrow">
+        <span class="eyebrow-bar"></span>
+        <span class="eyebrow-label">About the manufacturer</span>
+      </div>
+      {descriptionHtml ? (
+        <div class="about-prose" set:html={descriptionHtml} />
+      ) : (
+        <p class="about-fallback">
+          We've carried {brand.name} under a direct principal relationship — imported, stocked and serviced by our own team. Ask us about factory training, spare parts holding and lead times for this line.
+        </p>
+      )}
+    </div>
+    <div class="about-card">
+      <h3>Speccing {brand.name} into a project?</h3>
+      <p>Send us your floor area and budget range and we'll come back with a {brand.name} equipment mix, manufacturer spec sheets and an indicative quotation — usually within one business day.</p>
+      <a href="/contact" class="btn-secondary about-card-cta">Request a quote</a>
+    </div>
+  </section>
+
+  <!-- ════════════════════ PRODUCTS ════════════════════ -->
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">{brand.name} in our catalog</h2>
+      {brand.products?.length > 0 && (
+        <a href={`/catalog?brand=${brand.slug.current}`} class="view-all">
+          All {brand.productCount} product{brand.productCount === 1 ? '' : 's'} →
+        </a>
+      )}
+    </div>
+    {brand.products?.length > 0 ? (
+      <div class="product-grid">
+        {brand.products.map((p: any) => <ProductCard product={p} />)}
+      </div>
+    ) : (
+      <div class="empty">
+        <div class="empty-title">We're populating {brand.name}'s catalog.</div>
+        <p class="empty-body">Ask our sales team about specific {brand.name} models — we source outside the published range regularly.</p>
+        <a href="/contact" class="btn-primary">Ask our sales team</a>
+      </div>
+    )}
+  </section>
+
+  <!-- ════════════════════ PROJECTS ════════════════════ -->
+  {brand.projects?.length > 0 && (
+    <section class="section section-last">
+      <h2 class="section-title" style="margin-bottom:28px">Where we've installed it</h2>
+      <div class="project-grid">
+        {brand.projects.map((p: any) => {
+          const imageUrl = p.image?.asset ? urlFor(p.image).width(560).height(400).format('webp').url() : null
+          return (
+            <a href="/projects" class="project-card">
+              <div class="project-img">
+                {imageUrl ? <img src={imageUrl} alt={p.image?.alt ?? projectDisplayName(p)} loading="lazy" /> : <span class="img-ph">[ installation photo ]</span>}
+              </div>
+              <div class="project-info">
+                <div class="project-eyebrow">{p.segmentName}{p.segmentName && p.year ? ' · ' : ''}{p.year}</div>
+                <div class="project-name">{projectDisplayName(p)}</div>
+                {p.location && <div class="project-location">{p.location}</div>}
+              </div>
+            </a>
+          )
+        })}
+      </div>
+    </section>
+  )}
+</Layout>
+
+<style>
+  /* ── HERO ── */
+  .brand-hero {
+    position: relative;
+    min-height: clamp(360px,52vh,440px);
+    display: flex;
+    align-items: flex-end;
+    border-bottom: 1px solid #1e1e1e;
+    overflow: hidden;
+  }
+  .brand-hero-img, .brand-hero-ph {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .brand-hero-ph {
+    background: repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);
+    display: flex; align-items: flex-start; justify-content: flex-end;
+    padding: 20px; color: #4a4a48; font: 11px ui-monospace, monospace;
+  }
+  .brand-hero-scrim {
+    position: absolute; inset: 0;
+    background: linear-gradient(90deg, rgba(10,10,10,.96) 0%, rgba(10,10,10,.62) 58%, rgba(10,10,10,.28) 100%);
+  }
+  .brand-hero-content {
+    position: relative; width: 100%; box-sizing: border-box;
+    padding: 48px clamp(20px,5vw,48px);
+  }
+  .breadcrumb { display: flex; gap: 8px; align-items: center; font-size: 12px; color: #8a8a86; margin-bottom: 20px; }
+  .breadcrumb a { color: #8a8a86; }
+  .breadcrumb a:hover { color: #fff; }
+  .brand-hero-row { display: flex; align-items: flex-end; gap: 28px; flex-wrap: wrap; }
+  .brand-hero-logo {
+    width: 180px; aspect-ratio: 3/2; border-radius: 4px; background: #fff;
+    display: flex; align-items: center; justify-content: center; flex: none; padding: 14px;
+  }
+  .brand-hero-logo img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+  .brand-hero-logo-ph { color: #5a5a56; font: 10px ui-monospace, monospace; text-align: center; }
+  .brand-hero-content h1 { margin: 0 0 8px; font-size: clamp(28px,5.5vw,48px); font-weight: 300; letter-spacing: -.01em; color: #fff; }
+  .brand-hero-tagline { font-size: 18px; color: #b8b8b4; }
+  .brand-hero-cta { margin-left: auto; flex: none; }
+
+  /* ── QUICK FACTS ── */
+  .fact-bar {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+    border-bottom: 1px solid #1e1e1e;
+  }
+  .fact-cell {
+    padding: 30px clamp(20px,5vw,48px);
+    border-right: 1px solid #1e1e1e;
+  }
+  .fact-cell:last-child { border-right: none; }
+  .fact-label { font: 500 11px ui-monospace, monospace; color: #6a6a66; letter-spacing: .08em; text-transform: uppercase; }
+  .fact-value { font-size: 17px; font-weight: 600; margin-top: 7px; color: #f2f2f0; }
+  .fact-sub { font-size: 13px; color: #8a8a86; margin-top: 2px; }
+
+  /* ── ABOUT ── */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 56px;
+    padding: 72px clamp(20px,5vw,48px) 0;
+    align-items: start;
+  }
+  .about-prose :global(p) { margin: 0 0 18px; font-size: 16px; line-height: 1.7; color: #b8b8b4; }
+  .about-prose :global(p:last-child) { margin-bottom: 0; }
+  .about-fallback { margin: 0; font-size: 16px; line-height: 1.7; color: #b8b8b4; }
+  .about-card {
+    border: 1px solid #1e1e1e; border-radius: 8px; background: #0d0d0d; padding: 36px;
+  }
+  .about-card h3 { margin: 0 0 12px; font-size: 20px; font-weight: 600; color: #fff; text-wrap: pretty; }
+  .about-card p { margin: 0 0 24px; font-size: 14px; line-height: 1.7; color: #9a9a96; }
+  .about-card-cta { display: block; text-align: center; }
+  @media (max-width: 860px) {
+    .about-grid { grid-template-columns: 1fr; }
+  }
+
+  /* ── PRODUCTS / SHARED SECTION ── */
+  .section { padding: 88px clamp(20px,5vw,48px) 0; }
+  .section-last { padding-bottom: 100px; }
+  .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
+  .section-title { margin: 0; font-size: clamp(23px,4vw,34px); font-weight: 300; color: #fff; }
+  .view-all { font-size: 14px; font-weight: 600; color: #5b8def; white-space: nowrap; transition: color .15s; }
+  .view-all:hover { color: #82a9f2; }
+  .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 16px; }
+
+  .empty {
+    border: 1px solid #1e1e1e; border-radius: 6px; background: #0d0d0d;
+    padding: 72px clamp(20px,5vw,48px); text-align: center;
+  }
+  .empty-title { font-size: 22px; font-weight: 300; margin-bottom: 10px; color: #fff; }
+  .empty-body { margin: 0 0 24px; font-size: 15px; color: #9a9a96; }
+
+  /* ── PROJECTS ── */
+  .project-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 16px; }
+  .project-card {
+    border: 1px solid #1e1e1e; border-radius: 6px; overflow: hidden; background: #0d0d0d;
+    display: block; color: inherit; text-decoration: none; transition: border-color .15s;
+  }
+  .project-card:hover { border-color: #3a3a38; }
+  .project-img {
+    height: 200px; background: repeating-linear-gradient(45deg,#101010 0 14px,#151515 14px 28px);
+    display: flex; align-items: center; justify-content: center; color: #4a4a48; font: 11px ui-monospace,monospace;
+  }
+  .project-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .project-info { padding: 22px; }
+  .project-eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .1em; color: #5b8def; text-transform: uppercase; }
+  .project-name { font-size: 17px; font-weight: 600; margin: 8px 0 5px; color: #f2f2f0; }
+  .project-location { font-size: 13px; color: #8a8a86; }
+</style>

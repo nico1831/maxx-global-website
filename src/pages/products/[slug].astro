@@ -1,0 +1,303 @@
+---
+import Layout from '../../layouts/Layout.astro'
+import AvailabilityBadge from '../../components/AvailabilityBadge.astro'
+import ProductCard from '../../components/ProductCard.astro'
+import { client, urlFor } from '../../lib/sanity'
+import { productBySlugQuery } from '../../lib/queries'
+import { toHTML } from '@portabletext/to-html'
+
+export async function getStaticPaths() {
+  const slugs = await client.fetch(`*[_type == "product"]{ "slug": slug.current }`)
+  return slugs.map((s: any) => ({
+    params: { slug: s.slug },
+    props: { slug: s.slug },
+  }))
+}
+
+const { slug } = Astro.props
+const product = await client.fetch(productBySlugQuery, { slug })
+
+if (!product) return Astro.redirect('/catalog')
+
+const images = product.images ?? []
+const imageUrls = images.map((img: any) =>
+  img.asset ? urlFor(img).width(900).fit('max').url() : null
+)
+
+const parentCategory = product.primaryCategory?.parent
+const categoryHref = product.primaryCategory
+  ? parentCategory
+    ? `/catalog/${parentCategory.slug.current}/${product.primaryCategory.slug.current}`
+    : `/catalog/${product.primaryCategory.slug.current}`
+  : '/catalog'
+
+const descriptionHtml = product.description?.length ? toHTML(product.description) : null
+
+const specSheetSizeLabel = product.specSheet?.size
+  ? `${(product.specSheet.size / (1024 * 1024)).toFixed(1)} MB`
+  : null
+
+const waMessage = encodeURIComponent(
+  `Hi MAXX, I'm enquiring about the ${product.brand?.name ?? ''} ${product.title}${product.modelCode ? ` (${product.modelCode})` : ''}.`
+)
+
+const segmentNames = (product.segments ?? []).map((s: any) => s.title)
+
+const originParts = [product.brand?.originCity, product.brand?.originCountry].filter(Boolean)
+let originLabel = originParts.join(', ')
+if (product.brand?.secondaryOrigin?.city || product.brand?.secondaryOrigin?.country) {
+  const sec = [product.brand.secondaryOrigin.city, product.brand.secondaryOrigin.country].filter(Boolean).join(', ')
+  originLabel = originLabel ? `${originLabel} · ${sec}` : sec
+}
+
+const availableNote = 'In showroom and local stock — viewable at our Banawe showroom, Mon–Sat.'
+---
+
+<Layout
+  title={`${product.title} — Maxx Global Resources`}
+  description={product.shortDescription || `${product.brand?.name ?? ''} ${product.title} — commercial equipment imported and serviced by Maxx Global Resources across the Philippines.`}
+  active="Catalog"
+>
+  <div class="breadcrumb">
+    <a href="/">Home</a>
+    <span>/</span>
+    <a href="/catalog">Catalog</a>
+    {parentCategory && (<><span>/</span><a href={`/catalog/${parentCategory.slug.current}`}>{parentCategory.title}</a></>)}
+    {product.primaryCategory && (<><span>/</span><a href={categoryHref}>{product.primaryCategory.title}</a></>)}
+    <span>/</span>
+    <span class="current">{product.title}</span>
+  </div>
+
+  <div class="product-layout">
+    <!-- ── GALLERY ── -->
+    <div class="gallery">
+      <div class="gallery-main" id="gallery-main">
+        {imageUrls[0] ? (
+          <img src={imageUrls[0]} alt={images[0]?.alt ?? product.title} id="gallery-main-img">
+        ) : (
+          <span class="img-ph">[ {product.title} photo ]</span>
+        )}
+      </div>
+      {imageUrls.length > 1 && (
+        <div class="gallery-thumbs">
+          {imageUrls.map((url: string, i: number) => (
+            <button class={`gallery-thumb${i === 0 ? ' active' : ''}`} data-src={url} data-alt={images[i]?.alt ?? product.title}>
+              <img src={url} alt="">
+            </button>
+          ))}
+        </div>
+      )}
+      <div class="gallery-note">
+        <span class="gallery-note-bar"></span>
+        Photography shown may be manufacturer-supplied — confirm exact finish with our team.
+      </div>
+    </div>
+
+    <!-- ── INFO ── -->
+    <div class="info">
+      <div class="info-eyebrow">
+        {product.brand && <a href={`/brands/${product.brand.slug.current}`}>{product.brand.name}</a>}
+        {product.brand && product.primaryCategory && ' · '}
+        {product.primaryCategory?.title}
+      </div>
+      <h1 class="info-title">{product.title}</h1>
+
+      {product.modelCode && (
+        <div class="model-row">
+          <span class="model-chip">{product.modelCode}</span>
+          <span class="model-hint">Model code — quote this when you contact us</span>
+        </div>
+      )}
+
+      <div class="avail-row">
+        <AvailabilityBadge availability={product.availability} />
+        <div class="avail-note">
+          {product.availability === 'available' ? availableNote : (product.leadTimeNote || 'Ordered from the principal on request — ask us for a current lead time.')}
+        </div>
+      </div>
+
+      {descriptionHtml ? (
+        <div class="prose" set:html={descriptionHtml} />
+      ) : product.shortDescription ? (
+        <p class="prose-fallback">{product.shortDescription}</p>
+      ) : null}
+
+      {product.keyFeatures?.length > 0 && (
+        <div class="features">
+          <div class="features-label">Key features</div>
+          <div class="features-list">
+            {product.keyFeatures.map((f: string) => (
+              <div class="feature-row">
+                <span class="feature-dot"></span>
+                <span>{f}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div class="spec-card">
+        <div>
+          <div class="spec-card-title">Full specifications</div>
+          <div class="spec-card-sub">Manufacturer datasheet — dimensions, motor, deck, power output, warranty.</div>
+        </div>
+        {product.specSheet?.url ? (
+          <a href={product.specSheet.url} download target="_blank" rel="noopener noreferrer" class="spec-btn">
+            Download Spec Sheet
+            {specSheetSizeLabel && <span class="spec-btn-size">PDF · {specSheetSizeLabel}</span>}
+          </a>
+        ) : (
+          <a href={`/contact?request=spec-sheet&product=${product.slug.current}`} class="spec-btn spec-btn-request">
+            Request Spec Sheet
+          </a>
+        )}
+      </div>
+
+      <div class="cta-row">
+        <a href={`/contact?product=${product.slug.current}`} class="btn-primary cta-flex">Request a Quote</a>
+        <a href={`https://wa.me/639178333202?text=${waMessage}`} target="_blank" rel="noopener noreferrer" class="btn-secondary cta-flex">Message us on WhatsApp</a>
+      </div>
+      <div class="reply-note">We typically reply within one business day.</div>
+
+      <div class="facts-strip">
+        <div class="fact-cell">
+          <div class="fact-label">Suited to</div>
+          <div class="fact-value">{segmentNames.length > 0 ? segmentNames.join(' · ') : '—'}</div>
+        </div>
+        <div class="fact-cell">
+          <div class="fact-label">Origin</div>
+          <div class="fact-value">{originLabel || '—'}</div>
+        </div>
+        <div class="fact-cell">
+          <div class="fact-label">Installation</div>
+          <div class="fact-value">Included, Metro Manila</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {product.relatedProducts?.length > 0 && (
+    <section class="related">
+      <h2 class="related-title">You may also like</h2>
+      <div class="related-grid">
+        {product.relatedProducts.map((p: any) => <ProductCard product={p} />)}
+      </div>
+    </section>
+  )}
+</Layout>
+
+<style>
+  .breadcrumb {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    padding: 28px clamp(20px,5vw,48px) 0;
+    font-size: 12px;
+    color: #5a5a56;
+  }
+  .breadcrumb a { color: #5a5a56; }
+  .breadcrumb a:hover { color: #fff; }
+  .breadcrumb .current { color: #c9c9c6; }
+
+  .product-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
+    gap: 56px;
+    padding: 32px clamp(20px,5vw,48px) 88px;
+    align-items: start;
+  }
+
+  /* ── GALLERY ── */
+  .gallery { display: flex; flex-direction: column; gap: 12px; position: sticky; top: 104px; }
+  .gallery-main {
+    position: relative; aspect-ratio: 4/3;
+    border: 1px solid #1e1e1e; border-radius: 6px;
+    background: repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);
+    display: flex; align-items: center; justify-content: center;
+    color: #4a4a48; font: 11px ui-monospace,monospace; text-align: center; padding: 24px;
+    overflow: hidden;
+  }
+  .gallery-main img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .gallery-thumbs { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px,1fr)); gap: 12px; }
+  .gallery-thumb {
+    aspect-ratio: 1; border: 1px solid #1e1e1e; border-radius: 4px;
+    background: #101010; padding: 0; cursor: pointer; overflow: hidden; transition: border-color .15s;
+  }
+  .gallery-thumb img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .gallery-thumb.active { border-color: #d92632; }
+  .gallery-note { display: flex; align-items: center; gap: 10px; margin-top: 6px; font-size: 12px; color: #5a5a56; }
+  .gallery-note-bar { width: 16px; height: 2px; background: #d92632; flex: none; }
+  .img-ph { color: #4a4a48; font: 11px ui-monospace, monospace; }
+
+  /* ── INFO ── */
+  .info-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #5b8def; margin-bottom: 12px; }
+  .info-eyebrow a { color: #5b8def; }
+  .info-title { margin: 0 0 10px; font-size: clamp(27px,5.2vw,44px); font-weight: 300; letter-spacing: -.01em; line-height: 1.1; color: #fff; }
+
+  .model-row { display: flex; align-items: center; gap: 14px; margin-bottom: 26px; flex-wrap: wrap; }
+  .model-chip { font: 600 14px ui-monospace,monospace; color: #c9c9c6; background: #161616; border: 1px solid #242422; padding: 6px 12px; border-radius: 4px; }
+  .model-hint { font-size: 13px; color: #8a8a86; }
+
+  .avail-row { display: flex; align-items: center; gap: 16px; padding: 16px 20px; border: 1px solid #1e1e1e; border-radius: 6px; margin-bottom: 28px; }
+  .avail-note { font-size: 13px; color: #9a9a96; }
+
+  .prose :global(p) { margin: 0 0 18px; font-size: 16px; line-height: 1.7; color: #b8b8b4; }
+  .prose :global(p:last-child) { margin-bottom: 32px; }
+  .prose-fallback { margin: 0 0 32px; font-size: 16px; line-height: 1.7; color: #b8b8b4; }
+
+  .features { margin-bottom: 32px; }
+  .features-label { font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: #8a8a86; margin-bottom: 16px; }
+  .features-list { display: flex; flex-direction: column; gap: 12px; }
+  .feature-row { display: flex; gap: 14px; align-items: flex-start; }
+  .feature-dot { width: 6px; height: 6px; border-radius: 50%; background: #d92632; flex: none; margin-top: 8px; }
+  .feature-row span:last-child { font-size: 15px; line-height: 1.55; color: #e2e2de; }
+
+  .spec-card {
+    border: 1px solid #242422; border-radius: 6px; background: #0d0d0d;
+    padding: 26px 28px; margin-bottom: 20px;
+    display: flex; justify-content: space-between; align-items: center; gap: 32px; flex-wrap: wrap;
+  }
+  .spec-card-title { font-size: 17px; font-weight: 600; margin-bottom: 5px; color: #f2f2f0; }
+  .spec-card-sub { font-size: 13px; color: #8a8a86; line-height: 1.5; }
+  .spec-btn {
+    display: flex; align-items: center; gap: 12px; background: #2f6fe0; color: #fff;
+    border-radius: 4px; padding: 15px 26px; font: 600 14px Manrope,sans-serif;
+    white-space: nowrap; flex: none; transition: background .15s;
+  }
+  .spec-btn:hover { background: #4381ea; color: #fff; }
+  .spec-btn-size { font: 500 12px ui-monospace,monospace; color: rgba(255,255,255,.75); }
+  .spec-btn-request { background: #d92632; }
+  .spec-btn-request:hover { background: #e63e49; }
+
+  .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta-flex { flex: 1 1 200px; }
+  .reply-note { font-size: 13px; color: #8a8a86; margin-top: 14px; text-align: center; }
+
+  .facts-strip {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px,1fr));
+    gap: 1px; background: #1e1e1e; border: 1px solid #1e1e1e; border-radius: 6px;
+    overflow: hidden; margin-top: 40px;
+  }
+  .fact-cell { background: #0d0d0d; padding: 20px; }
+  .fact-label { font: 500 11px ui-monospace,monospace; color: #6a6a66; margin-bottom: 6px; letter-spacing: .04em; }
+  .fact-value { font-size: 14px; font-weight: 600; color: #f2f2f0; }
+
+  /* ── RELATED ── */
+  .related { padding: 0 clamp(20px,5vw,48px) 100px; }
+  .related-title { margin: 0 0 28px; font-size: clamp(23px,4vw,34px); font-weight: 300; color: #fff; }
+  .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px,1fr)); gap: 16px; }
+</style>
+
+<script>
+  const mainImg = document.getElementById('gallery-main-img') as HTMLImageElement | null
+  document.querySelectorAll<HTMLButtonElement>('.gallery-thumb').forEach(thumb => {
+    thumb.addEventListener('click', () => {
+      if (!mainImg) return
+      mainImg.src = thumb.dataset.src ?? mainImg.src
+      mainImg.alt = thumb.dataset.alt ?? mainImg.alt
+      document.querySelectorAll('.gallery-thumb').forEach(t => t.classList.remove('active'))
+      thumb.classList.add('active')
+    })
+  })
+</script>

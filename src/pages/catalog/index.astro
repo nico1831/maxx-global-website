@@ -4,11 +4,18 @@ import ProductCard from '../../components/ProductCard.astro'
 import { client } from '../../lib/sanity'
 import { catalogProductsQuery, categoryTreeQuery, allBrandsQuery } from '../../lib/queries'
 
-const [products, categories, brands] = await Promise.all([
+const [products, categoriesRaw, brands] = await Promise.all([
   client.fetch(catalogProductsQuery),
   client.fetch(categoryTreeQuery),
   client.fetch(allBrandsQuery),
 ])
+
+// Flooring and playground are separate product lines — keep them below the core equipment categories
+const TRAILING_CATS = new Set(['flooring', 'playground'])
+const categories = [...categoriesRaw].sort((a: any, b: any) => {
+  const rank = (cat: any) => (TRAILING_CATS.has(cat.slug.current) ? 1 : 0)
+  return rank(a) - rank(b)
+})
 
 // Per design.md §5: only Available and Indent Order shown in availability filter
 const AVAIL_FILTER = [
@@ -46,29 +53,49 @@ const AVAIL_FILTER = [
 
       <!-- Category -->
       <div class="filter-group">
-        <div class="filter-group-label">Category</div>
-        <div class="filter-rows" id="cat-rows">
+        <button class="filter-group-header" data-group-toggle="category" aria-expanded="true">
+          <span class="filter-group-label">Category</span>
+          <svg class="group-arrow" width="14" height="14" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M1.5 3L5 6.5L8.5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="filter-rows" id="cat-rows" data-group-panel="category">
           {categories.map((cat: any) => (
             <div class="cat-item" data-cat-key={cat.slug.current}>
-              <button
-                class="filter-row"
-                data-filter="cat"
-                data-value={cat.slug.current}
-                aria-pressed="false"
-              >
-                <span>{cat.title}</span>
-                <span class="filter-count">{cat.children?.length ? `${cat.children.length} sub` : ''}</span>
-              </button>
+              <div class="cat-row-wrap">
+                <button
+                  class="filter-row check-row cat-main"
+                  data-filter="cat"
+                  data-value={cat.slug.current}
+                  aria-pressed="false"
+                >
+                  <span class="check-box" aria-hidden="true"></span>
+                  <span>{cat.title}</span>
+                </button>
+                {cat.children?.length > 0 && (
+                  <button
+                    class="cat-toggle"
+                    data-toggle={cat.slug.current}
+                    aria-expanded="false"
+                    aria-label={`Toggle ${cat.title} subcategories`}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+                      <path d="M1.5 3L5 6.5L8.5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </button>
+                )}
+              </div>
               {cat.children?.length > 0 && (
                 <div class="sub-rows" id={`sub-${cat.slug.current}`} hidden>
                   {cat.children.map((sub: any) => (
                     <button
-                      class="filter-row sub"
+                      class="filter-row sub check-row"
                       data-filter="sub"
                       data-value={sub.slug.current}
                       data-parent={cat.slug.current}
                       aria-pressed="false"
                     >
+                      <span class="check-box" aria-hidden="true"></span>
                       <span>{sub.title}</span>
                     </button>
                   ))}
@@ -81,8 +108,13 @@ const AVAIL_FILTER = [
 
       <!-- Brand -->
       <div class="filter-group">
-        <div class="filter-group-label">Brand</div>
-        <div class="filter-rows">
+        <button class="filter-group-header" data-group-toggle="brand" aria-expanded="true">
+          <span class="filter-group-label">Brand</span>
+          <svg class="group-arrow" width="14" height="14" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M1.5 3L5 6.5L8.5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="filter-rows" data-group-panel="brand">
           {brands.map((b: any) => (
             <button
               class="filter-row check-row"
@@ -99,8 +131,13 @@ const AVAIL_FILTER = [
 
       <!-- Availability -->
       <div class="filter-group">
-        <div class="filter-group-label">Availability</div>
-        <div class="filter-rows">
+        <button class="filter-group-header" data-group-toggle="availability" aria-expanded="true">
+          <span class="filter-group-label">Availability</span>
+          <svg class="group-arrow" width="14" height="14" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M1.5 3L5 6.5L8.5 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+        <div class="filter-rows" data-group-panel="availability">
           {AVAIL_FILTER.map(a => (
             <button
               class="filter-row check-row"
@@ -247,15 +284,36 @@ const AVAIL_FILTER = [
     transition: color .15s;
   }
   .clear-btn.has-active { color: #d92632; }
+  .filter-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    background: transparent;
+    border: none;
+    padding: 0 0 14px;
+    margin: 0;
+    cursor: pointer;
+    color: inherit;
+  }
   .filter-group-label {
     font-size: 12px;
     font-weight: 700;
     letter-spacing: .1em;
     text-transform: uppercase;
     color: #8a8a86;
-    margin-bottom: 14px;
   }
+  .filter-group-header:hover .filter-group-label { color: #fff; }
+  .filter-group-header .group-arrow {
+    flex: none;
+    color: #6a6a66;
+    transition: transform .15s, color .15s;
+    transform: rotate(-90deg);
+  }
+  .filter-group-header:hover .group-arrow { color: #fff; }
+  .filter-group-header[aria-expanded="true"] .group-arrow { transform: rotate(0deg); }
   .filter-rows { display: flex; flex-direction: column; gap: 2px; }
+  .filter-rows[hidden] { display: none; }
 
   .filter-row {
     display: flex;
@@ -304,7 +362,26 @@ const AVAIL_FILTER = [
     border-color: #d92632;
   }
   .filter-row[aria-pressed="true"] .check-box::after { content: '✓'; }
-  .filter-count { font: 500 11px ui-monospace, monospace; color: #5a5a56; }
+
+  .cat-row-wrap { display: flex; align-items: center; gap: 2px; }
+  .cat-row-wrap .cat-main { flex: 1 1 auto; }
+  .cat-toggle {
+    flex: none;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    color: #6a6a66;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+  }
+  .cat-toggle:hover { background: #111; color: #fff; }
+  .cat-toggle svg { transition: transform .15s; transform: rotate(-90deg); }
+  .cat-toggle[aria-expanded="true"] svg { transform: rotate(0deg); }
   .sub-rows {
     display: flex;
     flex-direction: column;
@@ -313,6 +390,7 @@ const AVAIL_FILTER = [
     border-left: 1px solid #242422;
     margin-left: 8px;
   }
+  .sub-rows[hidden] { display: none; }
 
   /* ── MAIN AREA ── */
   .catalog-main {
@@ -356,6 +434,8 @@ const AVAIL_FILTER = [
     brands: new Set<string>(),
     avails: new Set<string>(),
   }
+  const expanded = new Set<string>()
+  const groupExpanded = new Set<string>(['category', 'brand', 'availability'])
 
   function applyFilters() {
     const wrappers = document.querySelectorAll<HTMLElement>('.product-wrapper')
@@ -392,7 +472,10 @@ const AVAIL_FILTER = [
   function updateSubRows() {
     document.querySelectorAll<HTMLElement>('.sub-rows').forEach(el => {
       const parentCat = el.id.replace('sub-', '')
-      el.hidden = state.cat !== parentCat
+      el.hidden = !expanded.has(parentCat)
+    })
+    document.querySelectorAll<HTMLButtonElement>('.cat-toggle').forEach(btn => {
+      btn.setAttribute('aria-expanded', String(expanded.has(btn.dataset.toggle!)))
     })
   }
 
@@ -458,6 +541,7 @@ const AVAIL_FILTER = [
       if (filter === 'cat') {
         state.cat = state.cat === value ? null : value
         state.sub = null
+        if (state.cat) expanded.add(state.cat)
       } else if (filter === 'sub') {
         state.sub = state.sub === value ? null : value
       } else if (filter === 'brand') {
@@ -470,11 +554,47 @@ const AVAIL_FILTER = [
     })
   })
 
+  // Wire up category expand/collapse arrows
+  document.querySelectorAll<HTMLButtonElement>('.cat-toggle').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation()
+      const key = btn.dataset.toggle!
+      expanded.has(key) ? expanded.delete(key) : expanded.add(key)
+      updateSubRows()
+    })
+  })
+
+  // Wire up filter-group collapse/expand headers
+  function updateGroupPanels() {
+    document.querySelectorAll<HTMLButtonElement>('[data-group-toggle]').forEach(header => {
+      const key = header.dataset.groupToggle!
+      const isOpen = groupExpanded.has(key)
+      header.setAttribute('aria-expanded', String(isOpen))
+      const panel = document.querySelector<HTMLElement>(`[data-group-panel="${key}"]`)
+      if (panel) panel.hidden = !isOpen
+    })
+  }
+  document.querySelectorAll<HTMLButtonElement>('[data-group-toggle]').forEach(header => {
+    header.addEventListener('click', () => {
+      const key = header.dataset.groupToggle!
+      groupExpanded.has(key) ? groupExpanded.delete(key) : groupExpanded.add(key)
+      updateGroupPanels()
+    })
+  })
+  updateGroupPanels()
+
   // Clear all
   document.getElementById('clear-all')?.addEventListener('click', () => {
     state.cat = null; state.sub = null; state.brands.clear(); state.avails.clear()
     applyFilters()
   })
+
+  // Pre-select filters passed in via the URL (e.g. /catalog?brand=sportsart)
+  const urlParams = new URLSearchParams(window.location.search)
+  const brandParam = urlParams.get('brand')
+  if (brandParam) state.brands.add(brandParam)
+  const catParam = urlParams.get('category')
+  if (catParam) { state.cat = catParam; expanded.add(catParam) }
 
   // Initial render
   applyFilters()
