@@ -24,13 +24,6 @@ const imageUrls = images.map((img: any) =>
   img.asset ? urlFor(img).width(900).fit('max').url() : null
 )
 
-const parentCategory = product.primaryCategory?.parent
-const categoryHref = product.primaryCategory
-  ? parentCategory
-    ? `/catalog/${parentCategory.slug.current}/${product.primaryCategory.slug.current}`
-    : `/catalog/${product.primaryCategory.slug.current}`
-  : '/catalog'
-
 const descriptionHtml = product.description?.length ? toHTML(product.description) : null
 
 const specSheetSizeLabel = product.specSheet?.size
@@ -58,16 +51,6 @@ const availableNote = 'In showroom and local stock — viewable at our Banawe sh
   description={product.shortDescription || `${product.brand?.name ?? ''} ${product.title} — commercial equipment imported and serviced by Maxx Global Resources across the Philippines.`}
   active="Catalog"
 >
-  <div class="breadcrumb">
-    <a href="/">Home</a>
-    <span>/</span>
-    <a href="/catalog">Catalog</a>
-    {parentCategory && (<><span>/</span><a href={`/catalog/${parentCategory.slug.current}`}>{parentCategory.title}</a></>)}
-    {product.primaryCategory && (<><span>/</span><a href={categoryHref}>{product.primaryCategory.title}</a></>)}
-    <span>/</span>
-    <span class="current">{product.title}</span>
-  </div>
-
   <div class="product-layout">
     <!-- ── GALLERY ── -->
     <div class="gallery">
@@ -187,19 +170,6 @@ const availableNote = 'In showroom and local stock — viewable at our Banawe sh
 </Layout>
 
 <style>
-  .breadcrumb {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    align-items: center;
-    padding: 28px clamp(20px,5vw,48px) 0;
-    font-size: 12px;
-    color: #5a5a56;
-  }
-  .breadcrumb a { color: #5a5a56; }
-  .breadcrumb a:hover { color: #fff; }
-  .breadcrumb .current { color: #c9c9c6; }
-
   .product-layout {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px,1fr));
@@ -213,7 +183,7 @@ const availableNote = 'In showroom and local stock — viewable at our Banawe sh
   .gallery-main {
     position: relative; aspect-ratio: 4/3;
     border: 1px solid #1e1e1e; border-radius: 6px;
-    background: repeating-linear-gradient(45deg,#101010 0 16px,#161616 16px 32px);
+    background: #101010;
     display: flex; align-items: center; justify-content: center;
     color: #4a4a48; font: 11px ui-monospace,monospace; text-align: center; padding: 24px;
     overflow: hidden;

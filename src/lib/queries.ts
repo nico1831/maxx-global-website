@@ -31,6 +31,10 @@ export const categoryTreeQuery = /* groq */ `
   }
 `
 
+export const allCategorySlugsQuery = /* groq */ `
+  *[_type == "category"]{ "slug": slug.current }
+`
+
 export const allBrandsQuery = /* groq */ `
   *[_type == "brand"] | order(coalesce(displayOrder, 9999) asc, name asc) {
     _id,
@@ -147,6 +151,7 @@ export const categoryWithProductsQuery = /* groq */ `
       modelCode,
       availability,
       "brand": brand->{ _id, name, slug },
+      "primaryCategory": primaryCategory->{ _id, title, slug, "parent": parent->{ _id, title, slug } },
       "image": images[0]{ asset, alt },
       shortDescription
     }

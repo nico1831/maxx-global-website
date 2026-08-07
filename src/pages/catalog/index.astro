@@ -12,10 +12,21 @@ const [products, categoriesRaw, brands] = await Promise.all([
 
 // Flooring and playground are separate product lines — keep them below the core equipment categories
 const TRAILING_CATS = new Set(['flooring', 'playground'])
-const categories = [...categoriesRaw].sort((a: any, b: any) => {
-  const rank = (cat: any) => (TRAILING_CATS.has(cat.slug.current) ? 1 : 0)
-  return rank(a) - rank(b)
-})
+const categories = [...categoriesRaw]
+  .sort((a: any, b: any) => {
+    const rank = (cat: any) => (TRAILING_CATS.has(cat.slug.current) ? 1 : 0)
+    return rank(a) - rank(b)
+  })
+  .map((cat: any) => ({
+    ...cat,
+    // "Other X" catch-all subcategories always sort last within their category
+    children: cat.children?.length
+      ? [...cat.children].sort((a: any, b: any) => {
+          const rank = (sub: any) => (/^other\b/i.test(sub.title) ? 1 : 0)
+          return rank(a) - rank(b)
+        })
+      : cat.children,
+  }))
 
 // Per design.md §5: only Available and Indent Order shown in availability filter
 const AVAIL_FILTER = [
@@ -182,6 +193,23 @@ const AVAIL_FILTER = [
         <p class="no-results-body">Clear a filter, or tell us what you're looking for — we source outside the published range regularly.</p>
         <a href="/contact" class="btn-primary">Ask our sales team</a>
       </div>
+
+      <!-- Pagination -->
+      <nav class="pagination" id="pagination" aria-label="Catalog pages" hidden>
+        <button class="page-btn page-prev" id="page-prev" aria-label="Previous page">
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M6.5 1.5L3 5L6.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span>Prev</span>
+        </button>
+        <div class="page-numbers" id="page-numbers"></div>
+        <button class="page-btn page-next" id="page-next" aria-label="Next page">
+          <span>Next</span>
+          <svg width="14" height="14" viewBox="0 0 10 10" fill="none" aria-hidden="true">
+            <path d="M3.5 1.5L7 5L3.5 8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </nav>
     </div>
   </div>
 </Layout>
@@ -424,6 +452,16 @@ const AVAIL_FILTER = [
   }
   .no-results-title { font-size: 22px; font-weight: 300; margin-bottom: 10px; color: #fff; }
   .no-results-body { margin: 0 0 24px; font-size: 15px; color: #9a9a96; }
+
+  /* ── PAGINATION ── */
+  .pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 56px;
+  }
+  .pagination[hidden] { display: none; }
 </style>
 
 <script>
@@ -437,11 +475,13 @@ const AVAIL_FILTER = [
   const expanded = new Set<string>()
   const groupExpanded = new Set<string>(['category', 'brand', 'availability'])
 
-  function applyFilters() {
-    const wrappers = document.querySelectorAll<HTMLElement>('.product-wrapper')
-    let shown = 0
+  const PAGE_SIZE = 24
+  let page = 1
 
-    wrappers.forEach(el => {
+  function applyFilters() {
+    const wrappers = Array.from(document.querySelectorAll<HTMLElement>('.product-wrapper'))
+
+    const matches = wrappers.filter(el => {
       const brand = el.dataset.brand ?? ''
       const cat   = el.dataset.cat ?? ''
       const sub   = el.dataset.sub ?? ''
@@ -452,21 +492,79 @@ const AVAIL_FILTER = [
       const subOk   = !state.sub || sub === state.sub
       const availOk = state.avails.size === 0 || state.avails.has(avail)
 
-      const visible = brandOk && catOk && subOk && availOk
-      el.style.display = visible ? '' : 'none'
-      if (visible) shown++
+      return brandOk && catOk && subOk && availOk
     })
 
+    const totalPages = Math.max(1, Math.ceil(matches.length / PAGE_SIZE))
+    page = Math.min(Math.max(page, 1), totalPages)
+    const start = (page - 1) * PAGE_SIZE
+    const pageItems = new Set(matches.slice(start, start + PAGE_SIZE))
+
+    wrappers.forEach(el => { el.style.display = pageItems.has(el) ? '' : 'none' })
+
     const countEl = document.getElementById('result-count')
-    if (countEl) countEl.textContent = String(shown)
+    if (countEl) countEl.textContent = String(matches.length)
 
     const noResults = document.getElementById('no-results')!
-    noResults.hidden = shown > 0
+    noResults.hidden = matches.length > 0
 
     updateChips()
     updateClearBtn()
     updateButtonStates()
     updateSubRows()
+    renderPagination(totalPages)
+  }
+
+  function renderPagination(totalPages: number) {
+    const nav = document.getElementById('pagination')!
+    const numbers = document.getElementById('page-numbers')!
+    const prevBtn = document.getElementById('page-prev') as HTMLButtonElement
+    const nextBtn = document.getElementById('page-next') as HTMLButtonElement
+
+    nav.hidden = totalPages <= 1
+    if (totalPages <= 1) {
+      numbers.innerHTML = ''
+      prevBtn.disabled = true
+      nextBtn.disabled = true
+      return
+    }
+
+    prevBtn.disabled = page === 1
+    nextBtn.disabled = page === totalPages
+
+    // Build a compact list of page numbers with ellipsis, e.g. 1 … 4 5 6 … 12
+    const pages: (number | '…')[] = []
+    const addPage = (n: number) => pages.push(n)
+    const addEllipsis = () => { if (pages[pages.length - 1] !== '…') pages.push('…') }
+
+    for (let n = 1; n <= totalPages; n++) {
+      if (n === 1 || n === totalPages || Math.abs(n - page) <= 1) {
+        addPage(n)
+      } else {
+        addEllipsis()
+      }
+    }
+
+    numbers.innerHTML = ''
+    pages.forEach(p => {
+      if (p === '…') {
+        const span = document.createElement('span')
+        span.className = 'page-ellipsis'
+        span.textContent = '…'
+        numbers.appendChild(span)
+      } else {
+        const btn = document.createElement('button')
+        btn.className = `page-num${p === page ? ' active' : ''}`
+        btn.textContent = String(p)
+        btn.setAttribute('aria-current', p === page ? 'true' : 'false')
+        btn.addEventListener('click', () => { page = p; applyFilters(); scrollToGrid() })
+        numbers.appendChild(btn)
+      }
+    })
+  }
+
+  function scrollToGrid() {
+    document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   function updateSubRows() {
@@ -506,11 +604,11 @@ const AVAIL_FILTER = [
 
     if (state.cat) {
       const btn = document.querySelector<HTMLElement>(`[data-filter="cat"][data-value="${state.cat}"]`)
-      chips.push({ label: btn?.querySelector('span')?.textContent ?? state.cat, clear: () => { state.cat = null; state.sub = null } })
+      chips.push({ label: btn?.querySelector('span:last-child')?.textContent ?? state.cat, clear: () => { state.cat = null; state.sub = null } })
     }
     if (state.sub) {
       const btn = document.querySelector<HTMLElement>(`[data-filter="sub"][data-value="${state.sub}"]`)
-      chips.push({ label: btn?.querySelector('span')?.textContent ?? state.sub, clear: () => { state.sub = null } })
+      chips.push({ label: btn?.querySelector('span:last-child')?.textContent ?? state.sub, clear: () => { state.sub = null } })
     }
     state.brands.forEach(v => {
       const btn = document.querySelector<HTMLElement>(`[data-filter="brand"][data-value="${v}"]`)
@@ -527,7 +625,7 @@ const AVAIL_FILTER = [
       const chip = document.createElement('button')
       chip.className = 'chip'
       chip.innerHTML = `${c.label} <span aria-hidden="true">✕</span>`
-      chip.addEventListener('click', () => { c.clear(); applyFilters() })
+      chip.addEventListener('click', () => { c.clear(); page = 1; applyFilters() })
       chipsRow.appendChild(chip)
     })
   }
@@ -550,9 +648,14 @@ const AVAIL_FILTER = [
         state.avails.has(value) ? state.avails.delete(value) : state.avails.add(value)
       }
 
+      page = 1
       applyFilters()
     })
   })
+
+  // Wire up pagination prev/next
+  document.getElementById('page-prev')?.addEventListener('click', () => { page--; applyFilters(); scrollToGrid() })
+  document.getElementById('page-next')?.addEventListener('click', () => { page++; applyFilters(); scrollToGrid() })
 
   // Wire up category expand/collapse arrows
   document.querySelectorAll<HTMLButtonElement>('.cat-toggle').forEach(btn => {
@@ -586,6 +689,7 @@ const AVAIL_FILTER = [
   // Clear all
   document.getElementById('clear-all')?.addEventListener('click', () => {
     state.cat = null; state.sub = null; state.brands.clear(); state.avails.clear()
+    page = 1
     applyFilters()
   })
 
@@ -616,4 +720,52 @@ const AVAIL_FILTER = [
   }
   .chip span { color: #e6949a; }
   .chip:hover { background: #4a1a1e; }
+
+  /* ── PAGINATION (buttons are built in JS, so this must be global) ── */
+  .page-btn {
+    -webkit-appearance: none;
+    appearance: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: none;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font: 700 14px Manrope, sans-serif;
+    letter-spacing: .02em;
+    color: #c9c9c6;
+    padding: 0;
+    transition: color .15s, transform .15s;
+  }
+  .page-btn svg { transition: transform .15s; }
+  .page-btn:hover:not(:disabled) { color: #ff4d58; }
+  .page-prev:hover:not(:disabled) svg { transform: translateX(-2px); }
+  .page-next:hover:not(:disabled) svg { transform: translateX(2px); }
+  .page-btn:disabled { color: #3a3a38; cursor: default; pointer-events: none; }
+
+  .page-numbers { display: flex; align-items: center; gap: 16px; }
+  .page-num {
+    -webkit-appearance: none;
+    appearance: none;
+    background: none;
+    border: none;
+    outline: none;
+    padding: 0;
+    cursor: pointer;
+    font: 700 15px ui-monospace, monospace;
+    color: #9a9a96;
+    transition: color .15s, transform .15s;
+  }
+  .page-num:hover { color: #ff4d58; transform: scale(1.12); }
+  .page-num.active {
+    color: #ff3b47;
+    font-weight: 800;
+    font-size: 17px;
+    text-shadow: 0 0 14px rgba(255,59,71,.55);
+  }
+  .page-ellipsis {
+    color: #6a6a66;
+    font: 700 15px ui-monospace, monospace;
+  }
 </style>

@@ -2,13 +2,13 @@
 import Layout from '../../layouts/Layout.astro'
 import ProductCard from '../../components/ProductCard.astro'
 import { client } from '../../lib/sanity'
-import { categoryTreeQuery, categoryWithProductsQuery } from '../../lib/queries'
+import { allCategorySlugsQuery, categoryWithProductsQuery } from '../../lib/queries'
 
 export async function getStaticPaths() {
-  const categories = await client.fetch(categoryTreeQuery)
+  const categories = await client.fetch(allCategorySlugsQuery)
   return categories.map((cat: any) => ({
-    params: { category: cat.slug.current },
-    props: { categorySlug: cat.slug.current },
+    params: { category: cat.slug },
+    props: { categorySlug: cat.slug },
   }))
 }
 
@@ -30,6 +30,7 @@ const hasSubs = cat.children?.length > 0
       <a href="/">Home</a>
       <span>/</span>
       <a href="/catalog">Catalog</a>
+      {cat.parent && (<><span>/</span><a href={`/catalog/${cat.parent.slug.current}`}>{cat.parent.title}</a></>)}
       <span>/</span>
       <span>{cat.title}</span>
     </div>
@@ -45,7 +46,7 @@ const hasSubs = cat.children?.length > 0
     <div class="sub-chips">
       <a href={`/catalog/${categorySlug}`} class="sub-chip active">All</a>
       {cat.children.map((sub: any) => (
-        <a href={`/catalog/${categorySlug}/${sub.slug.current}`} class="sub-chip">
+        <a href={`/catalog/${sub.slug.current}`} class="sub-chip">
           {sub.title}
           {sub.productCount > 0 && <span class="sub-count">{sub.productCount}</span>}
         </a>
