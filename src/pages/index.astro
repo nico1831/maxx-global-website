@@ -5,7 +5,7 @@ import Layout from '../layouts/Layout.astro'
 <Layout title="Maxx Global Resources — Commercial Fitness Equipment Philippines">
   <!-- ════════════════════ HERO ════════════════════ -->
   <section class="hero" aria-label="Hero">
-    <div class="hero-bg">[ hero photo — commercial gym floor, low light, equipment silhouettes ]</div>
+    <div class="hero-bg" role="img" aria-label="Runner training on a SportsArt commercial treadmill in a gym"></div>
     <div class="hero-scrim"></div>
     <div class="hero-content">
       <div class="hero-text">
@@ -33,16 +33,9 @@ import Layout from '../layouts/Layout.astro'
   <!-- ════════════════════ MAP ════════════════════ -->
   <section class="map-section" aria-labelledby="map-title-el">
     <div class="map-header">
-      <div class="map-eyebrow" id="map-eyebrow-el">Supplier provenance</div>
+      <div class="map-eyebrow">Supplier provenance</div>
       <h2 class="map-title" id="map-title-el">From the world to your floor</h2>
-      <p class="map-sub" id="map-sub-el">Principal relationships with manufacturers across four continents — imported directly, supported locally from Manila.</p>
-    </div>
-
-    <div class="map-toggle">
-      <div class="map-segmented">
-        <button class="map-btn world-active" id="btn-world">Global suppliers</button>
-        <button class="map-btn" id="btn-ph">Our clients in the Philippines</button>
-      </div>
+      <p class="map-sub">Principal relationships with manufacturers across four continents — imported directly, supported locally from Manila.</p>
     </div>
 
     <div class="map-layout">
@@ -62,13 +55,6 @@ import Layout from '../layouts/Layout.astro'
               <div class="manila-dot"></div>
               <div class="manila-lbl">Manila — HQ &amp; Showroom</div>
             </div>
-          </div>
-
-          <!-- PH view -->
-          <div id="ph-view" style="display:none">
-            <div class="map-placeholder">[ Philippines outline SVG — single flat tone #1a1a1a ]</div>
-            <div id="ph-pins"></div>
-            <div class="ph-legend" id="ph-legend"></div>
           </div>
         </div><!-- /.map-canvas -->
       </div><!-- /.map-canvas-scroll -->
@@ -131,13 +117,13 @@ import Layout from '../layouts/Layout.astro'
   .hero { position: relative; min-height: clamp(520px,82vh,680px); display: flex; align-items: flex-end; }
   .hero-bg {
     position: absolute; inset: 0;
-    background: #101010;
-    display: flex; align-items: flex-start; justify-content: flex-end;
-    padding: 20px; color: #4a4a48; font: 11px ui-monospace, monospace;
+    background: #101010 url('/images/hero.png') center 18% / cover no-repeat;
   }
   .hero-scrim {
     position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(10,10,10,.25) 0%, rgba(10,10,10,.05) 45%, rgba(10,10,10,.92) 100%);
+    background:
+      linear-gradient(180deg, rgba(10,10,10,.55) 0%, rgba(10,10,10,.25) 40%, rgba(10,10,10,.96) 100%),
+      linear-gradient(90deg, rgba(10,10,10,.75) 0%, rgba(10,10,10,.25) 55%, rgba(10,10,10,0) 100%);
   }
   .hero-content {
     position: relative; width: 100%;
@@ -195,15 +181,6 @@ import Layout from '../layouts/Layout.astro'
   .map-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .18em; text-transform: uppercase; color: #5b8def; margin-bottom: 14px; }
   .map-title { margin: 0 0 14px; font-size: clamp(24px,4.4vw,38px); font-weight: 300; color: #fff; }
   .map-sub { margin: 0; font-size: 16px; line-height: 1.6; color: #9a9a96; }
-  .map-toggle { display: flex; justify-content: center; margin-bottom: 24px; }
-  .map-segmented { display: flex; background: #111; border: 1px solid #242422; border-radius: 100px; padding: 5px; gap: 5px; }
-  .map-btn {
-    border: none; border-radius: 100px; padding: 11px 24px;
-    font: 600 13px Manrope, sans-serif; cursor: pointer; transition: all .2s;
-    background: transparent; color: #8a8a86;
-  }
-  .map-btn.world-active { background: #2f6fe0; color: #fff; }
-  .map-btn.ph-active   { background: #d92632; color: #fff; }
   .map-canvas {
     position: relative;
     aspect-ratio: 7001 / 4001;
@@ -214,10 +191,6 @@ import Layout from '../layouts/Layout.astro'
     position: absolute; inset: 0; pointer-events: none;
     background-image: linear-gradient(#141414 1px,transparent 1px), linear-gradient(90deg,#141414 1px,transparent 1px);
     background-size: 62px 62px;
-  }
-  .map-placeholder {
-    position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%);
-    color: #3a3a38; font: 11px ui-monospace, monospace; pointer-events: none; text-align: center;
   }
   @property --zoom { syntax: '<number>'; inherits: true; initial-value: 1; }
   #world-view {
@@ -258,14 +231,6 @@ import Layout from '../layouts/Layout.astro'
   .manila-pin.dim .manila-lbl { display: none; }
   .manila-dot { width: 6px; height: 6px; border-radius: 50%; background: #2f6fe0; box-shadow: 0 0 18px 6px rgba(47,111,224,.55); }
   .manila-lbl { font-size: 11px; font-weight: 600; color: #fff; white-space: nowrap; background: #2f6fe0; padding: 3px 8px; border-radius: 3px; }
-  .ph-legend {
-    position: absolute; left: 24px; bottom: 20px; z-index: 4;
-    display: flex; gap: 18px; flex-wrap: wrap; align-items: center;
-    background: rgba(10,10,10,.8); border: 1px solid #1e1e1e; border-radius: 6px; padding: 12px 18px;
-  }
-  .leg-item { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: #9a9a96; }
-  .leg-dot { width: 9px; height: 9px; border-radius: 50%; flex: none; }
-  .leg-hint { display: flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 600; color: #f0a63c; border-left: 1px solid #2a2a28; padding-left: 18px; }
   .chip-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
   .chip {
     border: 1px solid #242422; border-radius: 4px; padding: 8px 8px;
@@ -281,7 +246,6 @@ import Layout from '../layouts/Layout.astro'
   .chip:hover { border-color: #5a5a5a; color: #c9c9c6; }
   .chip.brand-on { border-color: #2f6fe0; color: #fff; background: #12203f; }
   .chip.brand-on img { opacity: 1; }
-  .chip.client-on { border-color: #d92632; color: #fff; background: #3a1216; }
 
   /* ── MAP LOGO SIDEBAR ── */
   .map-layout {
@@ -458,15 +422,6 @@ import Layout from '../layouts/Layout.astro'
   }
 
   // ── DATA ─────────────────────────────────────────────────────────────────
-  const SEG: Record<string, { name: string; color: string }> = {
-    hotel:  { name: 'Hotels & Resorts',   color: '#e64550' },
-    condo:  { name: 'Condominiums',       color: '#f0a63c' },
-    corp:   { name: 'Corporate',          color: '#5b8def' },
-    school: { name: 'Schools',            color: '#a78bfa' },
-    lgu:    { name: 'Government / LGU',   color: '#4ade80' },
-    gym:    { name: 'Commercial Gyms',    color: '#e8e8e6' },
-  }
-
   const CATS = [
     { key: 'cardio',     name: 'Cardio',        sub: 'Treadmills · Ellipticals · Bikes · Rowers',    img: 'cardio row photo',         href: '/catalog/cardio' },
     { key: 'strength',   name: 'Strength',      sub: 'Plate loaded · Selectorized · Racks',          img: 'strength floor photo',     href: '/catalog/strength' },
@@ -498,20 +453,6 @@ import Layout from '../layouts/Layout.astro'
     ['Wallenried, CH — Inotec HQ',     '49%',   '43%',   'r', ['inotec']],
   ]
 
-  // [label, left, top, side, segment, clientKey, hasPhotos]
-  const PH_PINS: [string, string, string, string, string, string, boolean][] = [
-    ['SM North EDSA, QC — Corporate gym', '46%', '25%', 'r', 'corp',   'sm',        true],
-    ['Shangri-La Plaza, Ortigas — Hotel', '50%', '31%', 'r', 'hotel',  'shangrila', true],
-    ['Ayala Tower, Makati — Office',      '42%', '34%', 'l', 'corp',   'ayala',     false],
-    ['Megaworld BGC — Condo amenity',     '48%', '39%', 'r', 'condo',  'megaworld', true],
-    ['Anvaya Cove, Bataan — Resort gym',  '37%', '27%', 'l', 'hotel',  'ayala',     true],
-    ['State university, Baguio',          '41%', '14%', 'r', 'school', 'lgu',       false],
-    ['Robinsons, Iloilo — Mall gym',      '43%', '58%', 'l', 'gym',    'robinsons', false],
-    ['SM Seaside, Cebu',                  '56%', '55%', 'r', 'gym',    'sm',        true],
-    ['LGU playground, Cagayan de Oro',    '58%', '70%', 'r', 'lgu',    'lgu',       true],
-    ['SM Lanang, Davao — Hotel gym',      '62%', '80%', 'r', 'hotel',  'sm',        false],
-  ]
-
   const BRAND_CHIPS: [string, string, string][] = [
     ['SportsArt',      'sportsart',   '/images/brands/sportsart.png'],
     ['Force USA',      'forceusa',    '/images/brands/forceusa.png'],
@@ -530,10 +471,6 @@ import Layout from '../layouts/Layout.astro'
     ['Spirit Fitness', 'spirit',      '/images/brands/spirit.png'],
     ['Aeon Fitness',   'aeon',        '/images/brands/aeon.png'],
   ]
-  const CLIENT_CHIPS: [string, string][] = [
-    ['SM Supermalls', 'sm'], ['Ayala Land', 'ayala'], ['Shangri-La', 'shangrila'],
-    ['Megaworld', 'megaworld'], ['Robinsons Land', 'robinsons'], ["Gov't & LGU", 'lgu'],
-  ]
 
   const FEATURED = [
     { title: 'G690 Verde Treadmill', model: 'G690',    brand: 'SportsArt', avail: 'available' },
@@ -547,9 +484,7 @@ import Layout from '../layouts/Layout.astro'
   }
 
   // ── STATE ────────────────────────────────────────────────────────────────
-  let mapMode: 'world' | 'ph' = 'world'
   let selBrand: string | null = null
-  let selClient: string | null = null
 
   // ── HELPERS ──────────────────────────────────────────────────────────────
   function pinTF(side: string) {
@@ -630,49 +565,10 @@ import Layout from '../layouts/Layout.astro'
     })
   }
 
-  // ── PH PINS ──────────────────────────────────────────────────────────────
-  function buildPHPins() {
-    const container = document.getElementById('ph-pins')!
-    container.innerHTML = ''
-    PH_PINS.forEach(([label, left, top, side, seg, client, photos]) => {
-      const isHi  = selClient === client
-      const isDim = !!selClient && !isHi
-      const color  = SEG[seg].color
-      const sz     = isHi ? 14 : 10
-      const glowSz = isHi ? '18px 6px' : '12px 3px'
-      const glow   = color + (isHi ? '99' : '59')
-
-      const dot = document.createElement('div')
-      dot.className = 'pin-dot'
-      dot.style.cssText = `width:${sz}px;height:${sz}px;background:${color};box-shadow:0 0 ${glowSz} ${glow}`
-
-      const lbl = document.createElement('div')
-      lbl.className = 'pin-lbl'
-      lbl.textContent = photos ? label + '  ↗' : label
-      if (isHi) { lbl.style.color = '#0a0a0a'; lbl.style.background = '#fff' }
-
-      const pin = document.createElement('a')
-      pin.className = 'pin' + (isDim ? ' dim' : '') + (isHi ? ' hi' : '')
-      pin.style.cssText = `left:${left};top:${top};transform:${pinTF(side)};flex-direction:${pinDir(side)}`
-      pin.href  = photos ? '/projects/detail' : '/projects'
-      pin.title = photos ? 'Open installation photos' : 'No published photos for this site'
-      pin.append(dot, lbl)
-      container.appendChild(pin)
-    })
-
-    const leg = document.getElementById('ph-legend')!
-    leg.innerHTML =
-      Object.values(SEG).map(s =>
-        `<div class="leg-item"><span class="leg-dot" style="background:${s.color}"></span>${s.name}</div>`
-      ).join('') +
-      `<div class="leg-hint">↗&nbsp; click pin for installation photos</div>`
-  }
-
   // ── LOGO SIDEBAR (world view, wide screens) ─────────────────────────────
   function buildSidebarLogos() {
     const sidebar = document.getElementById('map-logo-sidebar')!
     sidebar.innerHTML = ''
-    if (mapMode !== 'world') { sidebar.classList.remove('visible'); return }
     sidebar.classList.add('visible')
     BRAND_CHIPS.forEach(([name, key, logo]) => {
       const isOn = selBrand === key
@@ -690,54 +586,25 @@ import Layout from '../layouts/Layout.astro'
   function buildChips() {
     const row = document.getElementById('chip-row')!
     row.innerHTML = ''
-    if (mapMode === 'world') row.classList.add('logo-mode')
-    else row.classList.remove('logo-mode')
-    const chips = mapMode === 'world' ? BRAND_CHIPS : CLIENT_CHIPS
-    chips.forEach(([name, key, logo]) => {
-      const isOn = mapMode === 'world' ? selBrand === key : selClient === key
+    row.classList.add('logo-mode')
+    BRAND_CHIPS.forEach(([name, key, logo]) => {
+      const isOn = selBrand === key
       const btn  = document.createElement('button')
-      btn.className = 'chip' + (isOn ? (mapMode === 'world' ? ' brand-on' : ' client-on') : '')
-      if (logo) {
-        const img = document.createElement('img')
-        img.src = logo; img.alt = name
-        btn.appendChild(img)
-      } else {
-        btn.textContent = name
-      }
-      btn.addEventListener('click', () => {
-        if (mapMode === 'world') selBrand  = isOn ? null : key
-        else                     selClient = isOn ? null : key
-        renderMap()
-      })
+      btn.className = 'chip' + (isOn ? ' brand-on' : '')
+      const img = document.createElement('img')
+      img.src = logo; img.alt = name
+      btn.appendChild(img)
+      btn.addEventListener('click', () => { selBrand = isOn ? null : key; renderMap() })
       row.appendChild(btn)
     })
   }
 
   // ── RENDER ───────────────────────────────────────────────────────────────
   function renderMap() {
-    const isWorld = mapMode === 'world'
-
-    ;(document.getElementById('world-view') as HTMLElement).style.display = isWorld ? '' : 'none'
-    ;(document.getElementById('ph-view') as HTMLElement).style.display    = isWorld ? 'none' : ''
-
-    document.getElementById('btn-world')!.className = 'map-btn' + (isWorld ? ' world-active' : '')
-    document.getElementById('btn-ph')!.className    = 'map-btn' + (!isWorld ? ' ph-active' : '')
-
-    document.getElementById('map-eyebrow-el')!.textContent = isWorld ? 'Supplier provenance' : 'Installations'
-    document.getElementById('map-title-el')!.textContent   = isWorld ? 'From the world to your floor' : 'Delivered across the Philippines'
-    document.getElementById('map-sub-el')!.textContent     = isWorld
-      ? 'Principal relationships with manufacturers across four continents — imported directly, supported locally from Manila.'
-      : 'Hotels, condos, schools, LGUs and commercial gyms — 250+ installations from Baguio to Davao.'
-
-    if (isWorld) buildWorldPins(); else buildPHPins()
+    buildWorldPins()
     buildSidebarLogos()
     buildChips()
     syncSidebarHeight()
-  }
-
-  function showMap(mode: 'world' | 'ph') {
-    mapMode = mode; selBrand = null; selClient = null
-    renderMap()
   }
 
   // ── SIDEBAR HEIGHT SYNC (cap logo list to the map's rendered height) ──────
@@ -789,9 +656,6 @@ import Layout from '../layouts/Layout.astro'
   }
 
   // ── MAP TOGGLE BUTTONS ───────────────────────────────────────────────────
-  document.getElementById('btn-world')!.addEventListener('click', () => showMap('world'))
-  document.getElementById('btn-ph')!.addEventListener('click', () => showMap('ph'))
-
   // ── INIT ─────────────────────────────────────────────────────────────────
   buildTicker()
   renderMap()
