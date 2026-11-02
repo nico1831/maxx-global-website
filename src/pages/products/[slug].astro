@@ -217,6 +217,24 @@ const availableNote = 'In showroom and local stock — viewable at our Banawe sh
   .gallery-note-bar { width: 16px; height: 2px; background: #d92632; flex: none; }
   .img-ph { color: #4a4a48; font: 11px ui-monospace, monospace; }
 
+  /* Single column: the gallery sits above the text, so it can't stay sticky or the
+     text scrolls underneath it */
+  @media (max-width: 767px) {
+    .product-layout { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-bottom: 56px; }
+    .gallery { position: static; min-width: 0; }
+    /* One swipeable row, so a long photo set doesn't push the title off the screen */
+    .gallery-thumbs {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 68px;
+      gap: 8px;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .gallery-thumbs::-webkit-scrollbar { display: none; }
+  }
+
   /* ── INFO ── */
   .info-eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #5b8def; margin-bottom: 12px; }
   .info-eyebrow a { color: #5b8def; }
@@ -256,6 +274,12 @@ const availableNote = 'In showroom and local stock — viewable at our Banawe sh
   .spec-btn-size { font: 500 12px ui-monospace,monospace; color: rgba(255,255,255,.75); }
   .spec-btn-request { background: #d92632; }
   .spec-btn-request:hover { background: #e63e49; }
+  @media (max-width: 767px) {
+    /* Full width and allowed to wrap: "Download Spec Sheet" plus the file size is
+       wider than the card on the narrowest phones */
+    .spec-card { padding: 20px; gap: 20px; }
+    .spec-btn { flex: 1 1 100%; flex-wrap: wrap; justify-content: center; gap: 4px 12px; padding: 15px 16px; white-space: normal; text-align: center; }
+  }
 
   .cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
   .cta-flex { flex: 1 1 200px; }
@@ -294,6 +318,17 @@ const availableNote = 'In showroom and local stock — viewable at our Banawe sh
     mainImg.alt = thumb.dataset.alt ?? mainImg.alt
     thumbs.forEach(t => t.classList.remove('active'))
     thumb.classList.add('active')
+
+    // On small screens the thumbs are a scrolling row; keep the active one in view
+    const strip = thumb.parentElement
+    if (strip) {
+      const stripRect = strip.getBoundingClientRect()
+      const thumbRect = thumb.getBoundingClientRect()
+      strip.scrollBy({
+        left: thumbRect.left - stripRect.left - (stripRect.width - thumbRect.width) / 2,
+        behavior: 'smooth',
+      })
+    }
   }
 
   function showByOffset(offset: number) {
