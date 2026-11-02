@@ -434,6 +434,7 @@ const AVAIL_FILTER = [
     align-items: center;
     margin-bottom: 24px;
   }
+  .active-chips[hidden] { display: none; }
   .chips-label { font-size: 12px; color: #8a8a86; margin-right: 4px; }
   .chips-row { display: flex; gap: 8px; flex-wrap: wrap; }
 
@@ -462,6 +463,28 @@ const AVAIL_FILTER = [
     margin-top: 56px;
   }
   .pagination[hidden] { display: none; }
+
+  /* ── SINGLE COLUMN (keep in sync with narrowLayout in the script below) ──
+     Filters sit above the grid here, so the sidebar can't stay sticky: it would
+     pin to the viewport and the products would scroll underneath it. */
+  @media (max-width: 767px) {
+    .catalog-body { display: block; }
+    .filter-sidebar {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      gap: 16px;
+      padding: 20px clamp(20px,5vw,48px);
+      border-right: none;
+      border-bottom: 1px solid #1e1e1e;
+    }
+    .catalog-main { padding-top: 24px; }
+    /* min() keeps a card from overflowing the gutter on the narrowest phones */
+    .product-grid { grid-template-columns: repeat(auto-fill, minmax(min(190px, 100%), 1fr)); gap: 10px; }
+  }
+  @media (max-width: 420px) {
+    .product-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+  }
 </style>
 
 <script>
@@ -473,7 +496,11 @@ const AVAIL_FILTER = [
     avails: new Set<string>(),
   }
   const expanded = new Set<string>()
-  const groupExpanded = new Set<string>(['category', 'brand', 'availability'])
+  // Filter groups start collapsed in the single-column layout so products aren't
+  // pushed a full screen down the page
+  const narrowLayout = window.matchMedia('(max-width: 767px)')
+  const FILTER_GROUPS = ['category', 'brand', 'availability']
+  const groupExpanded = new Set<string>(narrowLayout.matches ? [] : FILTER_GROUPS)
 
   const PAGE_SIZE = 24
   let page = 1
@@ -683,6 +710,11 @@ const AVAIL_FILTER = [
       groupExpanded.has(key) ? groupExpanded.delete(key) : groupExpanded.add(key)
       updateGroupPanels()
     })
+  })
+  narrowLayout.addEventListener('change', (e) => {
+    groupExpanded.clear()
+    if (!e.matches) FILTER_GROUPS.forEach(key => groupExpanded.add(key))
+    updateGroupPanels()
   })
   updateGroupPanels()
 

@@ -110,4 +110,55 @@ const imageUrl = product.image?.asset
     color: #c9c9c6;
     white-space: nowrap;
   }
+
+  /* Two per row, like the homepage category cards, with the photo and the text
+     as separate panels. The fixed photo height keeps the divider level across a
+     row, and height: 100% lets shorter cards match their row's tallest.
+     Grids holding this card need the same 767px / 420px breakpoints. */
+  @media (max-width: 767px) {
+    .product-card {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: none;
+      border-radius: 4px;
+      background: #141414;
+    }
+    .product-img {
+      flex: none;
+      height: 170px;
+      padding: 36px 10px 8px;
+      background: #fff;
+    }
+    .product-info {
+      flex: 1 1 auto;
+      min-width: 0;
+      padding: 12px 14px;
+      border-top: 1px solid #2a2a28;
+    }
+    .product-brand {
+      font-size: 9.5px;
+      letter-spacing: .06em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .product-title { font-size: 14px; margin: 3px 0 2px; }
+    .product-model {
+      font: 500 11px Manrope, sans-serif;
+      color: #9a9a96;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .product-footer { position: absolute; top: 8px; left: 8px; margin: 0; background: #0a0a0a; }
+    .product-cta { display: none; }
+  }
+  @media (max-width: 420px) {
+    .product-img { height: 150px; padding: 34px 8px 6px; }
+    .product-info { padding: 10px 12px; }
+    .product-title { font-size: 13px; }
+    .product-model { font-size: 10px; }
+  }
 </style>
