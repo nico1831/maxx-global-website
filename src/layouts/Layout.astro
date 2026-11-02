@@ -13,6 +13,11 @@ const { title, description = 'Full commercial ranges from SportsArt, Force USA, 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{title}</title>
   <meta name="description" content={description}>
+  <!-- Navy disappears on dark browser tabs, so dark themes get a white-lettered version.
+       Light stays last for browsers that ignore media here; /favicon.ico is picked up by default. -->
+  <link rel="icon" type="image/png" href="/favicon-dark.png" media="(prefers-color-scheme: dark)">
+  <link rel="icon" type="image/png" href="/favicon-light.png" media="(prefers-color-scheme: light)">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
