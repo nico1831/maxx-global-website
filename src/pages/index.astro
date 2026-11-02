@@ -219,6 +219,11 @@ import Layout from '../layouts/Layout.astro'
     position: absolute; left: 50%; top: 46%; transform: translate(-50%,-50%);
     color: #3a3a38; font: 11px ui-monospace, monospace; pointer-events: none; text-align: center;
   }
+  @property --zoom { syntax: '<number>'; inherits: true; initial-value: 1; }
+  #world-view {
+    position: absolute; inset: 0; transform-origin: 0 0;
+    transition: transform .6s ease, --zoom .6s ease;
+  }
   .world-map-wrap { position: absolute; inset: 0; pointer-events: none; }
   .world-map-base {
     position: absolute; inset: 0; width: 100%; height: 100%;
@@ -245,9 +250,12 @@ import Layout from '../layouts/Layout.astro'
   }
   .pin.hi .pin-lbl { color: #0a0a0a; background: #fff; }
   .manila-pin {
-    position: absolute; left: 76.25%; top: 60%; transform: translate(-5px,-50%);
+    position: absolute; left: 76.25%; top: 60%;
+    transform: translate(-5px,-50%) scale(calc(1 / var(--zoom))); transform-origin: 5px 50%;
     display: flex; flex-direction: row; align-items: center; gap: 7px; z-index: 3; pointer-events: none;
   }
+  .manila-pin.dim { opacity: .3; }
+  .manila-pin.dim .manila-lbl { display: none; }
   .manila-dot { width: 6px; height: 6px; border-radius: 50%; background: #2f6fe0; box-shadow: 0 0 18px 6px rgba(47,111,224,.55); }
   .manila-lbl { font-size: 11px; font-weight: 600; color: #fff; white-space: nowrap; background: #2f6fe0; padding: 3px 8px; border-radius: 3px; }
   .ph-legend {
@@ -552,11 +560,49 @@ import Layout from '../layouts/Layout.astro'
   function pinDir(side: string) {
     return side === 'l' ? 'row-reverse' : side === 'b' ? 'column' : 'row'
   }
+  // The point of the pin that sits on its map coordinate, so counter-scaling keeps it in place
+  function pinOrigin(side: string) {
+    if (side === 'l') return 'calc(100% - 5px) 50%'
+    if (side === 'b') return '50% 5px'
+    return '5px 50%'
+  }
+
+  // ── WORLD ZOOM ───────────────────────────────────────────────────────────
+  const MAX_ZOOM = 3.5
+  const ZOOM_FILL = 60 // % of the canvas the selected pins should span
+
+  function applyWorldZoom() {
+    const view = document.getElementById('world-view')!
+    const pins = WORLD_PINS.filter(([, , , , keys]) => !!selBrand && keys.includes(selBrand))
+    let zoom = 1, tx = 0, ty = 0
+
+    if (pins.length) {
+      const xs = pins.map(([, left]) => parseFloat(left))
+      const ys = pins.map(([, , top]) => parseFloat(top))
+      const [minX, maxX] = [Math.min(...xs), Math.max(...xs)]
+      const [minY, maxY] = [Math.min(...ys), Math.max(...ys)]
+
+      zoom = Math.max(1, Math.min(MAX_ZOOM, ZOOM_FILL / (maxX - minX || 1), ZOOM_FILL / (maxY - minY || 1)))
+      // Center the pins, but never pull the map's edge inside the canvas
+      const minOffset = 100 - 100 * zoom
+      tx = Math.min(0, Math.max(minOffset, 50 - ((minX + maxX) / 2) * zoom))
+      ty = Math.min(0, Math.max(minOffset, 50 - ((minY + maxY) / 2) * zoom))
+
+      // On narrow screens the canvas scrolls sideways, so bring the zoomed area into view
+      const scroller = document.querySelector('.map-canvas-scroll') as HTMLElement
+      scroller.scrollTo({ left: (scroller.scrollWidth - scroller.clientWidth) / 2, behavior: 'smooth' })
+    }
+
+    view.style.transform = `translate(${tx}%,${ty}%) scale(${zoom})`
+    view.style.setProperty('--zoom', String(zoom))
+  }
 
   // ── WORLD PINS ───────────────────────────────────────────────────────────
   function buildWorldPins() {
     const container = document.getElementById('world-pins')!
     container.innerHTML = ''
+    document.querySelector('.manila-pin')!.classList.toggle('dim', !!selBrand)
+    applyWorldZoom()
     WORLD_PINS.forEach(([label, left, top, side, keys]) => {
       const isHi  = !!selBrand && keys.includes(selBrand)
       const isDim = !!selBrand && !isHi
@@ -577,7 +623,7 @@ import Layout from '../layouts/Layout.astro'
 
       const pin = document.createElement('div')
       pin.className = 'pin' + (isDim ? ' dim' : '') + (isHi ? ' hi' : '')
-      pin.style.cssText = `left:${left};top:${top};transform:${pinTF(side)};flex-direction:${pinDir(side)}`
+      pin.style.cssText = `left:${left};top:${top};transform:${pinTF(side)} scale(calc(1 / var(--zoom)));transform-origin:${pinOrigin(side)};flex-direction:${pinDir(side)}`
       pin.append(dot, lbl)
       pin.addEventListener('click', () => { selBrand = isHi ? null : keys[0]; renderMap() })
       container.appendChild(pin)
