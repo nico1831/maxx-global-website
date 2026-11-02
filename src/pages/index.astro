@@ -393,7 +393,17 @@ const categories = [...(categoryDocs ?? [])]
   @media (max-width: 767px) {
     .map-canvas { min-width: 500px; }
     .chip-row { display: flex; }
-    .pin-lbl, .manila-lbl { display: none; }
+    /* The dots are far too small for a finger, so each carries an invisible tap area */
+    .pin { width: max-content; }
+    .pin::before { content: ''; position: absolute; inset: -14px; }
+    /* The longest labels are wider than half this canvas and would hit its edge */
+    .pin-lbl { width: max-content; max-width: 130px; white-space: normal; line-height: 1.3; }
+    /* On this narrower canvas Manila's label would run off the right edge */
+    .manila-pin {
+      flex-direction: row-reverse;
+      transform: translate(calc(-100% + 5px),-50%) scale(calc(1 / var(--zoom)));
+      transform-origin: calc(100% - 5px) 50%;
+    }
   }
 
   /* ── CATEGORY GRID ── */
@@ -586,14 +596,27 @@ const categories = [...(categoryDocs ?? [])]
       const minOffset = 100 - 100 * zoom
       tx = Math.min(0, Math.max(minOffset, 50 - ((minX + maxX) / 2) * zoom))
       ty = Math.min(0, Math.max(minOffset, 50 - ((minY + maxY) / 2) * zoom))
-
-      // On narrow screens the canvas scrolls sideways, so bring the zoomed area into view
-      const scroller = document.querySelector('.map-canvas-scroll') as HTMLElement
-      scroller.scrollTo({ left: (scroller.scrollWidth - scroller.clientWidth) / 2, behavior: 'smooth' })
     }
 
     view.style.transform = `translate(${tx}%,${ty}%) scale(${zoom})`
     view.style.setProperty('--zoom', String(zoom))
+    return { zoom, tx }
+  }
+
+  // On narrow screens the canvas scrolls sideways, so bring the selected pins and their
+  // labels into view. Worked out from the zoom target, as the pins are still animating.
+  function scrollToSelectedPins(zoom: number, tx: number) {
+    const scroller = document.querySelector('.map-canvas-scroll') as HTMLElement
+    const canvasWidth = scroller.scrollWidth
+    const edges = WORLD_PINS.flatMap((p, i) => {
+      if (p.key !== selBrand) return []
+      const lbl = document.querySelectorAll<HTMLElement>('#world-pins .pin-lbl')[i]
+      const x = ((p.left * zoom + tx) / 100) * canvasWidth
+      return p.side === 'l' ? [x - lbl.offsetWidth - 7, x] : [x, x + lbl.offsetWidth + 7]
+    })
+    if (!edges.length) return
+    const center = (Math.min(...edges) + Math.max(...edges)) / 2
+    scroller.scrollTo({ left: center - scroller.clientWidth / 2, behavior: 'smooth' })
   }
 
   // ── WORLD PINS ───────────────────────────────────────────────────────────
@@ -601,7 +624,7 @@ const categories = [...(categoryDocs ?? [])]
     const container = document.getElementById('world-pins')!
     container.innerHTML = ''
     document.querySelector('.manila-pin')?.classList.toggle('dim', !!selBrand)
-    applyWorldZoom()
+    const { zoom, tx } = applyWorldZoom()
     WORLD_PINS.forEach(({ label, left, top, side, key }) => {
       const isHi  = key === selBrand
       const isDim = !!selBrand && !isHi
@@ -627,6 +650,7 @@ const categories = [...(categoryDocs ?? [])]
       pin.addEventListener('click', () => { selBrand = isHi ? null : key; renderMap() })
       container.appendChild(pin)
     })
+    scrollToSelectedPins(zoom, tx)
   }
 
   // ── LOGO SIDEBAR (world view, wide screens) ─────────────────────────────
