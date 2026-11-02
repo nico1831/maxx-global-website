@@ -132,12 +132,12 @@ export default defineType({
     defineField({
       name: 'contactFormRecipient',
       type: 'string',
-      initialValue: 'info@maxxglobalresources.com',
+      initialValue: 'maxxglobal@gmail.com',
     }),
     defineField({
       name: 'serviceEmail',
       type: 'string',
-      initialValue: 'service@maxxglobalresources.com',
+      initialValue: 'maxxglobal@gmail.com',
     }),
     defineField({
       name: 'socialLinks',

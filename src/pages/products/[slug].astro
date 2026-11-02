@@ -30,10 +30,6 @@ const specSheetSizeLabel = product.specSheet?.size
   ? `${(product.specSheet.size / (1024 * 1024)).toFixed(1)} MB`
   : null
 
-const waMessage = encodeURIComponent(
-  `Hi MAXX, I'm enquiring about the ${product.brand?.name ?? ''} ${product.title}${product.modelCode ? ` (${product.modelCode})` : ''}.`
-)
-
 const segmentNames = (product.segments ?? []).map((s: any) => s.title)
 
 const originParts = [product.brand?.originCity, product.brand?.originCountry].filter(Boolean)
@@ -148,7 +144,6 @@ const availableNote = 'In showroom and local stock — viewable at our Banawe sh
 
       <div class="cta-row">
         <a href={`/contact?product=${product.slug.current}`} class="btn-primary cta-flex">Request a Quote</a>
-        <a href={`https://wa.me/639178333202?text=${waMessage}`} target="_blank" rel="noopener noreferrer" class="btn-secondary cta-flex">Message us on WhatsApp</a>
       </div>
       <div class="reply-note">We typically reply within one business day.</div>
 

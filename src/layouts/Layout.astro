@@ -27,8 +27,8 @@ const { title, description = 'Full commercial ranges from SportsArt, Force USA, 
         <nav class="header-nav" aria-label="Primary navigation">
           <a href="/catalog" class:list={{ active: active === 'Catalog' }}>Catalog</a>
           <a href="/brands" class:list={{ active: active === 'Brands' }}>Brands</a>
-          <a href="/solutions" class:list={{ active: active === 'Solutions' }}>Solutions</a>
-          <a href="/projects" class:list={{ active: active === 'Projects' }}>Projects</a>
+          <!-- TODO: Solutions hidden for now; restore <a href="/solutions"> here when the page exists -->
+          <!-- TODO(F4): Projects hidden until install photos + client permissions land -->
           <a href="/about" class:list={{ active: active === 'About' }}>About</a>
           <a href="/contact" class:list={{ active: active === 'Contact' }}>Contact</a>
         </nav>
@@ -42,8 +42,8 @@ const { title, description = 'Full commercial ranges from SportsArt, Force USA, 
         <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
           <a href="/catalog">Catalog</a>
           <a href="/brands">Brands</a>
-          <a href="/solutions">Solutions</a>
-          <a href="/projects">Projects</a>
+          <!-- TODO: Solutions hidden for now; restore <a href="/solutions"> here when the page exists -->
+          <!-- TODO(F4): Projects hidden until install photos + client permissions land -->
           <a href="/about">About</a>
           <a href="/contact">Contact</a>
         </nav>
@@ -80,23 +80,20 @@ const { title, description = 'Full commercial ranges from SportsArt, Force USA, 
         <span class="footer-col-title">Contact</span>
         <div class="footer-links">
           <a href="/contact">Request a Quote</a>
-          <a href="mailto:info@maxxglobalresources.com">info@maxxglobalresources.com</a>
-          <a href="mailto:service@maxxglobalresources.com">service@maxxglobalresources.com</a>
+          <a href="mailto:maxxglobal@gmail.com">maxxglobal@gmail.com</a>
+          <a href="sms:+639178333202">0917 833 3202</a>
+          <span class="footer-contact-note">SMS, Viber or WhatsApp</span>
         </div>
       </div>
       <div>
         <span class="footer-col-title">Showroom</span>
         <p class="footer-address">Unit 202B, RBL Building<br>549 Banawe St, Lourdes<br>Santa Mesa Heights, QC 1114</p>
-        <a href="https://maps.google.com/?q=14.6305045,121.0025512" target="_blank" rel="noopener" class="footer-map-link">Open in Maps →</a>
+        <a href="https://www.google.com/maps/place/Maxx+Home+Fitness/@14.6305809,120.9999855,732m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3397b79ef52c3231:0xcb10cd14ca321073!8m2!3d14.6305809!4d121.0025604!16s%2Fg%2F11ry5_gfyc?entry=ttu&g_ep=EgoyMDI2MTAyOC4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="footer-map-link">Open in Maps →</a>
         <p class="footer-hours">Mon–Sat · 9 AM – 6 PM</p>
       </div>
     </div>
     <div class="footer-bottom">
       <span>© {new Date().getFullYear()} Maxx Global Resources Corporation</span>
-      <div class="footer-social">
-        <a href="#" aria-label="Facebook">Facebook</a>
-        <a href="#" aria-label="Instagram">Instagram</a>
-      </div>
     </div>
   </footer>
 </body>
@@ -121,6 +118,14 @@ const { title, description = 'Full commercial ranges from SportsArt, Force USA, 
     backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
     box-shadow: 0 12px 40px rgba(0,0,0,.5);
     position: relative;
+    transition: background .25s ease, border-color .25s ease, box-shadow .25s ease, backdrop-filter .25s ease;
+  }
+  .header-capsule:hover {
+    background: rgba(255,255,255,.58);
+    border-color: rgba(255,255,255,.65);
+    backdrop-filter: blur(22px) saturate(180%);
+    -webkit-backdrop-filter: blur(22px) saturate(180%);
+    box-shadow: 0 12px 40px rgba(0,0,0,.28), inset 0 1px 0 rgba(255,255,255,.6);
   }
   .header-logo {
     display: flex; align-items: center; flex: none;
@@ -134,6 +139,9 @@ const { title, description = 'Full commercial ranges from SportsArt, Force USA, 
     white-space: nowrap; color: #a8a8a4; transition: color .15s;
   }
   .header-nav a:hover, .header-nav a.active { color: #fff; }
+  .header-capsule:hover .header-nav a { color: #3f3f3c; }
+  .header-capsule:hover .header-nav a:hover,
+  .header-capsule:hover .header-nav a.active { color: #121212; }
   .header-cta {
     background: #d92632; color: #fff; border-radius: 100px;
     padding: 12px 24px; font: 600 13.5px Manrope, sans-serif;
@@ -190,6 +198,7 @@ const { title, description = 'Full commercial ranges from SportsArt, Force USA, 
   .footer-links { display: flex; flex-direction: column; gap: 9px; }
   .footer-links a { font-size: 13px; color: #8a8a86; text-decoration: none; transition: color .15s; }
   .footer-links a:hover { color: #fff; }
+  .footer-contact-note { font-size: 13px; color: #8a8a86; margin-top: -6px; }
   .footer-address { font-size: 13px; line-height: 1.7; color: #8a8a86; }
   .footer-map-link { font-size: 13px; color: #5b8def; font-weight: 600; text-decoration: none; margin-top: 4px; display: inline-block; transition: color .15s; }
   .footer-map-link:hover { color: #82a9f2; }
@@ -199,9 +208,6 @@ const { title, description = 'Full commercial ranges from SportsArt, Force USA, 
     margin-top: 48px; padding-top: 24px; border-top: 1px solid #161616;
     font-size: 12px; color: #5a5a56;
   }
-  .footer-social { display: flex; gap: 18px; }
-  .footer-social a { color: #5a5a56; text-decoration: none; transition: color .15s; }
-  .footer-social a:hover { color: #fff; }
 
   /* ── SHARED UTILITIES ── */
   .btn-primary {

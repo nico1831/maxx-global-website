@@ -45,7 +45,7 @@ function projectDisplayName(p: any) {
     {heroUrl ? (
       <img src={heroUrl} class="brand-hero-img" alt="" />
     ) : (
-      <div class="brand-hero-ph">[ {brand.name} brand banner ]</div>
+      <div class="brand-hero-ph"></div>
     )}
     <div class="brand-hero-scrim"></div>
     <div class="brand-hero-content">
@@ -149,8 +149,9 @@ function projectDisplayName(p: any) {
   </section>
 
   <!-- ════════════════════ PROJECTS ════════════════════ -->
-  {brand.projects?.length > 0 && (
-    <section class="section section-last">
+  <!-- TODO(F4): gated off until install photos + client permissions land -->
+  {false && brand.projects?.length > 0 && (
+    <section class="section">
       <h2 class="section-title" style="margin-bottom:28px">Where we've installed it</h2>
       <div class="project-grid">
         {brand.projects.map((p: any) => {
@@ -188,11 +189,7 @@ function projectDisplayName(p: any) {
     width: 100%; height: 100%;
     object-fit: cover;
   }
-  .brand-hero-ph {
-    background: #101010;
-    display: flex; align-items: flex-start; justify-content: flex-end;
-    padding: 20px; color: #4a4a48; font: 11px ui-monospace, monospace;
-  }
+  .brand-hero-ph { background: #101010; }
   .brand-hero-scrim {
     position: absolute; inset: 0;
     background: linear-gradient(90deg, rgba(10,10,10,.96) 0%, rgba(10,10,10,.62) 58%, rgba(10,10,10,.28) 100%);
@@ -253,7 +250,7 @@ function projectDisplayName(p: any) {
 
   /* ── PRODUCTS / SHARED SECTION ── */
   .section { padding: 88px clamp(20px,5vw,48px) 0; }
-  .section-last { padding-bottom: 100px; }
+  .section:last-child { padding-bottom: 100px; }
   .section-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 28px; gap: 16px; flex-wrap: wrap; }
   .section-title { margin: 0; font-size: clamp(23px,4vw,34px); font-weight: 300; color: #fff; }
   .view-all { font-size: 14px; font-weight: 600; color: #5b8def; white-space: nowrap; transition: color .15s; }

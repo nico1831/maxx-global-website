@@ -48,7 +48,7 @@ Three deliberately distinct channels. Different buyers have different habits, an
 
 **Behaviour**
 - Form on `/contact`, plus a compact version on every product detail page
-- Submits through Netlify Forms; notification routes to **info@maxxglobalresources.com**
+- Submits through Netlify Forms; notification routes to **maxxglobal@gmail.com**
 - User never leaves the site and never opens a mail client
 
 **Fields**
@@ -71,7 +71,7 @@ Three deliberately distinct channels. Different buyers have different habits, an
 - Success state renders in place with a clear "we typically reply within one business day" expectation
 - Netlify's built-in honeypot plus `data-netlify-recaptcha` if spam becomes an issue
 
-**Routing note:** `info@maxxglobalresources.com` is the general enquiry inbox; `service@maxxglobalresources.com` handles support and maintenance. Consider a second, separate form on the future service/maintenance page routing to `service@` — mixing new-business enquiries with existing-client support tickets in one inbox is how leads get buried. Both addresses live in `siteSettings` so routing can change without a code edit.
+**Routing note:** `maxxglobal@gmail.com` is the single inbox for general enquiries, support and maintenance. If volume grows, consider a separate form on the future service/maintenance page — mixing new-business enquiries with existing-client support tickets in one inbox is how leads get buried. `siteSettings` keeps separate fields for both purposes, so a split needs no schema change.
 
 ### F1.2 — WhatsApp
 
@@ -90,22 +90,22 @@ https://b2b.maxxglobalresources.com/products/sportsart-g690-verde-treadmill
 - Desktop: same link works via WhatsApp Web. Also display a QR code so a desktop visitor can continue on their phone.
 - Keep prefilled text under ~300 characters; long URLs get truncated by some clients
 
-### F1.3 — Phone numbers — **withdrawn from the UI (Rev 3)**
+### F1.3 — Phone numbers — **mobile number restored; other numbers withdrawn**
 
-**Change:** at the client's instruction, all four numbers were removed from the header, the site footer and `/contact`. The "Call us" card on the contact page was deleted, as were the digits printed under the WhatsApp button. Phone is not a launch contact channel.
+**Change:** at the client's instruction, three numbers stay out of the header, the site footer and `/contact`, and the "Call us" card remains deleted. The mobile number, 0917 833 3202, is displayed in the footer and on `/contact` for SMS, Viber or WhatsApp. It is a messaging channel, not a voice line.
 
-**Current state:** two channels — the on-site form (F1.1) and WhatsApp (F1.2) — plus the showroom address and the `info@` mailto in the footer. The header keeps its "Request a Quote" CTA, which routes to the form.
+**Current state:** the on-site form (F1.1), WhatsApp (F1.2), SMS and Viber on 0917 833 3202, the `maxxglobal@gmail.com` mailto, and the showroom address. The header keeps its "Request a Quote" CTA, which routes to the form.
 
-**Retained in `siteSettings` for reference, not rendered:**
+**Numbers on file:**
 
 | Label | Number | Note |
 |---|---|---|
 | Sales — Manila Office | (632) 583-2360 | Landline |
 | Sales — Showroom | (632) 794-1737 | Landline |
-| Mobile / Viber | (63917) 833-3202 | Also the WhatsApp number |
+| Mobile / SMS / Viber / WhatsApp | 0917 833 3202 | Displayed in the footer and on `/contact` |
 | Hotline | (63925) 7-MAXX-77 | |
 
-**If numbers are restored**, the Rev 2 requirements stand unchanged: label each number with its purpose, show business hours beside it, wrap in `tel:` for mobile dialling, and state Viber availability in text rather than a `viber://` deep link — those links can't prefill message text and trigger an "open external application?" dialog on desktop.
+**If more numbers are restored**, the Rev 2 requirements stand unchanged: label each number with its purpose, show business hours beside it, wrap in `tel:` for mobile dialling, and state Viber availability in text rather than a `viber://` deep link — those links can't prefill message text and trigger an "open external application?" dialog on desktop.
 
 ### F1.5 — Showroom map links
 
@@ -143,7 +143,7 @@ The enum leaves room for LinkedIn, which is worth considering later — it's the
 Order matters. Lead with the fastest channel for the visitor, not the most convenient for you.
 
 1. Form (primary, above the fold)
-2. WhatsApp button and desktop QR code — no number printed alongside it (Rev 3)
+2. WhatsApp button and desktop QR code, plus 0917 833 3202 listed for SMS, Viber or WhatsApp
 3. Showroom location with map link, coordinates, and photos
 4. Office address
 5. Social links (Facebook, Instagram)
@@ -168,7 +168,7 @@ The Banawe addresses are the same building with different street numbers on reco
 
 - Form submission arrives at the configured inbox within 2 minutes, with product context when sent from a product page
 - WhatsApp opens with correct number and prefilled text on Android and iOS
-- The WhatsApp QR scans correctly from a desktop screen, and no phone number appears anywhere in the UI (Rev 3)
+- The WhatsApp QR scans correctly from a desktop screen, and 0917 833 3202 is the only phone number in the UI
 - Zero rebuilds triggered by any submission
 
 ### Risk
@@ -294,6 +294,20 @@ Liben and Shamrock Arena were confirmed in Rev 3. Confirm the remaining "verify 
 
 ## F4 — Clients & Installations Showcase
 
+> **Status: deferred — hidden in build (2026-11-02).** Everything below is still the intended spec; none of it is live. Blocked on open question 1 (written client permission) and on sourcing real installation photography — the current copy and client names are placeholders per open question 13.
+>
+> **To-do to un-hide:**
+> 1. Secure written permission from at least three clients to name them and publish install photos (F4.4).
+> 2. Source installation photography; replace the `[ installation photo ]` placeholders.
+> 3. Replace placeholder client names (SM Supermalls, Ayala Land, Shangri-La, Megaworld, Robinsons Land).
+> 4. Restore the routes and entry points listed below, then re-check the Projects filters referenced in the Catalog-filters note.
+>
+> **What was hidden, and where to restore it:**
+> - `src/pages/_projects.astro` — underscore prefix un-routes it; rename back to `projects.astro`.
+> - `src/layouts/Layout.astro` — Projects link removed from both the desktop and mobile nav (marked `TODO(F4)`).
+> - `src/pages/index.astro` — the homepage Projects teaser section is commented out (marked `TODO(F4)`).
+> - `src/pages/brands/[slug].astro` — the "Where we've installed it" section is gated behind `false &&` (marked `TODO(F4)`).
+
 ### Problem
 
 For a ₱2M+ purchase, proof of prior delivery outweighs any product feature. A logo grid is the default treatment and it's weak — logos prove a transaction happened, not that it went well.
@@ -415,8 +429,8 @@ Updates to the content model doc:
 - **No** `beforeImages` field — completed installations only
 
 **`siteSettings`**
-- `contactFormRecipient` — set to `info@maxxglobalresources.com`
-- `serviceEmail` — `service@maxxglobalresources.com`, for future service enquiries
+- `contactFormRecipient` — set to `maxxglobal@gmail.com`
+- `serviceEmail` — `maxxglobal@gmail.com`, for future service enquiries
 - `whatsappNumber` (string)
 - `phones[]` → `{ label, number, hasViber (boolean), hours }`
 - `showrooms[]` → `{ name, addressLine, city, postalCode, coordinates (geopoint), landmarkNote, hours, photo, isPrimary }`
@@ -429,7 +443,7 @@ Updates to the content model doc:
 
 | Concern | Approach |
 |---|---|
-| Forms | Netlify Forms → info@maxxglobalresources.com. Monitor the 100/month ceiling. |
+| Forms | Netlify Forms → maxxglobal@gmail.com. Monitor the 100/month ceiling. |
 | WhatsApp | `wa.me` links, number from `siteSettings` |
 | Maps | Static SVG + percentage-positioned pins. No library, no API key. |
 | Spec sheets | PDFs on Sanity CDN, linked not bundled |
@@ -446,7 +460,7 @@ Updates to the content model doc:
 
 **Phase 1 — Foundation.** Catalog, brands, categories, product detail with description + spec sheet download, contact form, WhatsApp, phone numbers. Fully useful on its own.
 
-**Phase 2 — Credibility.** Supplier origin map (F3) and installations showcase (F4). Gated on photo sourcing and client permissions, which is why it follows — the engineering is a fraction of the effort.
+**Phase 2 — Credibility.** Supplier origin map (F3) and installations showcase (F4). Gated on photo sourcing and client permissions, which is why it follows — the engineering is a fraction of the effort. **As of 2026-11-02 F4 is built but hidden in the build** pending those permissions; see the status note at the top of F4 for the un-hide checklist.
 
 **Phase 3 — Polish.** Pagefind search, filtering, print stylesheet, analytics.
 
