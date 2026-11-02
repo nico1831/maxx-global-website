@@ -278,7 +278,7 @@ Liben and Shamrock Arena were confirmed in Rev 3. Confirm the remaining "verify 
 - Worth doing properly rather than picking one: the USA HQ signals design provenance and the Taiwan facility signals manufacturing scale. Both help you.
 
 **F3.6 — Technical**
-- Equirectangular projection, pins positioned by percentage: `left = (lng + 180) / 360 * 100%`, `top = (90 - lat) / 180 * 100%`
+- Pins are positioned by percentage from each brand's Sanity `coordinates`. The basemap is a stylised outline rather than an equirectangular map, so the conversion is calibrated to the image in `src/lib/worldMap.ts`; replacing the image means recalibrating it
 - Static SVG basemap. No mapping library, no API key, no tile costs.
 - If accurate projection is needed later, upgrade to `d3-geo` + `world-atlas` TopoJSON rendered at build time
 - Total added weight target: under 40KB

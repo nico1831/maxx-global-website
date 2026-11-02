@@ -141,6 +141,21 @@ export const productBySlugQuery = /* groq */ `
   }
 `
 
+// Supplier map pins come from each brand's origin; the blue marker is the primary showroom.
+export const worldMapQuery = /* groq */ `
+  {
+    "brands": *[_type == "brand" && (defined(coordinates) || defined(secondaryOrigin.coordinates))] | order(name asc) {
+      name,
+      "slug": slug.current,
+      originCity,
+      originCountry,
+      coordinates,
+      secondaryOrigin
+    },
+    "showroom": *[_type == "siteSettings"][0].showrooms[isPrimary == true][0].coordinates
+  }
+`
+
 export const homeHeroQuery = /* groq */ `
   *[_type == "siteSettings"][0].hero {
     eyebrow,

@@ -1,12 +1,17 @@
 ---
 import Layout from '../layouts/Layout.astro'
 import { client, urlFor } from '../lib/sanity'
-import { homeHeroQuery, homeCategoriesQuery } from '../lib/queries'
+import { homeHeroQuery, homeCategoriesQuery, worldMapQuery } from '../lib/queries'
+import { mapPinsFrom, toMapPosition } from '../lib/worldMap'
 
-const [hero, categoryDocs] = await Promise.all([
+const [hero, categoryDocs, worldMap] = await Promise.all([
   client.fetch(homeHeroQuery),
   client.fetch(homeCategoriesQuery),
+  client.fetch(worldMapQuery),
 ])
+
+const worldPins = mapPinsFrom(worldMap?.brands ?? [])
+const showroomPos = worldMap?.showroom ? toMapPosition(worldMap.showroom) : null
 
 // Fall back to the authored copy so the hero still renders before Site Settings is filled in
 const heroEyebrow   = hero?.eyebrow  ?? 'Commercial fitness · Flooring · Playground'
@@ -130,11 +135,13 @@ const categories = [...(categoryDocs ?? [])]
               <img src="/images/world-map.jpg" class="world-map-base" alt="">
               <img src="/images/world-map.jpg" class="world-map-bloom" alt="">
             </div>
-            <div id="world-pins"></div>
-            <div class="manila-pin">
-              <div class="manila-dot"></div>
-              <div class="manila-lbl">Manila — HQ &amp; Showroom</div>
-            </div>
+            <div id="world-pins" data-pins={JSON.stringify(worldPins)}></div>
+            {showroomPos && (
+              <div class="manila-pin" style={`left:${showroomPos.left}%;top:${showroomPos.top}%`}>
+                <div class="manila-dot"></div>
+                <div class="manila-lbl">Manila — HQ &amp; Showroom</div>
+              </div>
+            )}
           </div>
         </div><!-- /.map-canvas -->
       </div><!-- /.map-canvas-scroll -->
@@ -325,7 +332,7 @@ const categories = [...(categoryDocs ?? [])]
   }
   .pin.hi .pin-lbl { color: #0a0a0a; background: #fff; }
   .manila-pin {
-    position: absolute; left: 76.25%; top: 60%;
+    position: absolute;
     transform: translate(-5px,-50%) scale(calc(1 / var(--zoom))); transform-origin: 5px 50%;
     display: flex; flex-direction: row; align-items: center; gap: 7px; z-index: 3; pointer-events: none;
   }
@@ -521,6 +528,7 @@ const categories = [...(categoryDocs ?? [])]
         if (fact.plus) {
           const plusEl = document.createElement('span')
           plusEl.className = 'plus'
+  // Keys are Sanity brand slugs, which is what ties a chip to its pins
           plusEl.textContent = '+'
           numEl.appendChild(plusEl)
         }
@@ -547,45 +555,27 @@ const categories = [...(categoryDocs ?? [])]
 
   // ── DATA ─────────────────────────────────────────────────────────────────
 
-  // [label, left, top, side, brandKeys[]]
-  // left = (lng + 180) / 360 * 100 · top = (90 - lat) / 180 * 100
-  const WORLD_PINS: [string, string, string, string, string[]][] = [
-    ['Washington, USA — SportsArt HQ', '17.5%', '43%',   'r', ['sportsart']],
-    ['Utah, USA — Force USA',          '19.5%', '48.5%', 'l', ['forceusa']],
-    ['Colarado, USA — Stages',          '21.5%', '48.5%', 'r', ['stages']],
-    ['Shangdong, CN — Impulse',          '75.5%', '50%',   'l', ['impulse']],
-    ['Zhejiang, CN — Liben',           '75.5%', '54%',   'l', ['liben']],
-    ['Taoyuan, TW — Intenza',          '76.5%', '56%',   'r', ['intenza', 'fitplus']],
-    ['Tainan, TW — SportsArt Factory', '75.75%','57%',   'l', ['sportsart']],
-    ['Selangor, MY — Shamrock Arena',  '71.5%', '65%',   'l', ['shamrock']],
-    ['Bassendean, AU — First Degree',  '75%',   '81%',   'l', ['firstdegree']],
-    ['Saint Marys, AU — VersaFit',     '83%',   '81%',   'r', ['versafit']],
-    ['New York, USA — MX Select HQ',  '28.5%',   '45.5%',   'r', ['mxselect']],
-    ['Arkansas, USA — Spirit HQ',      '24%',   '50%',   'l', ['spirit']],
-    ['Shandong, CN — Ironbull Fitness','75.5%', '50%',   'r', ['ironbull']],
-    ['Xiamen, CN — Housefit',          '75%',   '56%',   'l', ['housefit']],
-    ['Taipei, TW — Spirit Factory',    '76.5%',   '56%', 'r', ['spirit']],
-    ['Taichung, TW — Aeon Fitness',    '76%',   '56.5%', 'r', ['aeon']],
-    ['Wallenried, CH — Inotec HQ',     '49%',   '43%',   'r', ['inotec']],
-  ]
+  // Built from Sanity brand origins in the page frontmatter
+  type MapPin = { label: string; left: number; top: number; side: string; key: string }
+  const WORLD_PINS: MapPin[] = JSON.parse(document.getElementById('world-pins')!.dataset.pins ?? '[]')
 
   const BRAND_CHIPS: [string, string, string][] = [
-    ['SportsArt',      'sportsart',   '/images/brands/sportsart.png'],
-    ['Force USA',      'forceusa',    '/images/brands/forceusa.png'],
-    ['Impulse',        'impulse',     '/images/brands/impulse.png'],
-    ['Stages Cycling', 'stages',      '/images/brands/stages.png'],
-    ['Intenza',        'intenza',     '/images/brands/intenza.png'],
-    ['First Degree',   'firstdegree', '/images/brands/fdf.png'],
-    ['VersaFit',       'versafit',    '/images/brands/versafit.png'],
-    ['FitPlus Floor',  'fitplus',     '/images/brands/fitplus-floor-black-transparent.png'],
-    ['Liben',          'liben',       '/images/brands/liben.png'],
-    ['Shamrock Arena', 'shamrock',    '/images/brands/shamrock.png'],
-    ['MX Select',      'mxselect',    '/images/brands/mxselect.png'],
-    ['Ironbull Fitness','ironbull',   '/images/brands/ironbull.png'],
-    ['Housefit',       'housefit',    '/images/brands/housefit.png'],
-    ['Inotec',         'inotec',      '/images/brands/inotec.png'],
-    ['Spirit Fitness', 'spirit',      '/images/brands/spirit.png'],
-    ['Aeon Fitness',   'aeon',        '/images/brands/aeon.png'],
+    ['SportsArt',      'sportsart',            '/images/brands/sportsart.png'],
+    ['Force USA',      'force-usa',            '/images/brands/forceusa.png'],
+    ['Impulse',        'impulse',              '/images/brands/impulse.png'],
+    ['Stages Cycling', 'stages-cycling',       '/images/brands/stages.png'],
+    ['Intenza',        'intenza',              '/images/brands/intenza.png'],
+    ['First Degree',   'first-degree-fitness', '/images/brands/fdf.png'],
+    ['VersaFit',       'versafit',             '/images/brands/versafit.png'],
+    ['FitPlus Floor',  'fitplus-floor',        '/images/brands/fitplus-floor-black-transparent.png'],
+    ['Liben',          'liben',                '/images/brands/liben.png'],
+    ['Shamrock Arena', 'shamrock-arena',       '/images/brands/shamrock.png'],
+    ['MX Select',      'mx-select',            '/images/brands/mxselect.png'],
+    ['Ironbull Fitness','ironbull-fitness',    '/images/brands/ironbull.png'],
+    ['Housefit',       'housefit',             '/images/brands/housefit.png'],
+    ['Inotec',         'inotec',               '/images/brands/inotec.png'],
+    ['Spirit Fitness', 'spirit-fitness',       '/images/brands/spirit.png'],
+    ['Aeon Fitness',   'aeon-fitness',         '/images/brands/aeon.png'],
   ]
 
   const FEATURED = [
@@ -624,12 +614,12 @@ const categories = [...(categoryDocs ?? [])]
 
   function applyWorldZoom() {
     const view = document.getElementById('world-view')!
-    const pins = WORLD_PINS.filter(([, , , , keys]) => !!selBrand && keys.includes(selBrand))
+    const pins = WORLD_PINS.filter((p) => p.key === selBrand)
     let zoom = 1, tx = 0, ty = 0
 
     if (pins.length) {
-      const xs = pins.map(([, left]) => parseFloat(left))
-      const ys = pins.map(([, , top]) => parseFloat(top))
+      const xs = pins.map((p) => p.left)
+      const ys = pins.map((p) => p.top)
       const [minX, maxX] = [Math.min(...xs), Math.max(...xs)]
       const [minY, maxY] = [Math.min(...ys), Math.max(...ys)]
 
@@ -652,10 +642,10 @@ const categories = [...(categoryDocs ?? [])]
   function buildWorldPins() {
     const container = document.getElementById('world-pins')!
     container.innerHTML = ''
-    document.querySelector('.manila-pin')!.classList.toggle('dim', !!selBrand)
+    document.querySelector('.manila-pin')?.classList.toggle('dim', !!selBrand)
     applyWorldZoom()
-    WORLD_PINS.forEach(([label, left, top, side, keys]) => {
-      const isHi  = !!selBrand && keys.includes(selBrand)
+    WORLD_PINS.forEach(({ label, left, top, side, key }) => {
+      const isHi  = key === selBrand
       const isDim = !!selBrand && !isHi
       const color  = '#5b8def'
       const glow   = isHi ? 'rgba(91,141,239,.6)' : 'rgba(91,141,239,.35)'
@@ -674,9 +664,9 @@ const categories = [...(categoryDocs ?? [])]
 
       const pin = document.createElement('div')
       pin.className = 'pin' + (isDim ? ' dim' : '') + (isHi ? ' hi' : '')
-      pin.style.cssText = `left:${left};top:${top};transform:${pinTF(side)} scale(calc(1 / var(--zoom)));transform-origin:${pinOrigin(side)};flex-direction:${pinDir(side)}`
+      pin.style.cssText = `left:${left}%;top:${top}%;transform:${pinTF(side)} scale(calc(1 / var(--zoom)));transform-origin:${pinOrigin(side)};flex-direction:${pinDir(side)}`
       pin.append(dot, lbl)
-      pin.addEventListener('click', () => { selBrand = isHi ? null : keys[0]; renderMap() })
+      pin.addEventListener('click', () => { selBrand = isHi ? null : key; renderMap() })
       container.appendChild(pin)
     })
   }
