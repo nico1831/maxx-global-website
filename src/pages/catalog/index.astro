@@ -699,6 +699,8 @@ const AVAIL_FILTER = [
   if (brandParam) state.brands.add(brandParam)
   const catParam = urlParams.get('category')
   if (catParam) { state.cat = catParam; expanded.add(catParam) }
+  const subParam = urlParams.get('sub')
+  if (subParam) state.sub = subParam
 
   // Initial render
   applyFilters()

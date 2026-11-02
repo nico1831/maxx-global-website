@@ -32,20 +32,18 @@ export const categoryTreeQuery = /* groq */ `
 `
 
 // Homepage category cards. Subcategory titles ride along as a last-resort subtitle
-// for categories with no tagline.
+// for categories with no tagline. Rowers and Spin Bikes are subcategories of Cardio
+// that keep their own homepage card.
 export const homeCategoriesQuery = /* groq */ `
-  *[_type == "category" && !defined(parent)] | order(coalesce(displayOrder, 9999) asc, title asc) {
+  *[_type == "category" && (!defined(parent) || slug.current in ["rowers", "spin-bikes"])] | order(coalesce(displayOrder, 9999) asc, title asc) {
     _id,
     title,
     "slug": slug.current,
+    "parentSlug": parent->slug.current,
     tagline,
     image,
     "childTitles": *[_type == "category" && parent._ref == ^._id] | order(coalesce(displayOrder, 9999) asc, title asc).title
   }
-`
-
-export const allCategorySlugsQuery = /* groq */ `
-  *[_type == "category"]{ "slug": slug.current }
 `
 
 export const allBrandsQuery = /* groq */ `
@@ -140,34 +138,6 @@ export const productBySlugQuery = /* groq */ `
     "images": images[]{ asset, alt },
     "relatedProducts": relatedProducts[]->{ _id, title, slug, modelCode, availability, "image": images[0]{ asset, alt }, "brand": brand->{ name } },
     seo
-  }
-`
-
-export const categoryWithProductsQuery = /* groq */ `
-  *[_type == "category" && slug.current == $slug][0] {
-    _id,
-    title,
-    slug,
-    description,
-    image,
-    "parent": parent->{ _id, title, slug },
-    "children": *[_type == "category" && parent._ref == ^._id] | order(coalesce(displayOrder, 9999) asc) {
-      _id,
-      title,
-      slug,
-      "productCount": count(*[_type == "product" && primaryCategory._ref == ^._id])
-    },
-    "products": *[_type == "product" && primaryCategory._ref == ^._id] | order(coalesce(displayOrder, 9999) asc, title asc) {
-      _id,
-      title,
-      slug,
-      modelCode,
-      availability,
-      "brand": brand->{ _id, name, slug },
-      "primaryCategory": primaryCategory->{ _id, title, slug, "parent": parent->{ _id, title, slug } },
-      "image": images[0]{ asset, alt },
-      shortDescription
-    }
   }
 `
 

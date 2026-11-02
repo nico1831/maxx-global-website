@@ -61,7 +61,9 @@ const categories = [...(categoryDocs ?? [])]
   .sort((a: any, b: any) => catRank(a) - catRank(b))
   .map((cat: any) => ({
     name: cat.title,
-    href: `/catalog/${cat.slug}`,
+    href: cat.parentSlug
+      ? `/catalog?category=${cat.parentSlug}&sub=${cat.slug}`
+      : `/catalog?category=${cat.slug}`,
     sub:
       cat.tagline ||
       CAT_SUBS[cat.slug] ||
