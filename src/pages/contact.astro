@@ -5,9 +5,10 @@ import { categoryTreeQuery } from '../lib/queries'
 
 const categories = await client.fetch(categoryTreeQuery)
 
-const SALES_EMAIL = 'info@maxxglobalresources.com'
-const SERVICE_EMAIL = 'service@maxxglobalresources.com'
+const SALES_EMAIL = 'maxxglobal@gmail.com'
+const SERVICE_EMAIL = 'maxxglobal@gmail.com'
 const WHATSAPP = '639178333202'
+const PHONE_DISPLAY = '0917 833 3202'
 ---
 
 <Layout
@@ -92,7 +93,6 @@ const WHATSAPP = '639178333202'
 
         <div class="form-actions">
           <button type="submit" class="btn-primary submit-btn">Send request</button>
-          <a id="wa-link" href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" class="btn-secondary submit-btn">Message us on WhatsApp</a>
         </div>
         <p class="form-note" id="form-note">
           Sending opens your email client with the request filled in. Prefer to write directly? <a href={`mailto:${SALES_EMAIL}`}>{SALES_EMAIL}</a>
@@ -112,13 +112,16 @@ const WHATSAPP = '639178333202'
       <div class="detail-card">
         <div class="detail-title">Sales &amp; quotations</div>
         <a href={`mailto:${SALES_EMAIL}`} class="detail-link">{SALES_EMAIL}</a>
-        <a href={`https://wa.me/${WHATSAPP}`} target="_blank" rel="noopener noreferrer" class="detail-link">WhatsApp +63 917 833 3202</a>
+        <a href={`sms:+${WHATSAPP}`} class="detail-link">{PHONE_DISPLAY}</a>
+        <p class="detail-text detail-channels">SMS, Viber or WhatsApp</p>
       </div>
 
       <div class="detail-card">
         <div class="detail-title">Service &amp; parts</div>
         <p class="detail-text">Existing installation needing attention? Reach the service desk directly — include the model and serial.</p>
         <a href={`mailto:${SERVICE_EMAIL}`} class="detail-link">{SERVICE_EMAIL}</a>
+        <a href={`sms:+${WHATSAPP}`} class="detail-link">{PHONE_DISPLAY}</a>
+        <p class="detail-text detail-channels">SMS, Viber or WhatsApp</p>
       </div>
 
       <div class="detail-card detail-card-quiet">
@@ -227,7 +230,6 @@ const WHATSAPP = '639178333202'
 
   .form-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
   .submit-btn { flex: 1 1 200px; border: none; cursor: pointer; }
-  a.submit-btn { border: 1px solid #3a3a38; }
   .form-note {
     margin: 16px 0 0;
     font-size: 13px; line-height: 1.6; color: #8a8a86;
@@ -252,6 +254,7 @@ const WHATSAPP = '639178333202'
     text-decoration: none; margin-top: 4px; transition: color .15s;
   }
   .detail-link:hover { color: #82a9f2; }
+  .detail-channels { margin: 2px 0 0; }
   .detail-hours { font-size: 13px; color: #8a8a86; margin-top: 12px; }
   .detail-list {
     margin: 0; padding-left: 18px;
@@ -259,7 +262,7 @@ const WHATSAPP = '639178333202'
   }
 </style>
 
-<script define:vars={{ SALES_EMAIL, WHATSAPP }}>
+<script define:vars={{ SALES_EMAIL }}>
   const form = document.getElementById('quote-form')
   const note = document.getElementById('form-note')
   const defaultNote = note.innerHTML
@@ -282,19 +285,6 @@ const WHATSAPP = '639178333202'
   if (params.get('request') === 'spec-sheet') {
     document.getElementById('f-type').value = 'Spec sheet request'
   }
-
-  // The WhatsApp button carries whatever has been typed so far
-  const waLink = document.getElementById('wa-link')
-  const syncWhatsApp = () => {
-    const parts = [
-      'Hi Maxx Global, I would like to request a quote.',
-      productSlug ? `Product: ${titleize(productSlug)}` : '',
-      document.getElementById('f-message').value.trim(),
-    ].filter(Boolean)
-    waLink.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(parts.join('\n\n'))}`
-  }
-  syncWhatsApp()
-  document.getElementById('f-message').addEventListener('input', syncWhatsApp)
 
   // Submit composes a mailto, so the site stays fully static (no adapter needed)
   const REQUIRED = ['f-name', 'f-email', 'f-message']
