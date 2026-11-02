@@ -38,16 +38,27 @@ const CAT_SUBS: Record<string, string> = {
   'playground':     'Play systems · Swings · Slides',
 }
 
-// Playground, flooring and accessories are add-on lines, so they sit after the core
-// equipment categories in that order; Display Order in the Studio governs the rest.
-const TRAILING_CATS = ['playground', 'flooring', 'accessories']
-const trailingRank = (cat: any) => {
-  const i = TRAILING_CATS.indexOf(cat.slug)
-  return i === -1 ? -1 : i
+// The running order of the cards: core equipment first, then the add-on lines.
+// Setting Display Order in the Studio overrides a category's slot here — the
+// positions below are the Display Order values they stand in for.
+const CAT_ORDER = [
+  'cardio',
+  'cycling-studio',
+  'functional',
+  'strength',
+  'rowers',
+  'playground',
+  'flooring',
+  'accessories',
+]
+const catRank = (cat: any) => {
+  if (typeof cat.displayOrder === 'number') return cat.displayOrder
+  const i = CAT_ORDER.indexOf(cat.slug)
+  return i === -1 ? 999 : i + 1
 }
 
 const categories = [...(categoryDocs ?? [])]
-  .sort((a: any, b: any) => trailingRank(a) - trailingRank(b))
+  .sort((a: any, b: any) => catRank(a) - catRank(b))
   .map((cat: any) => ({
     name: cat.title,
     href: `/catalog/${cat.slug}`,
@@ -396,6 +407,27 @@ const categories = [...(categoryDocs ?? [])]
   .cat-body { position: absolute; left: 24px; bottom: 20px; right: 24px; }
   .cat-name { font-size: 22px; font-weight: 600; color: #fff; }
   .cat-sub  { font-size: 13px; color: #9a9a96; margin-top: 4px; }
+  /* Below the auto-fill breakpoint the cards would drop to one 300px-tall card per
+     row and swallow the viewport, so hold two per row and scale them down */
+  @media (max-width: 767px) {
+    /* min() keeps a card from overflowing the gutter on the narrowest phones */
+    .cat-grid { grid-template-columns: repeat(auto-fill,minmax(min(190px,100%),1fr)); gap: 10px; }
+    .cat-card { height: 190px; border-radius: 4px; }
+    .cat-scrim { background: linear-gradient(180deg,transparent 28%,rgba(10,10,10,.92) 100%); }
+    .cat-body { left: 14px; right: 14px; bottom: 12px; }
+    .cat-name { font-size: 16px; }
+    /* Long subtitles (Accessories) would otherwise run past the card edge */
+    .cat-sub  {
+      font-size: 11px; line-height: 1.4; margin-top: 2px;
+      display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden;
+    }
+  }
+  @media (max-width: 420px) {
+    .cat-grid { grid-template-columns: repeat(auto-fill,minmax(min(150px,100%),1fr)); gap: 8px; }
+    .cat-card { height: 150px; }
+    .cat-name { font-size: 14px; }
+    .cat-sub  { font-size: 10px; }
+  }
 
   /* ── PRODUCT GRID ── */
   .product-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap: 16px; }
