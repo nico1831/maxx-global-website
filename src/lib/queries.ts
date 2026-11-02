@@ -181,3 +181,22 @@ export const homeHeroQuery = /* groq */ `
     secondaryCta
   }
 `
+
+export const projectsQuery = /* groq */ `
+  *[_type == "project" && permissionOnFile == true && displayAs != "hidden"]
+    | order(coalesce(year, 0) desc, title asc) {
+    _id,
+    title,
+    slug,
+    clientName,
+    displayAs,
+    anonymisedLabel,
+    location,
+    year,
+    summary,
+    isFeatured,
+    "segmentName": segment->title,
+    "image": images[0]{ asset, alt },
+    "brandsUsed": brandsUsed[]->{ _id, name, slug }
+  }
+`
