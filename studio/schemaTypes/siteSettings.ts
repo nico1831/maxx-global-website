@@ -7,6 +7,67 @@ export default defineType({
   title: 'Site Settings',
   type: 'document',
   fields: [
+    defineField({
+      name: 'hero',
+      title: 'Homepage Hero',
+      type: 'object',
+      description: 'The full-bleed banner at the top of the homepage.',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({
+          name: 'image',
+          title: 'Background Image',
+          type: 'image',
+          options: { hotspot: true },
+          description:
+            'Landscape, at least 2000px wide. Drag the hotspot onto the subject — the banner crops around it at every screen width.',
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Alt text',
+              type: 'string',
+              validation: (Rule) => Rule.required().error('Alt text is required'),
+            }),
+          ],
+        }),
+        defineField({
+          name: 'eyebrow',
+          type: 'string',
+          description: 'Small label above the headline, e.g. "Commercial fitness · Flooring · Playground"',
+        }),
+        defineField({
+          name: 'headline',
+          type: 'string',
+          description: 'Max 90 chars — it is set at display size and wraps to two lines',
+          validation: (Rule) => Rule.max(90),
+        }),
+        defineField({
+          name: 'lead',
+          type: 'text',
+          rows: 3,
+          description: 'One or two sentences under the headline. Max 200 chars.',
+          validation: (Rule) => Rule.max(200),
+        }),
+        defineField({
+          name: 'primaryCta',
+          title: 'Primary Button',
+          type: 'object',
+          fields: [
+            defineField({ name: 'label', type: 'string' }),
+            defineField({ name: 'href', title: 'Link', type: 'string', description: 'e.g. /contact' }),
+          ],
+        }),
+        defineField({
+          name: 'secondaryCta',
+          title: 'Secondary Button',
+          type: 'object',
+          fields: [
+            defineField({ name: 'label', type: 'string' }),
+            defineField({ name: 'href', title: 'Link', type: 'string', description: 'e.g. /catalog' }),
+          ],
+        }),
+      ],
+    }),
     defineField({ name: 'logo', type: 'image', description: 'Primary logo (for dark backgrounds)' }),
     defineField({ name: 'logoInverse', type: 'image', description: 'Logo for light backgrounds' }),
     defineField({ name: 'officeAddress', type: 'text', rows: 3 }),

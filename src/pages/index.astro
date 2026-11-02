@@ -1,24 +1,91 @@
 ---
 import Layout from '../layouts/Layout.astro'
+import { client, urlFor } from '../lib/sanity'
+import { homeHeroQuery, homeCategoriesQuery } from '../lib/queries'
+
+const [hero, categoryDocs] = await Promise.all([
+  client.fetch(homeHeroQuery),
+  client.fetch(homeCategoriesQuery),
+])
+
+// Fall back to the authored copy so the hero still renders before Site Settings is filled in
+const heroEyebrow   = hero?.eyebrow  ?? 'Commercial fitness · Flooring · Playground'
+const heroHeadline  = hero?.headline ?? 'Equip your facility with the world\'s commercial brands.'
+const heroLead      = hero?.lead     ?? 'Full commercial ranges from SportsArt, Force USA, Impulse and more — specified, imported and installed across the Philippines.'
+const heroAlt       = hero?.image?.alt ?? 'Runner training on a SportsArt commercial treadmill in a gym'
+const heroPrimary   = { label: hero?.primaryCta?.label   ?? 'Request a Quote',    href: hero?.primaryCta?.href   ?? '/contact' }
+const heroSecondary = { label: hero?.secondaryCta?.label ?? 'Browse the Catalog', href: hero?.secondaryCta?.href ?? '/catalog' }
+
+// The image hotspot drives the crop focus; with no Sanity image we keep the bundled
+// photo and the framing tuned for it in .hero-bg
+const heroImageUrl = hero?.image?.asset
+  ? urlFor(hero.image).width(2000).fit('max').format('webp').url()
+  : null
+const heroStyle = [
+  heroImageUrl && `--hero-img:url('${heroImageUrl}')`,
+  hero?.image?.hotspot && `--hero-pos:${(hero.image.hotspot.x * 100).toFixed(1)}% ${(hero.image.hotspot.y * 100).toFixed(1)}%`,
+].filter(Boolean).join(';')
+
+// Card subtitles fall back to the authored copy so the grid still reads well before
+// Tagline is filled in.
+const CAT_SUBS: Record<string, string> = {
+  'cardio':         'Treadmills · Ellipticals · Bikes · Ski trainers',
+  'rowers':         'Fluid rowers · Air rowers · Accessories',
+  'strength':       'Plate loaded · Selectorized · Racks',
+  'functional':     'All-in-one trainers · Rigs · Accessories',
+  'cycling-studio': 'Indoor cycles · Power meters · Studio systems',
+  'flooring':       'Rubber tiles · Rolls · PVC · Platforms',
+  'playground':     'Play systems · Swings · Slides',
+}
+
+// Playground, flooring and accessories are add-on lines, so they sit after the core
+// equipment categories in that order; Display Order in the Studio governs the rest.
+const TRAILING_CATS = ['playground', 'flooring', 'accessories']
+const trailingRank = (cat: any) => {
+  const i = TRAILING_CATS.indexOf(cat.slug)
+  return i === -1 ? -1 : i
+}
+
+const categories = [...(categoryDocs ?? [])]
+  .sort((a: any, b: any) => trailingRank(a) - trailingRank(b))
+  .map((cat: any) => ({
+    name: cat.title,
+    href: `/catalog/${cat.slug}`,
+    sub:
+      cat.tagline ||
+      CAT_SUBS[cat.slug] ||
+      (cat.childTitles ?? [])
+        .filter((t: string) => !/^other\b/i.test(t))
+        .slice(0, 4)
+        .join(' · '),
+    imgUrl: cat.image?.asset
+      ? urlFor(cat.image).width(900).fit('max').format('webp').url()
+      : null,
+    imgAlt: cat.image?.alt ?? cat.title,
+    // The hotspot drives the crop focus, same as the hero
+    imgPos: cat.image?.hotspot
+      ? `${(cat.image.hotspot.x * 100).toFixed(1)}% ${(cat.image.hotspot.y * 100).toFixed(1)}%`
+      : null,
+  }))
 ---
 
 <Layout title="Maxx Global Resources — Commercial Fitness Equipment Philippines">
   <!-- ════════════════════ HERO ════════════════════ -->
   <section class="hero" aria-label="Hero">
-    <div class="hero-bg" role="img" aria-label="Runner training on a SportsArt commercial treadmill in a gym"></div>
+    <div class="hero-bg" style={heroStyle || undefined} role="img" aria-label={heroAlt}></div>
     <div class="hero-scrim"></div>
     <div class="hero-content">
       <div class="hero-text">
         <div class="eyebrow">
           <span class="eyebrow-bar"></span>
-          <span class="eyebrow-label">Commercial fitness · Flooring · Playground</span>
+          <span class="eyebrow-label">{heroEyebrow}</span>
         </div>
-        <h1 class="hero-h1">Equip your facility with the world's commercial brands.</h1>
-        <p class="hero-lead">Full commercial ranges from SportsArt, Force USA, Impulse and more — specified, imported and installed across the Philippines.</p>
+        <h1 class="hero-h1">{heroHeadline}</h1>
+        <p class="hero-lead">{heroLead}</p>
       </div>
       <div class="hero-ctas">
-        <a href="/contact" class="btn-primary">Request a Quote</a>
-        <a href="/catalog" class="btn-secondary">Browse the Catalog</a>
+        <a href={heroPrimary.href} class="btn-primary">{heroPrimary.label}</a>
+        <a href={heroSecondary.href} class="btn-secondary">{heroSecondary.label}</a>
       </div>
     </div>
   </section>
@@ -69,7 +136,29 @@ import Layout from '../layouts/Layout.astro'
       <h2 class="section-title" id="cat-title">The complete commercial range</h2>
       <a href="/catalog" class="view-all">View all categories →</a>
     </div>
-    <div class="cat-grid" id="cat-grid"></div>
+    <div class="cat-grid">
+      {categories.map((cat) => (
+        <a href={cat.href} class="cat-card">
+          {cat.imgUrl ? (
+            <img
+              class="cat-img"
+              src={cat.imgUrl}
+              alt={cat.imgAlt}
+              loading="lazy"
+              decoding="async"
+              style={cat.imgPos ? `object-position:${cat.imgPos}` : undefined}
+            />
+          ) : (
+            <div class="cat-card-ph">[ {cat.name.toLowerCase()} photo ]</div>
+          )}
+          <div class="cat-scrim"></div>
+          <div class="cat-body">
+            <div class="cat-name">{cat.name}</div>
+            <div class="cat-sub">{cat.sub}</div>
+          </div>
+        </a>
+      ))}
+    </div>
   </section>
 
   <!-- ════════════════════ FEATURED PRODUCTS ════════════════════ -->
@@ -117,7 +206,7 @@ import Layout from '../layouts/Layout.astro'
   .hero { position: relative; min-height: clamp(520px,82vh,680px); display: flex; align-items: flex-end; }
   .hero-bg {
     position: absolute; inset: 0;
-    background: #101010 url('/images/hero.png') center 18% / cover no-repeat;
+    background: #101010 var(--hero-img, url('/images/hero.png')) var(--hero-pos, center 18%) / cover no-repeat;
   }
   .hero-scrim {
     position: absolute; inset: 0;
@@ -302,6 +391,7 @@ import Layout from '../layouts/Layout.astro'
   }
   .cat-card:hover { outline: 1px solid #3a3a38; }
   .cat-card-ph { position: absolute; top: 14px; right: 16px; color: #4a4a48; font: 11px ui-monospace,monospace; }
+  .cat-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; }
   .cat-scrim { position: absolute; inset: 0; background: linear-gradient(180deg,transparent 40%,rgba(10,10,10,.9) 100%); }
   .cat-body { position: absolute; left: 24px; bottom: 20px; right: 24px; }
   .cat-name { font-size: 22px; font-weight: 600; color: #fff; }
@@ -422,14 +512,6 @@ import Layout from '../layouts/Layout.astro'
   }
 
   // ── DATA ─────────────────────────────────────────────────────────────────
-  const CATS = [
-    { key: 'cardio',     name: 'Cardio',        sub: 'Treadmills · Ellipticals · Bikes · Rowers',    img: 'cardio row photo',         href: '/catalog/cardio' },
-    { key: 'strength',   name: 'Strength',      sub: 'Plate loaded · Selectorized · Racks',          img: 'strength floor photo',     href: '/catalog/strength' },
-    { key: 'functional', name: 'Functional',    sub: 'All-in-one trainers · Rigs · Accessories',     img: 'functional rig photo',     href: '/catalog/functional' },
-    { key: 'cycling',    name: 'Cycling Studio',sub: 'Indoor cycles · Power meters · Studio systems',img: 'cycling studio photo',     href: '/catalog/cycling-studio' },
-    { key: 'flooring',   name: 'Flooring',      sub: 'Rubber tiles · Rolls · PVC · Platforms',       img: 'rubber flooring detail',   href: '/catalog/flooring' },
-    { key: 'playground', name: 'Playground',    sub: 'Play systems · Swings · Slides',               img: 'playground install photo', href: '/catalog/playground' },
-  ]
 
   // [label, left, top, side, brandKeys[]]
   // left = (lng + 180) / 360 * 100 · top = (90 - lat) / 180 * 100
@@ -615,23 +697,6 @@ import Layout from '../layouts/Layout.astro'
     sidebar.style.maxHeight = canvas.offsetHeight + 'px'
   }
 
-  // ── CATEGORIES ───────────────────────────────────────────────────────────
-  function buildCategories() {
-    const grid = document.getElementById('cat-grid')!
-    CATS.forEach(cat => {
-      const a = document.createElement('a')
-      a.href = cat.href; a.className = 'cat-card'
-      a.innerHTML = `
-        <div class="cat-card-ph">[ ${cat.img} ]</div>
-        <div class="cat-scrim"></div>
-        <div class="cat-body">
-          <div class="cat-name">${cat.name}</div>
-          <div class="cat-sub">${cat.sub}</div>
-        </div>`
-      grid.appendChild(a)
-    })
-  }
-
   // ── FEATURED PRODUCTS ───────────────────────────────────────────────────
   function buildFeatured() {
     const grid = document.getElementById('product-grid')!
@@ -659,7 +724,6 @@ import Layout from '../layouts/Layout.astro'
   // ── INIT ─────────────────────────────────────────────────────────────────
   buildTicker()
   renderMap()
-  buildCategories()
   buildFeatured()
   syncSidebarHeight()
   window.addEventListener('resize', syncSidebarHeight)

@@ -31,6 +31,19 @@ export const categoryTreeQuery = /* groq */ `
   }
 `
 
+// Homepage category cards. Subcategory titles ride along as a last-resort subtitle
+// for categories with no tagline.
+export const homeCategoriesQuery = /* groq */ `
+  *[_type == "category" && !defined(parent)] | order(coalesce(displayOrder, 9999) asc, title asc) {
+    _id,
+    title,
+    "slug": slug.current,
+    tagline,
+    image,
+    "childTitles": *[_type == "category" && parent._ref == ^._id] | order(coalesce(displayOrder, 9999) asc, title asc).title
+  }
+`
+
 export const allCategorySlugsQuery = /* groq */ `
   *[_type == "category"]{ "slug": slug.current }
 `
@@ -155,5 +168,16 @@ export const categoryWithProductsQuery = /* groq */ `
       "image": images[0]{ asset, alt },
       shortDescription
     }
+  }
+`
+
+export const homeHeroQuery = /* groq */ `
+  *[_type == "siteSettings"][0].hero {
+    eyebrow,
+    headline,
+    lead,
+    "image": image{ asset, alt, hotspot },
+    primaryCta,
+    secondaryCta
   }
 `

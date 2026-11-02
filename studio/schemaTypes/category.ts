@@ -13,6 +13,12 @@ export default defineType({
       validation: (Rule) => Rule.required(),
     }),
     defineField({
+      name: 'tagline',
+      type: 'string',
+      description:
+        'Short subtitle on the homepage category card, e.g. "Treadmills · Ellipticals · Bikes · Rowers".',
+    }),
+    defineField({
       name: 'parent',
       type: 'reference',
       to: [{ type: 'category' }],
